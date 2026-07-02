@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+
+<html data-theme="dark" lang="zh-Hant">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Module 2 練習講義 — 三種 AI 使用情境與 AI Agent 能力體驗</title>
+<style>
+  :root {
+    --bg:#fff; --fg:#1a1a1a; --muted:#555; --card:#f6f7f9;
+    --border:#e0e3e8; --accent:#2563eb; --th-bg:#eef1f6; --shadow:0 1px 3px rgba(0,0,0,.08);
+    --codebg:#f0f2f5;
+  }
+  [data-theme="dark"] {
+    --bg:#0f1115; --fg:#e6e8ec; --muted:#9aa3af; --card:#181b21;
+    --border:#2a2f37; --accent:#60a5fa; --th-bg:#1f242c; --shadow:0 1px 3px rgba(0,0,0,.4);
+    --codebg:#11141a;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.7; transition:background .25s,color .25s; }
+  .wrap { max-width:840px; margin-left:260px; padding:32px 32px 80px; }
+  .sidebar { position:fixed; top:0; left:0; width:260px; height:100vh; overflow-y:auto;
+    background:var(--card); border-right:1px solid var(--border);
+    display:flex; flex-direction:column; gap:10px; padding:18px 14px; z-index:30; }
+  .brand { font-weight:700; font-size:1rem; line-height:1.35; padding:0 6px; }
+  .toprow { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+  .nav { display:flex; flex-direction:column; gap:4px; margin-top:6px; }
+  .navbtn { cursor:pointer; border:1px solid transparent; background:transparent;
+    color:var(--muted); border-radius:7px; padding:7px 10px; font-size:14px;
+    font-weight:600; text-align:left; width:100%; white-space:normal; }
+  .navbtn:hover { color:var(--accent); border-color:var(--border); background:var(--bg); }
+  .navbtn.active { color:var(--accent); border-color:var(--border); background:var(--bg); }
+  .btn { cursor:pointer; border:1px solid var(--border); background:var(--bg); color:var(--fg);
+    border-radius:8px; padding:6px 12px; font-size:13px; font-weight:600; }
+  .btn:hover { border-color:var(--accent); }
+  .menu-toggle { display:none; position:fixed; top:12px; left:12px; z-index:40;
+    cursor:pointer; border:1px solid var(--border); background:var(--card); color:var(--fg);
+    border-radius:8px; padding:6px 12px; font-size:18px; line-height:1; }
+  .backdrop { display:none; position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:20; }
+  h1 { font-size:1.9rem; line-height:1.3; margin:.2em 0 .1em; }
+  h2 { font-size:1.35rem; margin-top:1.8em; padding-bottom:.25em;
+    border-bottom:2px solid var(--border); scroll-margin-top:24px; }
+  h3 { font-size:1.1rem; margin-top:1.4em; color:var(--accent); }
+  h4 { font-size:1rem; margin:1.1em 0 .3em; }
+  .lead { color:var(--muted); }
+  blockquote { margin:1.2em 0; padding:12px 16px; border-left:4px solid var(--accent);
+    background:var(--card); color:var(--fg); }
+  ul { padding-left:1.3em; }
+  li { margin:.35em 0; }
+  table { width:100%; border-collapse:collapse; margin:1em 0; font-size:.95rem;
+    box-shadow:var(--shadow); border-radius:8px; overflow:hidden; }
+  th,td { text-align:left; padding:10px 14px; border:1px solid var(--border); vertical-align:top; }
+  th { background:var(--th-bg); font-weight:700; }
+  td:first-child, th:first-child { white-space:nowrap; }
+  tbody tr:nth-child(even) td { background:var(--card); }
+  code { background:var(--codebg); padding:.1em .4em; border-radius:4px; font-size:.9em; }
+  pre { background:var(--codebg); border:1px solid var(--border); border-radius:8px;
+    padding:14px 16px; overflow-x:auto; line-height:1.55; }
+  pre code { background:none; padding:0; }
+  .tag { display:inline-block; font-size:.72rem; font-weight:700; padding:2px 8px;
+    border-radius:999px; background:var(--th-bg); color:var(--accent); margin-left:6px;
+    vertical-align:middle; }
+  hr { border:none; border-top:1px solid var(--border); margin:2.4em 0; }
+  footer { margin-top:3em; color:var(--muted); font-size:.85rem;
+    border-top:1px solid var(--border); padding-top:1em; }
+  @media (max-width:880px) {
+    .sidebar { transform:translateX(-100%); transition:transform .25s; }
+    .sidebar.open { transform:none; }
+    .wrap { margin-left:0; padding-top:60px; }
+    .menu-toggle { display:block; }
+    .backdrop.show { display:block; }
+  }
+
+  .embedded-slide { max-width:100%; margin:1.35em 0 1.8em; padding:22px; border:1px solid var(--border); border-radius:8px; background:linear-gradient(180deg, color-mix(in srgb, var(--card) 88%, var(--accent) 12%), var(--card)); box-shadow:var(--shadow); }
+  .embedded-slide .slide-label { margin:0 0 .75em; color:var(--accent); font-size:.78rem; font-weight:800; text-transform:uppercase; letter-spacing:0; }
+  .embedded-slide h2 { margin:.05em 0 .45em; padding:0; border:0; color:var(--fg); font-size:1.34rem; line-height:1.35; scroll-margin-top:24px; }
+  .embedded-slide p { max-width:100%; margin:.35em 0; color:var(--muted); font-size:1rem; line-height:1.65; }
+  .embedded-slide .lead { max-width:100%; color:var(--fg); font-size:1.08rem; line-height:1.6; }
+  .embedded-slide .grid-2, .embedded-slide .grid-3, .embedded-slide .grid-4, .embedded-slide .flow { display:grid; gap:12px; margin-top:.8em; }
+  .embedded-slide .grid-2 { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .embedded-slide .grid-3 { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .embedded-slide .grid-4, .embedded-slide .flow { grid-template-columns:repeat(4,minmax(0,1fr)); }
+  .embedded-slide .split-visual { display:grid; grid-template-columns:minmax(0,1fr); gap:12px; align-items:center; }
+  .embedded-slide .card, .embedded-slide .mini-card, .embedded-slide .source-note, .embedded-slide .flow-step, .embedded-slide .prompt-box { border:1px solid var(--border); border-radius:8px; background:var(--bg); padding:14px; }
+  .embedded-slide .card strong, .embedded-slide .mini-card strong, .embedded-slide .source-note strong, .embedded-slide .flow-step strong { display:block; margin-bottom:6px; color:var(--fg); font-size:1rem; line-height:1.35; }
+  .embedded-slide .visual { max-width:100%; margin:.8em 0 0; border:1px solid var(--border); border-radius:8px; background:var(--bg); overflow:hidden; }
+  .embedded-slide .visual img, .embedded-slide img { display:block; max-width:100%; height:auto; }
+  .embedded-slide .prompt-box { overflow-x:auto; color:var(--fg); font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.92rem; line-height:1.5; white-space:pre-wrap; }
+  .embedded-slide .checkline { display:grid; grid-template-columns:28px minmax(0,1fr); gap:10px; align-items:start; }
+  .embedded-slide .checkmark { display:inline-grid; place-items:center; width:24px; height:24px; border-radius:999px; background:var(--th-bg); color:var(--accent); font-weight:900; }
+  .embedded-slide .tag { display:inline-block; border:1px solid var(--border); border-radius:999px; padding:2px 8px; color:var(--accent); font-size:.75rem; font-weight:800; }
+  .embedded-slide table { display:table; width:100%; margin:.8em 0 0; border-collapse:collapse; font-size:.92rem; box-shadow:none; border-radius:8px; overflow:hidden; }
+  .embedded-slide th, .embedded-slide td { padding:8px 10px; border:1px solid var(--border); vertical-align:top; white-space:normal; }
+  .embedded-slide th { background:var(--th-bg); }
+  body:not(.slides-hidden) .handout-nav { display:none; }
+  body.slides-hidden .slide-catalog { display:none; }
+  body.slides-hidden .embedded-slide { display:none; }
+  @media (max-width:1100px) {
+    .embedded-slide .grid-3, .embedded-slide .grid-4, .embedded-slide .flow { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  }
+  @media (max-width:720px) {
+    .embedded-slide { padding:16px; }
+    .embedded-slide .grid-2, .embedded-slide .grid-3, .embedded-slide .grid-4, .embedded-slide .flow { grid-template-columns:1fr; }
+    .embedded-slide h2 { font-size:1.16rem; }
+    .embedded-slide table { display:block; overflow-x:auto; }
+  }
+  .embedded-slide .en, .slide-catalog .en { display:none !important; }
+  @media (max-width:720px) {
+    body { overflow-x:hidden; }
+    .wrap { max-width:100%; overflow-x:hidden; }
+    .wrap table { display:block; max-width:100%; overflow-x:auto; }
+    .wrap pre { max-width:100%; overflow-x:auto; }
+  }
+</style>
+</head>
+<body>
+<button class="menu-toggle" id="menuToggle" onclick="toggleMenu()">☰</button>
+<aside class="sidebar" id="sidebar">
+<div class="brand">Module 2 練習講義</div>
+<div class="toprow">
+<button class="btn" id="themeBtn" onclick="toggleTheme()">☀️ Light</button>
+<button class="btn" id="slideToggle" onclick="toggleEmbeddedSlides()"><span class="zh">隱藏投影片</span><span class="en">Hide Slides</span></button>
+</div>
+<nav aria-label="講義目錄" class="nav handout-nav">
+<button class="navbtn" onclick="gotoSection(0)">如何使用本講義</button>
+<button class="navbtn" onclick="gotoSection(1)">練習前準備</button>
+<button class="navbtn" onclick="gotoSection(2)">練習 0：暖身</button>
+<button class="navbtn" onclick="gotoSection(3)">練習 1：簡單 use case</button>
+<button class="navbtn" onclick="gotoSection(4)">練習 2：展現威力</button>
+<button class="navbtn" onclick="gotoSection(5)">練習 3：抓開放資料</button>
+<button class="navbtn" onclick="gotoSection(6)">練習 4：Local LLM ⭐</button>
+<button class="navbtn" onclick="gotoSection(7)">綜合比較</button>
+<button class="navbtn" onclick="gotoSection(8)">資料隱私指引</button>
+<button class="navbtn" onclick="gotoSection(9)">自我檢核表</button>
+<button class="navbtn" onclick="gotoSection(10)">Prompt 速查</button>
+<button class="navbtn" onclick="gotoSection(11)">常見問題</button>
+<button class="navbtn" onclick="gotoSection(12)">延伸資源</button>
+</nav><nav aria-label="投影片目錄" class="nav slide-catalog">
+<button class="navbtn" onclick="gotoSlide(0)"><span class="zh">1. 今天要看見差異</span><span class="en">1. See the Difference</span></button>
+<button class="navbtn" onclick="gotoSlide(1)"><span class="zh">2. 三種情境地圖</span><span class="en">2. Three-mode Map</span></button>
+<button class="navbtn" onclick="gotoSlide(2)"><span class="zh">3. 練習前準備</span><span class="en">3. Before Practice</span></button>
+<button class="navbtn" onclick="gotoSlide(3)"><span class="zh">4. 練習 1：同題比較</span><span class="en">4. Exercise 1 Compare</span></button>
+<button class="navbtn" onclick="gotoSlide(4)"><span class="zh">5. 三個觀察角度</span><span class="en">5. Three Angles</span></button>
+<button class="navbtn" onclick="gotoSlide(5)"><span class="zh">6. 練習 2：Agent 威力</span><span class="en">6. Exercise 2 Agent Power</span></button>
+<button class="navbtn" onclick="gotoSlide(6)"><span class="zh">7. 多步驟工作流</span><span class="en">7. Multi-step Workflow</span></button>
+<button class="navbtn" onclick="gotoSlide(7)"><span class="zh">8. 練習 3：開放資料</span><span class="en">8. Exercise 3 Open Data</span></button>
+<button class="navbtn" onclick="gotoSlide(8)"><span class="zh">9. 練習 4：Local LLM</span><span class="en">9. Exercise 4 Local LLM</span></button>
+<button class="navbtn" onclick="gotoSlide(9)"><span class="zh">10. 隱私判斷</span><span class="en">10. Privacy Decision</span></button>
+<button class="navbtn" onclick="gotoSlide(10)"><span class="zh">11. 完成檢核</span><span class="en">11. Success Criteria</span></button>
+<button class="navbtn" onclick="gotoSlide(11)"><span class="zh">12. 帶回去使用</span><span class="en">12. Take-home Use</span></button>
+</nav>
+</aside>
+<div class="backdrop" id="backdrop" onclick="toggleMenu()"></div>
+<div class="wrap">
+<h1>Module 2 練習講義 — 三種 AI 使用情境與 AI Agent 能力體驗</h1><section class="embedded-slide" data-embedded-slide="slide-01" data-for-section="Module 2 練習講義">
+<div class="slide-label">Orientation</div>
+<h2><span class="zh">Module 2 不是介紹名詞，而是讓學員親眼看見三種 AI 的工作差異。</span><span class="en">Module 2 is not vocabulary review; it lets learners see how three AI modes work differently.</span></h2>
+<p class="lead"><span class="zh">同一個任務交給聊天機器人、AI Agent 與 Local LLM，會產生不同的操作方式、成品能力與資料去向。</span><span class="en">The same task behaves differently in a chatbot, an AI agent, and a local LLM: different operation, output capability, and data path.</span></p>
+</section>
+<p class="lead">本講義對應 <a href="module2-plan.html">Module 2 計畫</a> 的五個實作活動，提供可直接照做的步驟、可複製的 prompt、預期結果與討論題。設計上同時適合「現場帶領」與「課後自學」：每個練習都自成一段，附上要輸入什麼、會看到什麼、以及做完要思考什麼，教師離開工作坊後可獨立重做與延伸。</p>
+<blockquote>主角工具為 Module 1 設定的 Codex CLI；若你慣用 Copilot 或 Claude Code，指令與 prompt 幾乎相同，可直接互換。對話式 AI 請任選一項你有帳號的服務 (ChatGPT、Claude 或 Gemini)。</blockquote>
+<h2>如何使用本講義</h2>
+<table>
+<thead><tr><th>對象</th><th>建議用法</th></tr></thead>
+<tbody>
+<tr><td>現場學員</td><td>跟著講師逐個練習操作，先看「要做什麼」，再貼上 prompt，最後一起討論「想一想」</td></tr>
+<tr><td>課後自學</td><td>從練習 0 暖身開始，依序完成；每個練習都有獨立的素材與驗收點，可單獨重做</td></tr>
+<tr><td>帶領講師</td><td>每節的「講師提示」標出示範重點與容易卡關處，可直接投影本講義</td></tr>
+</tbody>
+</table>
+<p>每個練習的固定區塊：<strong>目標 → 動手做 (含 prompt) → 預期結果 → 想一想</strong>。標示 ⭐ 的為進階延伸，時間不足可略過。</p>
+<h2>練習前準備</h2><section class="embedded-slide" data-embedded-slide="slide-03" data-for-section="練習前準備">
+<div class="slide-label">Before Practice</div>
+<h2><span class="zh">練習開始前，先把所有產物集中在同一個資料夾。</span><span class="en">Before practice, keep every artifact in one workspace folder.</span></h2>
+<div class="flow">
+<div class="flow-step"><strong><span class="zh">建立資料夾</span><span class="en">Create folder</span></strong><p><span class="zh">例如 <code>module2-lab/</code>，所有檔案都放這裡。</span><span class="en">For example, <code>module2-lab/</code>, with all files kept inside.</span></p></div>
+<div class="flow-step"><strong><span class="zh">進入 Codex</span><span class="en">Enter Codex</span></strong><p><span class="zh">在終端機切到該資料夾並執行 <code>codex</code>。</span><span class="en">Open Terminal in that folder and run <code>codex</code>.</span></p></div>
+<div class="flow-step"><strong><span class="zh">開聊天 AI</span><span class="en">Open chat AI</span></strong><p><span class="zh">另開瀏覽器分頁，準備做並排比較。</span><span class="en">Open a browser tab for side-by-side comparison.</span></p></div>
+<div class="flow-step"><strong><span class="zh">確認網路</span><span class="en">Check network</span></strong><p><span class="zh">練習 1 到 3 需要網路；Local LLM 階段可離線。</span><span class="en">Exercises 1 to 3 need network; the Local LLM part can be offline.</span></p></div>
+</div>
+</section>
+<ul>
+<li>在你的家目錄底下開一個工作資料夾，例如 <code>module2-lab/</code>，本模組所有檔案都放這裡，方便整理與刪除。</li>
+<li>開啟終端機，切換到該資料夾，執行 <code>codex</code> 進入 AI Agent。</li>
+<li>另開一個瀏覽器分頁，登入你的對話式 AI 服務 (ChatGPT / Claude / Gemini)，等一下要做並排比較。</li>
+<li>確認可以上網 (練習 1 到 3 需要)；練習 4 的 Local LLM 階段可離線。</li>
+</ul>
+<blockquote>講師提示：先用一張投影片帶出本模組主線「先看差異、再看威力、最後談資料去哪裡」，讓學員知道每個練習在整條光譜上的位置。</blockquote>
+<hr/>
+<h2>練習 0 — 三種情境暖身 <span class="tag">Warm-up</span></h2><section class="embedded-slide" data-embedded-slide="slide-02" data-for-section="練習 0">
+<div class="slide-label">Mental Model</div>
+<h2><span class="zh">先用一張地圖定位：雲端回話、本機動手、本機離線。</span><span class="en">Use one map first: cloud response, local action, local offline work.</span></h2>
+<div class="visual full-visual"><img alt="Three AI usage modes infographic" src="assets/module2-three-ai-modes-infographic.png"/></div>
+</section>
+<p><strong>目標</strong>：在動手前，先用自己的話說出三種情境的差別，建立整體圖像。</p>
+<h3>動手做</h3>
+<p>對照下表，並嘗試把你最近一次用 AI 的經驗，歸到其中一格：</p>
+<table>
+<thead><tr><th>情境</th><th>代表工具</th><th>執行所在</th><th>會不會動手做</th><th>資料去向</th></tr></thead>
+<tbody>
+<tr><td>聊天機器人</td><td>ChatGPT、Claude、Gemini</td><td>雲端</td><td>只回話，給文字/步驟/程式碼</td><td>送到雲端服務</td></tr>
+<tr><td>AI Agent</td><td>Codex、Copilot、Claude Code</td><td>本機操作 (模型在雲端)</td><td>會動手，開檔、執行、產出成品</td><td>指令在雲端，檔案在本機</td></tr>
+<tr><td>Local LLM</td><td>Ollama + gemma3:12b</td><td>全程在本機</td><td>主要回話，可離線運作</td><td>完全留在本機</td></tr>
+</tbody>
+</table>
+<h3>想一想</h3>
+<ul>
+<li>你過去用的 AI，幾乎都落在哪一格？</li>
+<li>「給你程式碼要你自己跑」和「直接幫你把檔案做出來」，對非技術背景的你，差別有多大？</li>
+</ul>
+<blockquote>講師提示：請兩三位學員口頭舉例，刻意點出多數人只用過「聊天機器人」這一格，鋪陳接下來要體驗的另外兩格。</blockquote>
+<hr/>
+<h2>練習 1 — 簡單 use case：看出主要差異</h2><section class="embedded-slide" data-embedded-slide="slide-04" data-for-section="練習 1">
+<div class="slide-label">Exercise 1</div>
+<h2><span class="zh">同一個小任務，最能看出「回話」和「動手做」的差別。</span><span class="en">One small task makes the gap between replying and acting visible.</span></h2>
+<div class="grid-2">
+<div class="card"><strong><span class="zh">給聊天機器人</span><span class="en">Give it to a chatbot</span></strong><p><span class="zh">它通常會回 CSV 內容或程式碼，但不會真的在你的資料夾建立檔案。</span><span class="en">It usually returns CSV content or code, but it does not create a file in your folder.</span></p></div>
+<div class="card"><strong><span class="zh">給 AI Agent</span><span class="en">Give it to an AI agent</span></strong><p><span class="zh">它可以在本機工作區建立 <code>hello.csv</code>，完成後回報結果。</span><span class="en">It can create <code>hello.csv</code> in the local workspace and report the result.</span></p></div>
+</div>
+<div class="prompt-box"><span class="zh">請把下面這份清單整理成 hello.csv，存到我目前的資料夾：
+姓名, 系所, 想用 AI 做的事
+王小明, 應用英語系, 整理課堂逐字稿
+李美華, 機械工程系, 把實驗數據畫成圖
+陳大文, 資訊管理系, 自動產生小考題目</span><span class="en">Please organize the following list into hello.csv and save it in my current folder:
+Name, Department, What I want to use AI for
+Wang Xiaoming, Applied English, Organize class transcripts
+Li Meihua, Mechanical Engineering, Chart experiment data
+Chen Dawen, Information Management, Auto-generate quiz questions</span></div>
+</section>
+<p class="lead">what to do / can do / safety</p>
+<p><strong>目標</strong>：用同一個小任務，分別丟給聊天機器人與 AI Agent，親身辨識三個角度的差異。</p>
+<h3>動手做</h3>
+<p>任務：把下面這份清單整理成一個 <code>hello.csv</code> 檔，存到目前資料夾。先準備這份清單 (直接放進 prompt 即可)：</p>
+<pre><code>姓名, 系所, 想用 AI 做的事
+王小明, 應用英語系, 整理課堂逐字稿
+李美華, 機械工程系, 把實驗數據畫成圖
+陳大文, 資訊管理系, 自動產生小考題目</code></pre>
+<h4>步驟 A — 先問聊天機器人</h4>
+<p>在瀏覽器的對話式 AI 貼上：</p>
+<pre><code>請把下面這份清單整理成 hello.csv，存到我目前的資料夾：
+姓名, 系所, 想用 AI 做的事
+王小明, 應用英語系, 整理課堂逐字稿
+李美華, 機械工程系, 把實驗數據畫成圖
+陳大文, 資訊管理系, 自動產生小考題目</code></pre>
+<p>觀察它的回應：它能不能真的在你電腦上產生檔案？還是只給你內容或一段程式碼要你自己存？</p>
+<h4>步驟 B — 再請 AI Agent 做</h4>
+<p>在 <code>codex</code> 視窗貼上同一段 prompt。觀察它：是否直接在資料夾建立 <code>hello.csv</code>、執行前是否先徵詢你同意、完成後是否回報結果。</p>
+<h4>步驟 C — 驗收</h4>
+<p>回到資料夾，用檔案總管或 <code>ls</code> 確認 <code>hello.csv</code> 真的存在，打開看欄位是否正確。</p>
+<h3>預期結果</h3>
+<ul>
+<li>聊天機器人：給你 CSV 內容或一段「請存成檔案」的程式碼，但你的資料夾不會多出檔案。</li>
+<li>AI Agent：資料夾實際出現 <code>hello.csv</code>，內容為三列資料加一列欄位標題。</li>
+</ul>
+<h3>想一想 (填三個角度)</h3><section class="embedded-slide" data-embedded-slide="slide-05" data-for-section="想一想 (填三個角度)">
+<div class="slide-label">Observation</div>
+<h2><span class="zh">比較時抓三個角度：要它做什麼、它能做到什麼、資料去哪裡。</span><span class="en">Compare with three angles: what to ask, what it can do, and where data goes.</span></h2>
+<table>
+<thead><tr><th><span class="zh">角度</span><span class="en">Angle</span></th><th><span class="zh">聊天機器人</span><span class="en">Chatbot</span></th><th><span class="zh">AI Agent</span><span class="en">AI Agent</span></th></tr></thead>
+<tbody>
+<tr><td>what to do</td><td><span class="zh">給步驟、內容或程式碼</span><span class="en">Provides steps, content, or code</span></td><td><span class="zh">可直接著手完成任務</span><span class="en">Can take action to complete the task</span></td></tr>
+<tr><td>can do</td><td><span class="zh">不能碰你的本機檔案</span><span class="en">Cannot touch local files</span></td><td><span class="zh">能讀寫檔案、執行指令、產出成品</span><span class="en">Can read/write files, run commands, and create artifacts</span></td></tr>
+<tr><td>safety</td><td><span class="zh">貼上的內容送到雲端服務</span><span class="en">Pasted content goes to the cloud service</span></td><td><span class="zh">指令上雲，檔案留本機，執行前可確認</span><span class="en">Instructions go cloud-side; files stay local; actions can be reviewed</span></td></tr>
+</tbody>
+</table>
+</section>
+<table>
+<thead><tr><th>角度</th><th>聊天機器人</th><th>AI Agent</th></tr></thead>
+<tbody>
+<tr><td>what to do (要它做什麼)</td><td>給步驟/程式碼，要你自己跑</td><td>直接著手完成</td></tr>
+<tr><td>can do (它能做到什麼)</td><td>不能碰你的檔案</td><td>能讀寫本機檔案、執行指令、產出成品</td></tr>
+<tr><td>safety (安全與資料去向)</td><td>你貼的內容送到雲端</td><td>指令在雲端，檔案留在本機；執行前可逐步確認</td></tr>
+</tbody>
+</table>
+<blockquote>講師提示：重點不是寫程式，而是讓學員「看到資料夾真的多了一個檔」。請刻意示範 Agent 執行前的確認提示，帶出 safety 概念。</blockquote>
+<hr/>
+<h2>練習 2 — 聚焦 AI Agent：較複雜 use case 展現威力</h2><section class="embedded-slide" data-embedded-slide="slide-06" data-for-section="練習 2">
+<div class="slide-label">Exercise 2</div>
+<h2><span class="zh">AI Agent 的威力，出現在多步驟、跨工具、需要驗收的任務。</span><span class="en">AI agent value appears in multi-step, cross-tool tasks that need verification.</span></h2>
+<div class="grid-3">
+<div class="card"><strong><span class="zh">先造資料</span><span class="en">Create data first</span></strong><p><span class="zh">建立 <code>scores.xlsx</code>，含兩班 12 筆假資料。</span><span class="en">Create <code>scores.xlsx</code> with 12 sample records across two classes.</span></p></div>
+<div class="card"><strong><span class="zh">再請它分析</span><span class="en">Then analyze</span></strong><p><span class="zh">計算總分、平均、班級各科平均，輸出新 Excel。</span><span class="en">Compute totals, averages, class subject averages, and a new Excel file.</span></p></div>
+<div class="card"><strong><span class="zh">最後做預覽</span><span class="en">Preview the result</span></strong><p><span class="zh">產生圖表與 <code>index.html</code>，用 local server 開啟。</span><span class="en">Generate a chart and <code>index.html</code>, then open it with a local server.</span></p></div>
+</div>
+</section>
+<p class="lead">The Power of AI Agents</p>
+<p><strong>目標</strong>：用一個多步驟、串接工具的任務，體會 AI Agent 自行拆解步驟、執行、遇錯自我修正的能力，並看見它的邊界。</p>
+<h3>動手做</h3>
+<h4>步驟 A — 先請 Agent 幫你造一份練習用 Excel</h4>
+<p>這樣不需要外部檔案，自學也能重做。在 <code>codex</code> 貼上：</p>
+<pre><code>請幫我建立一個 Excel 檔 scores.xlsx，放在目前資料夾。
+內容是一張成績表，欄位為：班級、姓名、國文、英文、數學。
+請填入 12 筆假資料，班級分成 A 班與 B 班各 6 人，分數介於 50 到 100 之間。</code></pre>
+<h4>步驟 B — 多步驟分析與產出</h4><section class="embedded-slide" data-embedded-slide="slide-07" data-for-section="步驟 B — 多步驟">
+<div class="slide-label">Workflow</div>
+<h2><span class="zh">這個練習要觀察 Agent 如何拆解、執行、遇錯再修正。</span><span class="en">This exercise shows how an agent decomposes, runs, and recovers from errors.</span></h2>
+<div class="visual full-visual"><img alt="AI agent multi-step workflow infographic" src="assets/module2-agent-workflow-infographic.png"/></div>
+</section>
+<p>接著貼上：</p>
+<pre><code>請讀取 scores.xlsx，幫我做以下事情：
+1. 計算每位學生三科的總分與平均，新增為兩個欄位。
+2. 分別算出 A 班與 B 班的各科平均。
+3. 把結果存成一個新的 Excel 檔 scores-summary.xlsx。
+4. 再做一張長條圖，比較 A 班與 B 班的三科平均，存成 chart.png。
+5. 最後產生一個 index.html，把這張圖和班級平均表放進去，
+   並用 local web server 開起來讓我預覽。</code></pre>
+<h4>步驟 C — 觀察與預覽</h4>
+<p>看 Agent 如何把這串需求拆成數個步驟、逐一執行；若中途出錯 (例如套件未安裝)，留意它是否自行修正再重試。完成後，依它給的網址 (通常是 <code>http://localhost:8080</code> 之類) 在瀏覽器打開預覽頁。</p>
+<h3>預期結果</h3>
+<p>資料夾應出現：<code>scores-summary.xlsx</code>、<code>chart.png</code>、<code>index.html</code>，且瀏覽器能開啟一個含長條圖與班級平均表的預覽頁。</p>
+<h3>想一想</h3>
+<ul>
+<li>Agent 把這個任務拆成了哪幾步？哪一步你原本以為要自己做？</li>
+<li>如果中途出錯，它是怎麼處理的？這跟「聊天機器人給你一段程式碼、出錯要你自己 debug」差在哪？</li>
+<li>邊界與安全：哪些步驟你會想在 Agent 動手前先看一眼？什麼情況該由人介入把關？</li>
+</ul>
+<blockquote>講師提示：這節是「展現威力」的高潮。串接的正是 Module 1 已驗證的讀寫 Office 與 <code>npx http-server</code> 能力。若現場時間緊，可只示範步驟 B 的前三項，圖表與網頁當作課後延伸。</blockquote>
+<hr/>
+<h2>練習 3 — 用 AI Agent 抓開放資料存成本地檔</h2><section class="embedded-slide" data-embedded-slide="slide-08" data-for-section="練習 3">
+<div class="slide-label">Exercise 3</div>
+<h2><span class="zh">抓開放資料的重點，是把網路上的資料變成可重複使用的本地檔。</span><span class="en">Open-data practice turns online data into a reusable local file.</span></h2>
+<div class="flow">
+<div class="flow-step"><strong><span class="zh">選資料集</span><span class="en">Choose dataset</span></strong><p><span class="zh">找有 CSV 或 JSON 直接下載的資料。</span><span class="en">Find a dataset with direct CSV or JSON access.</span></p></div>
+<div class="flow-step"><strong><span class="zh">貼網址</span><span class="en">Paste URL</span></strong><p><span class="zh">請 Agent 下載到 <code>data/</code>。</span><span class="en">Ask the agent to download it into <code>data/</code>.</span></p></div>
+<div class="flow-step"><strong><span class="zh">檢查編碼</span><span class="en">Check encoding</span></strong><p><span class="zh">確認中文欄位與前 5 筆資料正確。</span><span class="en">Confirm Chinese fields and the first five rows.</span></p></div>
+<div class="flow-step"><strong><span class="zh">輸出 clean.csv</span><span class="en">Output clean.csv</span></strong><p><span class="zh">存成 UTF-8、有欄位標題的乾淨版本。</span><span class="en">Save a clean UTF-8 file with headers.</span></p></div>
+</div>
+</section>
+<p class="lead">Module 3 引子</p>
+<p><strong>目標</strong>：用 AI Agent 從台灣政府開放資料平台抓一份現成資料，存成乾淨的本地 CSV，作為後續分析的素材。</p>
+<blockquote>範圍界定：本練習只做「抓現成的資料檔或 API」。瀏覽器導航、雜亂頁面的結構化擷取留到 Module 3。</blockquote>
+<h3>動手做</h3>
+<h4>步驟 A — 選一個開放資料集</h4>
+<p>到 <a href="https://data.gov.tw" rel="noopener" target="_blank">data.gov.tw</a> 搜尋一個你學科相關、且提供 CSV 或 JSON 直接下載的資料集 (例如「各級學校名錄」「空氣品質」「圖書館清單」)。複製它的資料下載網址。</p>
+<h4>步驟 B — 請 Agent 下載並整理</h4>
+<p>在 <code>codex</code> 貼上 (把網址換成你選的)：</p>
+<pre><code>請從這個開放資料網址下載資料，存到目前資料夾的 data/ 子資料夾：
+&lt;貼上你的 CSV 或 API 網址&gt;
+下載後請幫我做最小整理：
+1. 確認檔案能正確開啟、欄位名稱讀得出來 (注意中文編碼，必要時轉成 UTF-8)。
+2. 列出前 5 筆資料讓我確認內容正確。
+3. 存成一份乾淨的 data/clean.csv (UTF-8、有欄位標題)。</code></pre>
+<h4>步驟 C — 驗收</h4>
+<p>打開 <code>data/clean.csv</code>，確認中文不是亂碼、欄位齊全。</p>
+<h3>預期結果</h3>
+<p><code>data/</code> 資料夾裡有原始下載檔與一份 <code>clean.csv</code>；Agent 在對話中列出了前 5 筆，編碼正確。</p>
+<h3>想一想</h3>
+<ul>
+<li>這份本地資料檔，可以怎麼接到你自己的教學或研究？</li>
+<li>如果這個資料集是一個「網頁表格」而不是可下載的檔案，會怎樣？(這正是 Module 3 要處理的。)</li>
+</ul>
+<blockquote>講師提示：先幫學員準備 2 到 3 個確定可直接下載的資料集連結備用，避免現場卡在找不到乾淨來源。強調這份 <code>clean.csv</code> 就是 Module 3 的起點。</blockquote>
+<hr/>
+<h2>練習 4 — Local LLM 離線實作與資料隱私 <span class="tag">⭐ 進階</span></h2><section class="embedded-slide" data-embedded-slide="slide-09" data-for-section="練習 4">
+<div class="slide-label">Exercise 4</div>
+<h2><span class="zh">Local LLM 補上光譜的另一端：斷網也能處理敏感文字。</span><span class="en">A local LLM completes the other end of the spectrum: sensitive text can be handled offline.</span></h2>
+<div class="grid-3">
+<div class="card"><strong><span class="zh">先安裝</span><span class="en">Install</span></strong><p><code>ollama --version</code></p></div>
+<div class="card"><strong><span class="zh">下載模型</span><span class="en">Pull model</span></strong><p><code>ollama pull gemma3:12b</code><br/><code>ollama run gemma3:12b</code></p></div>
+<div class="card"><strong><span class="zh">離線測試</span><span class="en">Offline test</span></strong><p><span class="zh">關閉 Wi-Fi，用假個資練習去識別化摘要。</span><span class="en">Turn off Wi-Fi and practice de-identifying a fake sensitive note.</span></p></div>
+</div>
+<p class="lead"><span class="zh">這節的教學重點不是模型最強，而是資料從頭到尾沒有離開筆電。</span><span class="en">The teaching point is not maximum model quality; it is that the data never leaves the laptop.</span></p>
+</section>
+<p><strong>目標</strong>：在筆電上用 Ollama 執行 Local LLM，全程離線完成一項任務，補上三種情境中「完全在本機」的一端。</p>
+<blockquote>視時間與硬碟空間安排 (模型約數 GB)。若現場不做，可照本節課後自行完成。</blockquote>
+<h3>動手做</h3>
+<h4>步驟 A — 安裝 Ollama</h4>
+<p>到 <a href="https://ollama.com" rel="noopener" target="_blank">ollama.com</a> 下載對應作業系統的安裝檔並安裝。安裝完成後在終端機確認：</p>
+<pre><code>ollama --version</code></pre>
+<h4>步驟 B — 下載並啟動模型</h4>
+<pre><code>ollama pull gemma3:12b
+ollama run gemma3:12b</code></pre>
+<p>第一次 <code>pull</code> 會下載數 GB，需要網路；下載完成後即可離線使用。</p>
+<h4>步驟 C — 離線完成一項任務</h4>
+<p>為了體會「資料完全不出門」，請先關閉 Wi-Fi，再在 <code>ollama run</code> 的對話中貼上一段「不可外流」的範例文字 (用假資料即可)：</p>
+<pre><code>請把下面這段學生輔導紀錄，改寫成一段中性、不含個資的摘要，
+只保留可對外說明的重點：
+（這裡貼一段你自編的假輔導紀錄，含姓名、學號等敏感欄位）</code></pre>
+<p>觀察：在完全離線的狀態下，模型仍能回應；你的敏感文字從頭到尾沒有離開這台筆電。</p>
+<h3>預期結果</h3>
+<p>斷網狀態下，Local LLM 仍給出一段去識別化的摘要；過程中沒有任何資料送往雲端。</p>
+<h3>想一想</h3>
+<ul>
+<li>同樣一段敏感文字，你會放心丟給雲端聊天機器人嗎？為什麼這裡可以？</li>
+<li>速度、品質和雲端比起來如何？這個取捨你能接受嗎？</li>
+</ul>
+<blockquote>講師提示：若多數筆電空間或記憶體吃緊，可由講師單機示範一次即可，重點在「親眼看到斷網也能跑」。</blockquote>
+<hr/>
+<h2>綜合比較 — 四個面向的取捨</h2>
+<p>做完前面的練習後，用你自己的體感填寫下表 (示範值僅供參考)：</p>
+<table>
+<thead><tr><th>面向</th><th>聊天機器人</th><th>AI Agent</th><th>Local LLM</th></tr></thead>
+<tbody>
+<tr><td>回應品質</td><td>高</td><td>高 (且能產出真實成品)</td><td>視模型而定，通常略低</td></tr>
+<tr><td>速度</td><td>快</td><td>中 (含執行步驟的時間)</td><td>視筆電效能，可能較慢</td></tr>
+<tr><td>隱私</td><td>內容送雲端</td><td>指令上雲，檔案留本機</td><td>完全留在本機</td></tr>
+<tr><td>成本</td><td>多為免費/訂閱</td><td>多為免費/訂閱</td><td>免費，但吃硬體與電</td></tr>
+</tbody>
+</table>
+<h3>想一想</h3>
+<ul>
+<li>對你最常見的工作，哪一格最划算？</li>
+<li>哪些任務你會混用 (例如先用 Agent 抓資料、再用 Local LLM 處理敏感段落)？</li>
+</ul>
+<hr/>
+<h2>資料隱私判斷指引</h2><section class="embedded-slide" data-embedded-slide="slide-10" data-for-section="資料隱私判斷指引">
+<div class="slide-label">Privacy Decision</div>
+<h2><span class="zh">資料能不能上雲，先問三題，再選工具。</span><span class="en">Before sending data to the cloud, ask three questions and then choose the tool.</span></h2>
+<div class="split-visual">
+<div class="grid-1">
+<div class="card"><strong><span class="zh">外流會傷害到誰？</span><span class="en">Who could be harmed by exposure?</span></strong><p><span class="zh">若牽涉具名學生、受試者或個人，就偏向留在本機。</span><span class="en">If named students, participants, or individuals are involved, prefer local handling.</span></p></div>
+<div class="card"><strong><span class="zh">有可識別欄位嗎？</span><span class="en">Are there identifying fields?</span></strong><p><span class="zh">姓名、學號、成績、健康或輔導紀錄都需要提高敏感度。</span><span class="en">Names, IDs, grades, health, or counseling records raise sensitivity.</span></p></div>
+<div class="card"><strong><span class="zh">有規範或承諾嗎？</span><span class="en">Are there rules or commitments?</span></strong><p><span class="zh">IRB、考試保密、個資法或校內規範都會影響去向。</span><span class="en">IRB, exam secrecy, privacy law, or campus policy affects where data can go.</span></p></div>
+</div>
+<div class="visual"><img alt="Privacy decision guide infographic" src="assets/module2-privacy-decision-infographic.png"/></div>
+</div>
+</section>
+<p>遇到一份資料時，先問自己這三題，再決定它適合上雲還是必須留在本機：</p>
+<ul>
+<li><strong>這份資料外流會傷害到誰？</strong> 會傷害到具名的個人 (學生、受試者)，傾向留在本機。</li>
+<li><strong>它含有可識別身分的欄位嗎？</strong> 姓名、學號、身分證、聯絡方式、成績、健康/輔導紀錄，傾向留在本機。</li>
+<li><strong>有沒有規範或承諾限制它的去向？</strong> 研究倫理 (IRB)、考試保密、個資法，傾向留在本機。</li>
+</ul>
+<table>
+<thead><tr><th>資料類型</th><th>範例</th><th>建議去向</th></tr></thead>
+<tbody>
+<tr><td>可公開</td><td>課程大綱、公開講義、開放資料</td><td>可上雲 (聊天機器人/Agent)</td></tr>
+<tr><td>內部但低敏感</td><td>去識別化的統計、匿名問卷彙整</td><td>視情況，謹慎上雲</td></tr>
+<tr><td>高敏感</td><td>學生個資、未公開考題、研究原始資料</td><td>留在本機 (Local LLM)</td></tr>
+</tbody>
+</table>
+<h3>想一想</h3>
+<ul>
+<li>在你自己的學科裡，舉一個「必須留在本機」的具體資料，並說明原因。</li>
+</ul>
+<hr/>
+<h2>自我檢核表</h2><section class="embedded-slide" data-embedded-slide="slide-11" data-for-section="自我檢核表">
+<div class="slide-label">Success Criteria</div>
+<h2><span class="zh">離開 Module 2 前，學員要能用自己的任務重做一次。</span><span class="en">Before leaving Module 2, learners should be able to repeat the pattern with their own task.</span></h2>
+<div class="grid-2">
+<div class="card"><div class="checkline"><span class="checkmark">✓</span><p><span class="zh">說出聊天機器人、AI Agent、Local LLM 的代表工具與差異。</span><span class="en">Explain representative tools and differences among chatbot, AI agent, and local LLM.</span></p></div></div>
+<div class="card"><div class="checkline"><span class="checkmark">✓</span><p><span class="zh">用同一個 use case 說明 what to do、can do、safety。</span><span class="en">Use one case to explain what to do, can do, and safety.</span></p></div></div>
+<div class="card"><div class="checkline"><span class="checkmark">✓</span><p><span class="zh">完成一個 AI Agent 多步驟任務，並驗收產物。</span><span class="en">Complete and verify one multi-step AI agent task.</span></p></div></div>
+<div class="card"><div class="checkline"><span class="checkmark">✓</span><p><span class="zh">判斷至少一個必須留在本機的敏感情境。</span><span class="en">Identify at least one sensitive case that must stay local.</span></p></div></div>
+</div>
+</section>
+<p>離開本模組前，逐項打勾確認：</p>
+<ul>
+<li>☐ 我能說出三種情境 (聊天機器人、AI Agent、Local LLM) 的代表工具與差異。</li>
+<li>☐ 我用同一個簡單 use case，講得出 what to do、can do、safety 三個角度的差別。</li>
+<li>☐ 我操作 AI Agent 完成了一個多步驟任務 (讀檔、計算/整理、產出成品)。</li>
+<li>☐ 我用 AI Agent 從 data.gov.tw 抓了一份開放資料，存成本地 <code>clean.csv</code>。</li>
+<li>☐ (進階) 我用 Ollama + Gemma 在離線狀態下完成了一項 Local LLM 任務。</li>
+<li>☐ 我能舉出至少一個需要本地處理的敏感情境，並說明原因。</li>
+</ul>
+<hr/>
+<h2>課後速查 — 可重複使用的 Prompt 範本</h2><section class="embedded-slide" data-embedded-slide="slide-12" data-for-section="課後速查">
+<div class="slide-label">Use and Source Notes</div>
+<h2><span class="zh">帶回去的不是一組固定答案，而是一套可重複使用的判斷與操作流程。</span><span class="en">The take-home is not a fixed answer set; it is a reusable judgment and workflow pattern.</span></h2>
+<div class="grid-2">
+<div class="source-note"><strong><span class="zh">可重複使用的 prompt</span><span class="en">Reusable prompts</span></strong><p><span class="zh">整理清單成檔案、多步驟分析與產出、抓開放資料、Local LLM 離線去識別化，都可換成自己的學科素材。</span><span class="en">List-to-file, multi-step analysis, open-data download, and offline de-identification prompts can all be adapted to each discipline.</span></p></div>
+<div class="source-note"><strong><span class="zh">使用與來源說明</span><span class="en">Use and source notes</span></strong><p><span class="zh">本投影片供 AI Agent 工作坊 Module 2 課堂投影使用，重點整理自同專案的 Module 2 練習講義。實際服務畫面、模型名稱與資料平台狀態仍以使用當下為準。</span><span class="en">These slides are for AI Agent Workshop Module 2 classroom projection and are based on the Module 2 exercise workbook in this project. Service screens, model names, and data-platform status should follow the live context when used.</span></p></div>
+</div>
+</section>
+<p>把 <code>&lt;&gt;</code> 裡的內容換成你自己的，即可套用到你的學科：</p>
+<h4>整理清單成檔案 (簡單 use case)</h4>
+<pre><code>請把下面這份清單整理成 &lt;檔名&gt;.csv，存到我目前的資料夾：
+&lt;貼上你的清單&gt;</code></pre>
+<h4>多步驟分析與產出 (複雜 use case)</h4>
+<pre><code>請讀取 &lt;你的檔案&gt;，幫我：
+1. &lt;要計算/整理什麼&gt;
+2. 把結果存成 &lt;新檔名&gt;
+3. 畫一張 &lt;圖型&gt; 存成 chart.png
+4. 產生 index.html 放入結果，並用 local web server 開起來預覽</code></pre>
+<h4>抓開放資料 (Module 3 引子)</h4>
+<pre><code>請從這個網址下載資料，存到 data/ 子資料夾：&lt;網址&gt;
+下載後確認欄位與中文編碼，列出前 5 筆，並存成乾淨的 data/clean.csv (UTF-8)。</code></pre>
+<h4>Local LLM 離線去識別化</h4>
+<pre><code>請把下面這段文字改寫成不含個資的中性摘要，只保留可對外說明的重點：
+&lt;貼上敏感文字&gt;</code></pre>
+<h2>常見問題</h2>
+<table>
+<thead><tr><th>狀況</th><th>處理方式</th></tr></thead>
+<tbody>
+<tr><td>Agent 沒有真的建立檔案</td><td>確認你在 <code>codex</code> 視窗 (不是瀏覽器聊天機器人)，且目前資料夾正確</td></tr>
+<tr><td>中文 CSV 變亂碼</td><td>請 Agent 以 UTF-8 重新存檔，或在 prompt 明確要求處理編碼</td></tr>
+<tr><td>預覽網頁打不開</td><td>確認 local web server 仍在執行，並用 Agent 給的完整網址</td></tr>
+<tr><td>ollama pull 很慢或失敗</td><td>確認網路與硬碟空間；模型較大，需耐心等待，下載後即可離線</td></tr>
+<tr><td>不確定資料能不能上雲</td><td>回到「資料隱私判斷指引」三個問題，有疑慮就留在本機</td></tr>
+</tbody>
+</table>
+<h2>延伸資源</h2>
+<ul>
+<li>三種情境對照表與四面向取捨表 (本講義上方)。</li>
+<li>可重複使用的 prompt 範本 (上方速查)。</li>
+<li>台灣政府開放資料平台：<a href="https://data.gov.tw" rel="noopener" target="_blank">data.gov.tw</a>。</li>
+<li>Ollama 官方網站與模型下載：<a href="https://ollama.com" rel="noopener" target="_blank">ollama.com</a>。</li>
+<li>資料隱私判斷指引 (本講義)，協助你判斷資料適合上雲或留在本機。</li>
+</ul>
+<footer>智慧雨林產業創生人才育成計畫 (南臺科技大學 電子系 楊榮林 教授)</footer>
+</div>
+<script>
+
+  function updateSlideToggleText() {
+    const btn = document.getElementById('slideToggle');
+    if (!btn) return;
+    const lang = document.documentElement.getAttribute('data-lang');
+    const hidden = document.body.classList.contains('slides-hidden');
+    const text = lang === 'en' ? (hidden ? 'Show Slides' : 'Hide Slides') : (hidden ? '顯示投影片' : '隱藏投影片');
+    btn.textContent = text;
+  }
+  function toggleEmbeddedSlides() {
+    document.body.classList.toggle('slides-hidden');
+    updateSlideToggleText();
+    buildSpy();
+  }
+  function gotoSection(i) {
+    const heads = [...document.querySelectorAll('.wrap h2')].filter(h => !h.closest('.embedded-slide'));
+    if (heads[i]) heads[i].scrollIntoView({ behavior:'smooth', block:'start' });
+    closeMenu();
+  }
+  function gotoSlide(i) {
+    const slides = [...document.querySelectorAll('.wrap .embedded-slide')];
+    if (slides[i]) slides[i].scrollIntoView({ behavior:'smooth', block:'start' });
+    closeMenu();
+  }
+  function toggleMenu() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('backdrop').classList.toggle('show');
+  }
+  function closeMenu() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('backdrop').classList.remove('show');
+  }
+  let spy;
+  function buildSpy() {
+    if (spy) spy.disconnect();
+    const slideMode = !document.body.classList.contains('slides-hidden');
+    const targets = slideMode
+      ? [...document.querySelectorAll('.wrap .embedded-slide')]
+      : [...document.querySelectorAll('.wrap h2')].filter(h => !h.closest('.embedded-slide'));
+    const btns = [...document.querySelectorAll(slideMode ? '.slide-catalog .navbtn' : '.handout-nav .navbtn')];
+    document.querySelectorAll('.navbtn').forEach(b => b.classList.remove('active'));
+    spy = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const idx = targets.indexOf(e.target);
+          btns.forEach((b, i) => b.classList.toggle('active', i === idx));
+        }
+      });
+    }, { rootMargin: '0px 0px -75% 0px', threshold: 0 });
+    targets.forEach(target => spy.observe(target));
+  }
+  document.addEventListener('DOMContentLoaded', () => { buildSpy(); updateSlideToggleText(); });
+  function toggleTheme() {
+    const html = document.documentElement;
+    const goingDark = html.getAttribute('data-theme') === 'light';
+    html.setAttribute('data-theme', goingDark ? 'dark' : 'light');
+    document.getElementById('themeBtn').textContent = goingDark ? '☀️ Light' : '🌙 Dark';
+  }
+</script>
+</body>
+</html>

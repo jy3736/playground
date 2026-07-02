@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+
+<html data-lang="zh" data-theme="dark" lang="zh-Hant">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Module 1 — 安裝指南 / Setup Guide (Windows 11 &amp; macOS)</title>
+<style>
+  :root {
+    --bg:#fff; --fg:#1a1a1a; --muted:#555; --card:#f6f7f9;
+    --border:#e0e3e8; --accent:#2563eb; --th-bg:#eef1f6; --shadow:0 1px 3px rgba(0,0,0,.08);
+    --code-bg:#f3f4f6; --code-fg:#0f172a; --ok:#16a34a; --warn:#b45309;
+  }
+  [data-theme="dark"] {
+    --bg:#0f1115; --fg:#e6e8ec; --muted:#9aa3af; --card:#181b21;
+    --border:#2a2f37; --accent:#60a5fa; --th-bg:#1f242c; --shadow:0 1px 3px rgba(0,0,0,.4);
+    --code-bg:#11151b; --code-fg:#e6e8ec; --ok:#4ade80; --warn:#fbbf24;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.7; transition:background .25s,color .25s; }
+  .wrap { max-width:820px; margin-left:240px; padding:32px 32px 80px; }
+  .sidebar { position:fixed; top:0; left:0; width:240px; height:100vh; overflow-y:auto;
+    background:var(--card); border-right:1px solid var(--border);
+    display:flex; flex-direction:column; gap:10px; padding:18px 14px; z-index:30; }
+  .brand { font-weight:700; font-size:1rem; line-height:1.35; padding:0 6px; }
+  .toprow { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+  .nav { display:flex; flex-direction:column; gap:4px; margin-top:6px; }
+  .navbtn { cursor:pointer; border:1px solid transparent; background:transparent;
+    color:var(--muted); border-radius:7px; padding:7px 10px; font-size:15px;
+    font-weight:600; text-align:left; width:100%; white-space:normal; }
+  .navbtn:hover { color:var(--accent); border-color:var(--border); background:var(--bg); }
+  .navbtn.active { color:var(--accent); border-color:var(--border); background:var(--bg); }
+  .btn { cursor:pointer; border:1px solid var(--border); background:var(--bg); color:var(--fg);
+    border-radius:8px; padding:6px 12px; font-size:13px; font-weight:600; }
+  .btn:hover { border-color:var(--accent); }
+  .menu-toggle { display:none; position:fixed; top:12px; left:12px; z-index:40;
+    cursor:pointer; border:1px solid var(--border); background:var(--card); color:var(--fg);
+    border-radius:8px; padding:6px 12px; font-size:18px; line-height:1; }
+  .backdrop { display:none; position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:20; }
+  h1 { font-size:1.9rem; line-height:1.3; margin:.2em 0 .1em; }
+  h2 { font-size:1.35rem; margin-top:1.8em; padding-bottom:.25em;
+    border-bottom:2px solid var(--border); scroll-margin-top:24px; }
+  h3 { font-size:1.1rem; margin-top:1.4em; color:var(--accent); }
+  .lead { color:var(--muted); }
+  ul, ol { padding-left:1.3em; }
+  li { margin:.35em 0; }
+  a { color:var(--accent); }
+  table { width:100%; border-collapse:collapse; margin:1em 0; font-size:.95rem;
+    box-shadow:var(--shadow); border-radius:8px; overflow:hidden; }
+  th,td { text-align:left; padding:10px 14px; border:1px solid var(--border); vertical-align:top; }
+  th { background:var(--th-bg); font-weight:700; }
+  td:first-child, th:first-child { white-space:nowrap; }
+  tbody tr:nth-child(even) td { background:var(--card); }
+  [data-lang="zh"] .en, [data-lang="en"] .zh { display:none; }
+  footer { margin-top:3em; color:var(--muted); font-size:.85rem;
+    border-top:1px solid var(--border); padding-top:1em; }
+  /* --- 額外：程式碼區塊、提示框、步驟、平台分頁 --- */
+  code.inline { background:var(--code-bg); padding:1px 6px; border-radius:5px;
+    font-family:"SF Mono",Consolas,Menlo,monospace; font-size:.9em; }
+  .codeblock { position:relative; margin:.8em 0; }
+  .codeblock pre { background:var(--code-bg); color:var(--code-fg); border:1px solid var(--border);
+    border-radius:8px; padding:14px 16px; overflow-x:auto; margin:0;
+    font-family:"SF Mono",Consolas,Menlo,monospace; font-size:.88rem; line-height:1.55; }
+  .copybtn { position:absolute; top:8px; right:8px; cursor:pointer; border:1px solid var(--border);
+    background:var(--card); color:var(--fg); border-radius:6px; padding:3px 9px; font-size:12px; font-weight:600; }
+  .copybtn:hover { border-color:var(--accent); color:var(--accent); }
+  .note { border-left:4px solid var(--accent); background:var(--card); border-radius:0 8px 8px 0;
+    padding:10px 16px; margin:1em 0; }
+  .warn { border-left:4px solid var(--warn); background:var(--card); border-radius:0 8px 8px 0;
+    padding:10px 16px; margin:1em 0; }
+  .platform-tabs { display:flex; gap:8px; margin:1em 0 .4em; }
+  .tabbtn { cursor:pointer; border:1px solid var(--border); background:var(--card); color:var(--fg);
+    border-radius:8px; padding:7px 16px; font-size:14px; font-weight:700; }
+  .tabbtn.active { border-color:var(--accent); color:var(--accent); background:transparent; }
+  .platform-pane { display:none; }
+  .platform-pane.active { display:block; }
+  .check { list-style:none; padding-left:0; }
+  .check li::before { content:"\2610"; margin-right:.5em; color:var(--accent); font-size:1.1em; }
+  .big-time { font-size:.9rem; color:var(--muted); }
+  .infographic-panel { margin:1.2em 0 1.5em; border:1px solid var(--border); border-radius:8px; overflow:hidden; background:var(--card); box-shadow:var(--shadow); }
+  .infographic-panel img { display:block; width:100%; aspect-ratio:16/9; object-fit:cover; }
+  @media (max-width:860px) {
+    .sidebar { transform:translateX(-100%); transition:transform .25s; }
+    .sidebar.open { transform:none; }
+    .wrap { margin-left:0; padding-top:60px; }
+    .menu-toggle { display:block; }
+    .backdrop.show { display:block; }
+  }
+
+  .embedded-slide { max-width:100%; margin:1.35em 0 1.8em; padding:22px; border:1px solid var(--border); border-radius:8px; background:linear-gradient(180deg, color-mix(in srgb, var(--card) 88%, var(--accent) 12%), var(--card)); box-shadow:var(--shadow); }
+  .embedded-slide .slide-label { margin:0 0 .75em; color:var(--accent); font-size:.78rem; font-weight:800; text-transform:uppercase; letter-spacing:0; }
+  .embedded-slide h2 { margin:.05em 0 .45em; padding:0; border:0; color:var(--fg); font-size:1.34rem; line-height:1.35; scroll-margin-top:24px; }
+  .embedded-slide p { max-width:100%; margin:.35em 0; color:var(--muted); font-size:1rem; line-height:1.65; }
+  .embedded-slide .lead { max-width:100%; color:var(--fg); font-size:1.08rem; line-height:1.6; }
+  .embedded-slide .grid-2, .embedded-slide .grid-3, .embedded-slide .grid-4, .embedded-slide .flow { display:grid; gap:12px; margin-top:.8em; }
+  .embedded-slide .grid-2 { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .embedded-slide .grid-3 { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .embedded-slide .grid-4, .embedded-slide .flow { grid-template-columns:repeat(4,minmax(0,1fr)); }
+  .embedded-slide .card, .embedded-slide .mini-card, .embedded-slide .source-note, .embedded-slide .flow-step { border:1px solid var(--border); border-radius:8px; background:var(--bg); padding:14px; }
+  .embedded-slide .card strong, .embedded-slide .mini-card strong, .embedded-slide .source-note strong, .embedded-slide .flow-step strong { display:block; margin-bottom:6px; color:var(--fg); font-size:1rem; line-height:1.35; }
+  .embedded-slide table { display:table; width:100%; margin:.8em 0 0; border-collapse:collapse; font-size:.92rem; box-shadow:none; border-radius:8px; overflow:hidden; }
+  .embedded-slide th, .embedded-slide td { padding:8px 10px; border:1px solid var(--border); vertical-align:top; white-space:normal; }
+  .embedded-slide th { background:var(--th-bg); }
+  body:not(.slides-hidden) .handout-nav { display:none; }
+  body.slides-hidden .slide-catalog { display:none; }
+  body.slides-hidden .embedded-slide { display:none; }
+  @media (max-width:1100px) {
+    .embedded-slide .grid-3, .embedded-slide .grid-4, .embedded-slide .flow { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  }
+  @media (max-width:720px) {
+    .embedded-slide { padding:16px; }
+    .embedded-slide .grid-2, .embedded-slide .grid-3, .embedded-slide .grid-4, .embedded-slide .flow { grid-template-columns:1fr; }
+    .embedded-slide h2 { font-size:1.16rem; }
+    .embedded-slide table { display:block; overflow-x:auto; }
+  }
+</style>
+</head>
+<body>
+<button class="menu-toggle" id="menuToggle" onclick="toggleMenu()">☰</button>
+<aside class="sidebar" id="sidebar">
+<div class="brand"><span class="zh">Module 1 安裝指南</span><span class="en">Module 1 Setup Guide</span></div>
+<div class="toprow">
+<button class="btn" id="langBtn" onclick="toggleLang()">English</button>
+<button class="btn" id="themeBtn" onclick="toggleTheme()">☀️ Light</button>
+<button class="btn" id="slideToggle" onclick="toggleEmbeddedSlides()"><span class="zh">隱藏投影片</span><span class="en">Hide Slides</span></button>
+</div>
+<nav aria-label="講義目錄" class="nav handout-nav">
+<button class="navbtn" onclick="gotoSection(0)"><span class="zh">開始前</span><span class="en">Before you start</span></button>
+<button class="navbtn" onclick="gotoSection(1)"><span class="zh">最低電腦需求</span><span class="en">Requirements</span></button>
+<button class="navbtn" onclick="gotoSection(2)"><span class="zh">一鍵安裝</span><span class="en">One-command</span></button>
+<button class="navbtn" onclick="gotoSection(3)"><span class="zh">手動安裝</span><span class="en">Manual</span></button>
+<button class="navbtn" onclick="gotoSection(4)"><span class="zh">登入 AI</span><span class="en">Sign in</span></button>
+<button class="navbtn" onclick="gotoSection(5)"><span class="zh">操作瀏覽器</span><span class="en">Browser</span></button>
+<button class="navbtn" onclick="gotoSection(6)"><span class="zh">連結 GitHub</span><span class="en">GitHub</span></button>
+<button class="navbtn" onclick="gotoSection(7)"><span class="zh">GitHub Pages</span><span class="en">Pages</span></button>
+<button class="navbtn" onclick="gotoSection(8)"><span class="zh">驗證</span><span class="en">Verify</span></button>
+<button class="navbtn" onclick="gotoSection(9)"><span class="zh">檢查清單</span><span class="en">Checklist</span></button>
+<button class="navbtn" onclick="gotoSection(10)"><span class="zh">常見問題</span><span class="en">Troubleshooting</span></button>
+</nav><nav aria-label="投影片目錄" class="nav slide-catalog">
+<button class="navbtn" onclick="gotoSlide(0)"><span class="zh">1. 今天要完成什麼</span><span class="en">1. What We Finish</span></button>
+<button class="navbtn" onclick="gotoSlide(1)"><span class="zh">2. 先建立安裝心法</span><span class="en">2. Setup Mindset</span></button>
+<button class="navbtn" onclick="gotoSlide(2)"><span class="zh">3. 最低電腦需求</span><span class="en">3. Computer Requirements</span></button>
+<button class="navbtn" onclick="gotoSlide(3)"><span class="zh">4. 一鍵安裝路線</span><span class="en">4. One-command Route</span></button>
+<button class="navbtn" onclick="gotoSlide(4)"><span class="zh">5. 手動安裝備案</span><span class="en">5. Manual Fallback</span></button>
+<button class="navbtn" onclick="gotoSlide(5)"><span class="zh">6. 登入 AI Agent</span><span class="en">6. Sign In</span></button>
+<button class="navbtn" onclick="gotoSlide(6)"><span class="zh">7. 瀏覽器操作能力</span><span class="en">7. Browser Control</span></button>
+<button class="navbtn" onclick="gotoSlide(7)"><span class="zh">8. 連結 GitHub</span><span class="en">8. Connect GitHub</span></button>
+<button class="navbtn" onclick="gotoSlide(8)"><span class="zh">9. 部署 GitHub Pages</span><span class="en">9. Deploy Pages</span></button>
+<button class="navbtn" onclick="gotoSlide(9)"><span class="zh">10. 四項驗證任務</span><span class="en">10. Four Verifications</span></button>
+<button class="navbtn" onclick="gotoSlide(10)"><span class="zh">11. 完成檢查清單</span><span class="en">11. Completion Checklist</span></button>
+<button class="navbtn" onclick="gotoSlide(11)"><span class="zh">12. 錯誤處理與來源</span><span class="en">12. Troubleshooting and Notes</span></button>
+</nav>
+</aside>
+<div class="backdrop" id="backdrop" onclick="toggleMenu()"></div>
+<div class="wrap">
+<!-- ================= 中文 ================= -->
+<section class="zh">
+<h1>Module 1 — 安裝指南 (Windows 11 與 macOS)</h1><section class="embedded-slide" data-embedded-slide="slide-01" data-for-section="Module 1">
+<div class="slide-label">Orientation</div>
+<h2><span class="zh">Module 1 的目標，是把每台筆電變成可驗收的 AI Agent 工作環境。</span><span class="en">Module 1 turns each laptop into a reviewable AI agent workspace.</span></h2>
+<p class="lead"><span class="zh">學員不需要先會寫程式；重點是照流程裝好工具、登入、連接 GitHub，並用四項任務確認環境真的能工作。</span><span class="en">Learners do not need prior coding experience. The goal is to install the tools, sign in, connect GitHub, and prove the environment works with four checks.</span></p>
+</section>
+<p class="lead">這是一份給「完全沒有寫過程式」的老師的逐步安裝指南。照著做，就能在自己的筆電上建立一套可運作的 AI Agent 工作環境。建議先看「一鍵安裝」；若遇到問題，再參考「手動安裝」與「常見問題」。</p>
+<figure class="infographic-panel"><img alt="Infographic showing a laptop connected to the core AI Agent workspace tools." src="assets/module1-agent-workspace-infographic.png"/></figure>
+<h2>開始前</h2><section class="embedded-slide" data-embedded-slide="slide-02" data-for-section="開始前">
+<div class="slide-label">Before Setup</div>
+<h2><span class="zh">安裝時不要猜錯誤；保留訊息，比自己亂試更重要。</span><span class="en">Do not guess at setup errors; preserve the message and ask for help.</span></h2>
+<div class="grid-3">
+<div class="card"><strong><span class="zh">先看一鍵安裝</span><span class="en">Start with one-command setup</span></strong><p><span class="zh">腳本會安裝主要工具，且可重複執行。</span><span class="en">The scripts install the core tools and can be re-run safely.</span></p></div>
+<div class="card"><strong><span class="zh">看到紅字要複製</span><span class="en">Copy red errors</span></strong><p><span class="zh">把完整錯誤貼給老師或 AI Agent 解讀。</span><span class="en">Copy the whole error for the instructor or AI agent to interpret.</span></p></div>
+<div class="card"><strong><span class="zh">重開終端機</span><span class="en">Reopen Terminal</span></strong><p><span class="zh">很多工具裝好後，需要重新開啟終端機才會進 PATH。</span><span class="en">Many tools need a fresh terminal before they appear on PATH.</span></p></div>
+</div>
+</section>
+<p>這份指南會在你的筆電上安裝下列工具：</p>
+<table>
+<thead><tr><th>工具</th><th>用途</th></tr></thead>
+<tbody>
+<tr><td>VS Code</td><td>程式碼編輯器，也是日後操作 AI Agent 的主要視窗</td></tr>
+<tr><td>Git</td><td>版本管理工具，許多 AI 工具會用到</td></tr>
+<tr><td>Node.js + npm</td><td>JavaScript 執行環境，用來啟動 local web server 與安裝 Codex CLI</td></tr>
+<tr><td>uv (Python)</td><td>管理 Python 與套件，安裝/更新/移除都很簡單</td></tr>
+<tr><td>Codex CLI</td><td>OpenAI 的 AI Agent 命令列工具，可用免費或 ChatGPT Plus 帳號</td></tr>
+<tr><td>Playwright MCP</td><td>Codex 的瀏覽器外掛 (plugin)，讓 AI Agent 能開網頁、點擊、填表單與擷取畫面</td></tr>
+<tr><td>GitHub CLI (gh)</td><td>用瀏覽器登入 GitHub，下載 (clone) 專案、推送與部署 GitHub Pages</td></tr>
+<tr><td>VS Code 擴充套件</td><td>Python、Jupyter、Git、JavaScript，以及 Codex AI 編程代理</td></tr>
+</tbody>
+</table>
+<ul>
+<li class="big-time">預估時間：約 20 至 40 分鐘 (視網路速度而定)。</li>
+<li>請確認筆電有「安裝軟體的權限」(一般個人筆電的本機帳號即可)。</li>
+<li>請全程保持網路連線。</li>
+</ul>
+<div class="warn">
+<strong>唯一要記住的一條規則：</strong>如果畫面出現紅色錯誤訊息，<strong>把整段文字複製起來</strong>，貼給授課老師或貼給 AI Agent，請它幫你解讀。不要自己猜、也不要直接關掉。
+  </div>
+<h2>最低電腦需求</h2><section class="embedded-slide" data-embedded-slide="slide-03" data-for-section="最低電腦需求">
+<div class="slide-label">Requirements</div>
+<h2><span class="zh">8 GB 可以完成任務；16 GB 會讓工作坊明顯順很多。</span><span class="en">8 GB can finish the tasks; 16 GB makes the workshop much smoother.</span></h2>
+<div class="grid-2">
+<div class="card"><strong>Windows 11</strong><p><span class="zh">64 位元、App Installer / winget、10 GB 以上空間、可安裝軟體與穩定網路。</span><span class="en">64-bit Windows, App Installer / winget, 10 GB free space, install permission, and stable network.</span></p></div>
+<div class="card"><strong>macOS</strong><p><span class="zh">macOS 12 以上、Apple Silicon 或 Intel、10 GB 以上空間、可執行 Homebrew 與 sudo。</span><span class="en">macOS 12 or later, Apple Silicon or Intel, 10 GB free space, and permission for Homebrew and sudo.</span></p></div>
+</div>
+<p><span class="tag">VS Code</span> <span class="tag">Node.js</span> <span class="tag">Python / uv</span> <span class="tag">Chromium</span></p>
+</section>
+<p>本工作坊會同時開啟 VS Code、Node.js、Python 與一個由 Codex 操控的 Chromium 瀏覽器。請先確認你的筆電符合下列規格 (標示「建議」者為較順暢的門檻)。</p>
+<h3>Windows 11</h3>
+<table>
+<thead><tr><th>項目</th><th>最低需求</th><th>建議</th></tr></thead>
+<tbody>
+<tr><td>作業系統</td><td>Windows 11 (64 位元)，已裝 App Installer (winget)</td><td>Windows 11 最新版</td></tr>
+<tr><td>處理器</td><td>64 位元 x64 雙核心</td><td>四核心以上</td></tr>
+<tr><td>記憶體 (RAM)</td><td>8 GB</td><td>16 GB</td></tr>
+<tr><td>可用磁碟空間</td><td>10 GB</td><td>20 GB 以上</td></tr>
+<tr><td>權限</td><td>系統管理員權限 (可安裝軟體、允許 UAC)</td><td>同左</td></tr>
+<tr><td>網路</td><td>穩定寬頻，可存取 GitHub 與 AI 服務</td><td>同左</td></tr>
+<tr><td>瀏覽器</td><td>Microsoft Edge 或 Chrome (供登入流程)</td><td>同左</td></tr>
+</tbody>
+</table>
+<h3>macOS</h3>
+<table>
+<thead><tr><th>項目</th><th>最低需求</th><th>建議</th></tr></thead>
+<tbody>
+<tr><td>作業系統</td><td>macOS 12 Monterey</td><td>macOS 13 Ventura 以上</td></tr>
+<tr><td>處理器</td><td>Apple Silicon (M1 以上) 或 Intel x86_64</td><td>Apple Silicon</td></tr>
+<tr><td>記憶體 (RAM)</td><td>8 GB</td><td>16 GB</td></tr>
+<tr><td>可用磁碟空間</td><td>10 GB</td><td>20 GB 以上</td></tr>
+<tr><td>權限</td><td>系統管理員帳號 (可執行 Homebrew 與 sudo)</td><td>同左</td></tr>
+<tr><td>網路</td><td>穩定寬頻，可存取 GitHub 與 AI 服務</td><td>同左</td></tr>
+<tr><td>瀏覽器</td><td>Safari 或 Chrome (供登入流程)</td><td>同左</td></tr>
+</tbody>
+</table>
+<div class="note">8 GB 記憶體可完成所有任務，但同時開啟 VS Code、瀏覽器與多個終端機時，16 GB 會明顯較順暢。磁碟空間需含工具鏈、Chromium 瀏覽器與專案的 node_modules 與 Python 套件。</div>
+<h2>一鍵安裝</h2><section class="embedded-slide" data-embedded-slide="slide-04" data-for-section="一鍵安裝">
+<div class="slide-label">One-command Setup</div>
+<h2><span class="zh">優先走一鍵安裝；失敗時重開終端機再跑一次。</span><span class="en">Use one-command setup first; if it fails, reopen Terminal and run it again.</span></h2>
+<div class="flow">
+<div class="flow-step"><strong><span class="zh">取得腳本</span><span class="en">Get script</span></strong><p><span class="zh">Windows 用 <code>setup-windows.bat</code>；macOS 用 <code>setup-macos.sh</code>。</span><span class="en">Windows uses <code>setup-windows.bat</code>; macOS uses <code>setup-macos.sh</code>.</span></p></div>
+<div class="flow-step"><strong><span class="zh">執行</span><span class="en">Run</span></strong><p><span class="zh">照平台步驟執行，允許必要權限。</span><span class="en">Follow the platform steps and allow required permissions.</span></p></div>
+<div class="flow-step"><strong><span class="zh">看總結</span><span class="en">Read summary</span></strong><p><span class="zh">結束時確認 OK / FAIL 數量。</span><span class="en">Check the OK / FAIL count at the end.</span></p></div>
+<div class="flow-step"><strong><span class="zh">重開</span><span class="en">Restart</span></strong><p><span class="zh">關閉並重新開啟終端機，再繼續登入。</span><span class="en">Close and reopen Terminal before sign-in.</span></p></div>
+</div>
+</section>
+<p>請依你的作業系統選擇下方分頁，照著三個步驟做。腳本<strong>可以重複執行</strong>：萬一中途出錯，重開終端機後再跑一次即可，已安裝的工具會自動略過。</p>
+<figure class="infographic-panel"><img alt="Infographic showing Windows and macOS one-command setup flows merging into a completion check." src="assets/module1-one-command-setup-infographic.png"/></figure>
+<div class="platform-tabs">
+<button class="tabbtn active" data-os="win" onclick="selectOS('win')">Windows 11</button>
+<button class="tabbtn" data-os="mac" onclick="selectOS('mac')">macOS</button>
+</div>
+<div class="platform-pane active" data-os="win">
+<h3>步驟 1 — 取得安裝腳本</h3>
+<p>向授課老師索取 <code class="inline">setup-windows.bat</code> 檔案 (或從工作坊提供的連結下載)，並存到「下載 (Downloads)」資料夾。</p>
+<h3>步驟 2 — 執行腳本</h3>
+<p>最簡單的方式：到「下載」資料夾<strong>用滑鼠雙擊 <code class="inline">setup-windows.bat</code></strong> 即可開始安裝。</p>
+<p>若你想從終端機執行，先按 <code class="inline">Win + X</code> 選「終端機 (Terminal)」，再依你看到的提示字元貼上對應指令：</p>
+<p>PowerShell (提示字元為 <code class="inline">PS C:\…&gt;</code>)：</p>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">複製</button><pre>&amp; "$HOME\Downloads\setup-windows.bat"</pre></div>
+<p>命令提示字元 Command Prompt (提示字元為 <code class="inline">C:\…&gt;</code>)：</p>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">複製</button><pre>"%USERPROFILE%\Downloads\setup-windows.bat"</pre></div>
+<p>按 <code class="inline">Enter</code> 後等待。安裝過程可能跳出權限或使用者帳戶控制 (UAC) 視窗，請按「是 / 允許」。結束時畫面會列出 <code class="inline">[OK]</code> 與 <code class="inline">[FAIL]</code> 的數量總結。腳本<strong>可重複執行</strong>，出錯就重開終端機再跑一次。</p>
+<div class="note">看到「全部完成！」後，請<strong>關閉並重新開啟</strong>終端機，再進入下方「登入 AI Agent」。</div>
+</div>
+<div class="platform-pane" data-os="mac">
+<h3>步驟 1 — 取得安裝腳本</h3>
+<p>向授課老師索取 <code class="inline">setup-macos.sh</code> 檔案 (或從工作坊提供的連結下載)，並存到「下載 (Downloads)」資料夾。</p>
+<h3>步驟 2 — 開啟終端機</h3>
+<p>按 <code class="inline">Command + 空白鍵</code> 開啟 Spotlight，輸入「Terminal」後按 <code class="inline">Enter</code>。</p>
+<h3>步驟 3 — 貼上並執行這一行</h3>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">複製</button><pre>bash ~/Downloads/setup-macos.sh</pre></div>
+<p>按 <code class="inline">Enter</code> 後等待。安裝 Homebrew 時可能要求輸入「登入密碼」(輸入時畫面不會顯示字元，屬正常現象)。結束時畫面會列出每項工具的 <code class="inline">OK</code> 或 <code class="inline">FAIL</code> 總結。</p>
+<div class="note">看到「全部完成！」後，請<strong>關閉並重新開啟</strong>終端機，再進入下方「登入 AI Agent」。</div>
+</div>
+<h2>手動安裝 (備用方案)</h2><section class="embedded-slide" data-embedded-slide="slide-05" data-for-section="手動安裝">
+<div class="slide-label">Manual Fallback</div>
+<h2><span class="zh">手動安裝不是另一套課程，而是用來補救失敗項目。</span><span class="en">Manual install is not a second course; it is a fallback for failed items.</span></h2>
+<div class="grid-3">
+<div class="card"><strong><span class="zh">基礎工具</span><span class="en">Base tools</span></strong><p>VS Code, Git, Node.js LTS, uv</p></div>
+<div class="card"><strong><span class="zh">Agent 工具</span><span class="en">Agent tools</span></strong><p>Codex CLI, Playwright MCP, GitHub CLI</p></div>
+<div class="card"><strong><span class="zh">VS Code 擴充</span><span class="en">VS Code extensions</span></strong><p>Python, Jupyter, GitLens, ESLint, Codex</p></div>
+</div>
+<p class="lead"><span class="zh">每裝完一項就重開終端機，再用檢查清單確認版本。</span><span class="en">After installing each item, reopen Terminal and confirm it with the checklist.</span></p>
+</section>
+<p>如果一鍵安裝某項失敗，或你想自己一步一步來，可依下表逐項安裝。安裝完每項後，<strong>關閉並重新開啟</strong>終端機，再用「檢查清單」確認。</p>
+<table>
+<thead><tr><th>工具</th><th>下載 / 安裝方式</th><th>備註</th></tr></thead>
+<tbody>
+<tr><td>VS Code</td><td><a href="https://code.visualstudio.com/download" rel="noopener" target="_blank">code.visualstudio.com/download</a></td><td>下載後雙擊安裝；安裝時勾選「加入 PATH」</td></tr>
+<tr><td>Git</td><td><a href="https://git-scm.com/downloads" rel="noopener" target="_blank">git-scm.com/downloads</a></td><td>一路按「下一步」採用預設值即可</td></tr>
+<tr><td>Node.js LTS</td><td><a href="https://nodejs.org" rel="noopener" target="_blank">nodejs.org</a></td><td>選擇「LTS」版本，安裝後即有 npm</td></tr>
+<tr><td>uv (Python)</td><td><a href="https://docs.astral.sh/uv/getting-started/installation/" rel="noopener" target="_blank">docs.astral.sh/uv</a></td><td>依該頁的一行安裝指令操作</td></tr>
+<tr><td>Codex CLI</td><td>於終端機執行 <code class="inline">npm install -g @openai/codex</code></td><td>需先裝好 Node.js</td></tr>
+<tr><td>Playwright MCP</td><td>於終端機執行 <code class="inline">npx -y playwright install chromium</code> 下載瀏覽器，再執行 <code class="inline">codex mcp add playwright -- npx -y @playwright/mcp@latest</code> 註冊給 Codex</td><td>需先裝好 Node.js 與 Codex CLI</td></tr>
+<tr><td>GitHub CLI</td><td><a href="https://cli.github.com/" rel="noopener" target="_blank">cli.github.com</a></td><td>裝好後執行 <code class="inline">gh auth login</code></td></tr>
+</tbody>
+</table>
+<h3>VS Code 擴充套件 (extensions)</h3>
+<p>開啟 VS Code，點左側方塊狀的 Extensions 圖示，搜尋並安裝下列項目；或在終端機逐行執行下方指令。</p>
+<ul>
+<li><code class="inline">ms-python.python</code> — Python</li>
+<li><code class="inline">ms-toolsai.jupyter</code> — Jupyter Notebook</li>
+<li><code class="inline">eamodio.gitlens</code> — Git</li>
+<li><code class="inline">dbaeumer.vscode-eslint</code> — JavaScript</li>
+<li><strong>Codex</strong> — OpenAI 的 AI 編程代理 (安裝 ID：<code class="inline">openai.chatgpt</code>)</li>
+</ul>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">複製</button><pre>code --install-extension ms-python.python
+code --install-extension ms-toolsai.jupyter
+code --install-extension eamodio.gitlens
+code --install-extension dbaeumer.vscode-eslint
+code --install-extension openai.chatgpt</pre></div>
+<div class="note">若終端機顯示「找不到 code 指令」，請<strong>關閉並重新開啟</strong>終端機；macOS 使用者可在 VS Code 內按 <code class="inline">Cmd+Shift+P</code>，執行「Shell Command: Install 'code' command in PATH」。</div>
+<h2>登入 AI Agent</h2><section class="embedded-slide" data-embedded-slide="slide-06" data-for-section="登入 AI Agent">
+<div class="slide-label">Sign In</div>
+<h2><span class="zh">登入完成後，先用一個最小任務確認 Agent 真的能動。</span><span class="en">After sign-in, use one tiny task to confirm the agent really works.</span></h2>
+<pre>codex "請建立一個名為 hello.txt 的檔案，內容寫上 Hello, AI Agent"</pre>
+<div class="grid-2">
+<div class="card"><strong><span class="zh">終端機登入</span><span class="en">Terminal sign-in</span></strong><p><span class="zh">輸入 <code>codex</code>，依瀏覽器登入流程完成授權。</span><span class="en">Run <code>codex</code> and finish the browser-based authorization flow.</span></p></div>
+<div class="card"><strong><span class="zh">VS Code 共用帳號</span><span class="en">VS Code shares the account</span></strong><p><span class="zh">Codex CLI 與 VS Code 擴充套件使用同一個 ChatGPT 帳號。</span><span class="en">Codex CLI and the VS Code extension use the same ChatGPT account.</span></p></div>
+</div>
+</section>
+<ol>
+<li>開啟終端機，輸入 <code class="inline">codex</code> 後按 <code class="inline">Enter</code>。</li>
+<li>依畫面指示選擇用帳號登入，瀏覽器會開啟登入頁；用你的免費或 ChatGPT Plus 帳號登入後回到終端機。</li>
+<li>執行下方「Hello, AI Agent」測試，確認 Agent 能接收指令並回應。</li>
+</ol>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">複製</button><pre>codex "請建立一個名為 hello.txt 的檔案，內容寫上 Hello, AI Agent"</pre></div>
+<p>若 Agent 成功建立檔案並回報結果，代表 AI Agent 環境已可運作。</p>
+<div class="note">VS Code 內的 Codex 擴充套件 (<code class="inline">openai.chatgpt</code>) 與這裡的 Codex CLI 共用同一個 ChatGPT 帳號，登入一次即可同時在終端機與編輯器中使用。</div>
+<h2>讓 Codex 操作瀏覽器 (Playwright MCP)</h2><section class="embedded-slide" data-embedded-slide="slide-07" data-for-section="讓 Codex 操作瀏覽器">
+<div class="slide-label">Browser Plugin</div>
+<h2><span class="zh">Playwright MCP 讓 Codex 能開網頁、點擊、填表單與擷取畫面。</span><span class="en">Playwright MCP lets Codex open pages, click, fill forms, and capture screens.</span></h2>
+<div class="flow">
+<div class="flow-step"><strong><span class="zh">下載瀏覽器</span><span class="en">Install browser</span></strong><p><code>npx -y playwright install chromium</code></p></div>
+<div class="flow-step"><strong><span class="zh">註冊外掛</span><span class="en">Register plugin</span></strong><p><code>codex mcp add playwright -- npx -y @playwright/mcp@latest</code></p></div>
+<div class="flow-step"><strong><span class="zh">確認啟用</span><span class="en">Confirm enabled</span></strong><p><code>codex mcp list</code></p></div>
+<div class="flow-step"><strong><span class="zh">做畫面測試</span><span class="en">Run a screen test</span></strong><p><span class="zh">請 Codex 開網頁並截圖。</span><span class="en">Ask Codex to open a page and save a screenshot.</span></p></div>
+</div>
+</section>
+<p>要讓 AI Agent 能<strong>開網頁、點擊、填表單與擷取畫面</strong>，需要為 Codex 安裝 <strong>Playwright MCP 外掛 (plugin)</strong>。一鍵安裝腳本已經幫你裝好並註冊；若你採用手動安裝，請執行下面兩個步驟。</p>
+<figure class="infographic-panel"><img alt="Infographic showing browser control, account authorization, repository sync, and static site publishing." src="assets/module1-browser-repo-pages-infographic.png"/></figure>
+<h3>步驟 1 — 下載瀏覽器</h3>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">複製</button><pre>npx -y playwright install chromium</pre></div>
+<h3>步驟 2 — 把外掛註冊給 Codex</h3>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">複製</button><pre>codex mcp add playwright -- npx -y @playwright/mcp@latest</pre></div>
+<h3>步驟 3 — 確認外掛已啟用</h3>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">複製</button><pre>codex mcp list</pre></div>
+<p>清單中應出現 <code class="inline">playwright</code> 且狀態為 <code class="inline">enabled</code>。接著可請 Codex 開啟一個網頁並擷取畫面，驗證它能操作瀏覽器。</p>
+<div class="note">指令可重複執行：若 <code class="inline">playwright</code> 已註冊，重跑安裝腳本會自動略過。</div>
+<h2>連結 GitHub</h2><section class="embedded-slide" data-embedded-slide="slide-08" data-for-section="連結 GitHub">
+<div class="slide-label">GitHub</div>
+<h2><span class="zh">GitHub CLI 用瀏覽器完成登入，讓 clone、push、部署少掉一堆帳密問題。</span><span class="en">GitHub CLI signs in through the browser, reducing credential friction for clone, push, and deployment.</span></h2>
+<div class="grid-3">
+<div class="card"><strong><span class="zh">登入</span><span class="en">Sign in</span></strong><p><code>gh auth login</code></p></div>
+<div class="card"><strong><span class="zh">確認</span><span class="en">Confirm</span></strong><p><code>gh auth status</code></p></div>
+<div class="card"><strong><span class="zh">設定提交身分</span><span class="en">Set commit identity</span></strong><p><code>git config --global user.name</code><br/><code>git config --global user.email</code></p></div>
+</div>
+</section>
+<p>要把專案下載 (clone) 下來、或把網站上傳到 GitHub，需要先讓電腦「連上」你的 GitHub 帳號。我們使用 <strong>GitHub CLI (<code class="inline">gh</code>)</strong>，全程用瀏覽器登入，<strong>不需要產生 SSH 金鑰、也不需要在終端機輸入密碼</strong>。</p>
+<div class="note">安裝腳本已經幫你裝好 <code class="inline">gh</code>。若顯示「找不到 gh」，請關閉並重新開啟終端機。</div>
+<h3>步驟 1 — 登入</h3>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">複製</button><pre>gh auth login</pre></div>
+<p>依畫面方向鍵選擇，建議選項依序為：<code class="inline">GitHub.com</code> → <code class="inline">HTTPS</code> → 詢問是否用 Git 認證時選 <code class="inline">Yes</code> → <code class="inline">Login with a web browser</code>。畫面會顯示一組一次性代碼 (one-time code)，按 <code class="inline">Enter</code> 開啟瀏覽器，貼上代碼並授權即可。完成後它也會自動設定好 git，之後 clone / push 都不必再登入。</p>
+<h3>步驟 2 — 確認登入狀態</h3>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">複製</button><pre>gh auth status</pre></div>
+<h3>步驟 3 — 設定提交身分 (只需做一次)</h3>
+<p>commit 需要知道你的名字與信箱，請把下方換成你自己的資料：</p>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">複製</button><pre>git config --global user.name "你的名字"
+git config --global user.email "你的信箱@example.com"</pre></div>
+<h3>步驟 4 — 下載 (clone) 一個專案</h3>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">複製</button><pre>gh repo clone 你的帳號/專案名稱</pre></div>
+<h2>部署到 GitHub Pages</h2><section class="embedded-slide" data-embedded-slide="slide-09" data-for-section="部署到 GitHub Pages">
+<div class="slide-label">Publishing</div>
+<h2><span class="zh">GitHub Pages 的教學重點，是把本機資料夾變成可分享的靜態網站。</span><span class="en">GitHub Pages turns a local folder into a shareable static website.</span></h2>
+<div class="flow">
+<div class="flow-step"><strong><span class="zh">建立紀錄</span><span class="en">Create history</span></strong><p><code>git init</code><br/><code>git add .</code><br/><code>git commit</code></p></div>
+<div class="flow-step"><strong><span class="zh">建立 repo</span><span class="en">Create repo</span></strong><p><code>gh repo create ... --push</code></p></div>
+<div class="flow-step"><strong><span class="zh">開啟 Pages</span><span class="en">Enable Pages</span></strong><p><span class="zh">用指令或 GitHub 網頁設定。</span><span class="en">Use the command or GitHub web settings.</span></p></div>
+<div class="flow-step"><strong><span class="zh">等待上線</span><span class="en">Wait for publish</span></strong><p><span class="zh">網址通常約一分鐘後可用。</span><span class="en">The site usually appears after about a minute.</span></p></div>
+</div>
+</section>
+<p>GitHub Pages 可以把一個靜態網站 (例如只有 <code class="inline">index.html</code> 的資料夾) 免費發佈成公開網址。請先用終端機進到你的網站資料夾，再依序執行。</p>
+<h3>步驟 1 — 建立本機版本紀錄</h3>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">複製</button><pre>git init
+git add .
+git commit -m "first site"</pre></div>
+<h3>步驟 2 — 建立 GitHub repo 並上傳</h3>
+<p>下面一行會建立一個公開 repo、設定遠端並把內容推上去 (請把 <code class="inline">我的網站</code> 換成你想要的名稱)：</p>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">複製</button><pre>gh repo create 我的網站 --public --source=. --remote=origin --push</pre></div>
+<h3>步驟 3 — 開啟 Pages</h3>
+<p>方法 A (指令)：</p>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">複製</button><pre>gh api -X POST repos/{owner}/{repo}/pages -f "source[branch]=main" -f "source[path]=/"</pre></div>
+<p>方法 B (網頁，較直覺)：到該 repo 的 <strong>Settings → Pages</strong>，在 Branch 選 <code class="inline">main</code>、資料夾選 <code class="inline">/ (root)</code>，按 Save。</p>
+<div class="note">完成後網址會是 <code class="inline">https://你的帳號.github.io/我的網站/</code>，可能需要等一分鐘左右才會生效。</div>
+<h2>驗證 (四項任務)</h2><section class="embedded-slide" data-embedded-slide="slide-10" data-for-section="驗證">
+<div class="slide-label">Verification</div>
+<h2><span class="zh">不是看到安裝完成就結束；要用四項任務驗收工具鏈。</span><span class="en">Setup is not done when install ends; verify the toolchain with four tasks.</span></h2>
+<div class="grid-4">
+<div class="card"><strong><span class="zh">Excel</span><span class="en">Excel</span></strong><p><span class="zh">讀取資料並輸出新 Excel。</span><span class="en">Read data and output a new Excel file.</span></p></div>
+<div class="card"><strong><span class="zh">Word</span><span class="en">Word</span></strong><p><span class="zh">讀取 Word 並產出修改版。</span><span class="en">Read a Word file and produce an edited version.</span></p></div>
+<div class="card"><strong><span class="zh">Local server</span><span class="en">Local server</span></strong><p><span class="zh">用 Node.js 啟動本機網站。</span><span class="en">Start a local site with Node.js.</span></p></div>
+<div class="card"><strong><span class="zh">Browser</span><span class="en">Browser</span></strong><p><span class="zh">讓 Codex 開網頁並截圖。</span><span class="en">Have Codex open a page and save a screenshot.</span></p></div>
+</div>
+</section>
+<p>下列四項對應 Module 1 的驗證任務。可直接把每個指令貼給 <code class="inline">codex</code>，或自行在終端機執行。</p>
+<figure class="infographic-panel"><img alt="Infographic showing four verification tasks and a troubleshooting retry loop." src="assets/module1-verification-troubleshooting-infographic.png"/></figure>
+<table>
+<thead><tr><th>任務</th><th>內容</th><th>驗證重點</th></tr></thead>
+<tbody>
+<tr><td>Python 驗證</td><td>讀取 Excel、整理資料、輸出新的 Excel</td><td>套件與檔案處理可運作</td></tr>
+<tr><td>Word 驗證</td><td>讀取 Word、產生修改後的 Word</td><td>Office 文件處理可運作</td></tr>
+<tr><td>JavaScript 驗證</td><td>啟動簡單的 local web server</td><td>Node.js 與 local host 可運作</td></tr>
+<tr><td>瀏覽器驗證</td><td>請 Codex 透過 Playwright MCP 開啟指定網頁並擷取畫面或讀取內容</td><td>瀏覽器外掛與 AI Agent 操作瀏覽器可運作</td></tr>
+</tbody>
+</table>
+<h3>準備 Python 專案 (Excel + Word)</h3>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">複製</button><pre>uv init verify-python
+cd verify-python
+uv add openpyxl python-docx</pre></div>
+<p>接著請 AI Agent 幫你寫一支程式：讀取一個 Excel、整理後輸出新檔，再讀取一個 Word、輸出修改後的版本。</p>
+<h3>啟動 local web server (JavaScript)</h3>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">複製</button><pre>npx http-server</pre></div>
+<p>看到網址 (例如 <code class="inline">http://127.0.0.1:8080</code>) 後，用瀏覽器開啟即代表成功。按 <code class="inline">Ctrl + C</code> 可停止。</p>
+<h3>讓 Codex 操作瀏覽器 (Playwright)</h3>
+<p>確認 <code class="inline">codex mcp list</code> 中的 <code class="inline">playwright</code> 為 <code class="inline">enabled</code> 後，請 Codex 開啟一個網頁並擷取畫面：</p>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">複製</button><pre>codex "用瀏覽器開啟 https://example.com，並把整頁擷圖存成 example.png"</pre></div>
+<p>若 Agent 成功產生截圖，代表瀏覽器外掛可運作。</p>
+<h2>檢查清單</h2><section class="embedded-slide" data-embedded-slide="slide-11" data-for-section="檢查清單">
+<div class="slide-label">Checklist</div>
+<h2><span class="zh">完成的標準，是每一個核心命令都有回應，且 Playwright 顯示 enabled。</span><span class="en">Completion means every core command responds, and Playwright shows enabled.</span></h2>
+<div class="grid-2">
+<div class="card"><div class="checkline"><span class="checkmark">✓</span><p><span class="zh">VS Code 與必要 extensions 已安裝。</span><span class="en">VS Code and required extensions are installed.</span></p></div></div>
+<div class="card"><div class="checkline"><span class="checkmark">✓</span><p><span class="zh"><code>code</code>, <code>git</code>, <code>node</code>, <code>npm</code>, <code>uv</code>, <code>gh</code>, <code>codex</code> 都有版本資訊。</span><span class="en"><code>code</code>, <code>git</code>, <code>node</code>, <code>npm</code>, <code>uv</code>, <code>gh</code>, and <code>codex</code> all report versions.</span></p></div></div>
+<div class="card"><div class="checkline"><span class="checkmark">✓</span><p><span class="zh"><code>codex mcp list</code> 有 <code>playwright</code> 且為 enabled。</span><span class="en"><code>codex mcp list</code> includes <code>playwright</code> and shows enabled.</span></p></div></div>
+<div class="card"><div class="checkline"><span class="checkmark">✓</span><p><span class="zh">Hello 測試與四項驗證任務都成功。</span><span class="en">The Hello test and all four verification tasks succeed.</span></p></div></div>
+</div>
+</section>
+<p>在終端機逐行執行下列指令，每一行都應顯示版本號 (而非「找不到指令」)。</p>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">複製</button><pre>code --version
+git --version
+node -v
+npm -v
+uv --version
+gh --version
+codex --version
+codex mcp list</pre></div>
+<ul class="check">
+<li>VS Code 可開啟，且已安裝 Python / Jupyter / GitLens / ESLint / Codex 擴充套件</li>
+<li>上方七個指令都顯示版本號或結果</li>
+<li><code class="inline">codex mcp list</code> 顯示 <code class="inline">playwright</code> 且狀態為 <code class="inline">enabled</code></li>
+<li><code class="inline">codex</code> 能登入並完成 Hello, AI Agent 測試</li>
+<li>四項驗證任務 (Excel、Word、local server、瀏覽器) 皆能成功</li>
+</ul>
+<h2>常見問題</h2><section class="embedded-slide" data-embedded-slide="slide-12" data-for-section="常見問題">
+<div class="slide-label">Troubleshooting and Notes</div>
+<h2><span class="zh">常見問題多半不是「不會寫程式」，而是 PATH、權限、網路或登入狀態。</span><span class="en">Most setup issues are not coding issues; they are PATH, permission, network, or sign-in state.</span></h2>
+<div class="grid-2">
+<div class="source-note"><strong><span class="zh">處理原則</span><span class="en">Handling rule</span></strong><p><span class="zh">先複製完整錯誤，再重開終端機、重跑腳本，或依常見問題逐項排除。</span><span class="en">Copy the full error first, then reopen Terminal, rerun the script, or follow the troubleshooting table.</span></p></div>
+<div class="source-note"><strong><span class="zh">使用與來源說明</span><span class="en">Use and source notes</span></strong><p><span class="zh">本投影片供 AI Agent 工作坊 Module 1 課堂投影使用，重點整理自同專案的 Module 1 安裝指南。實際工具版本、登入畫面與下載連結仍以使用當下官方頁面為準。</span><span class="en">These slides are for AI Agent Workshop Module 1 classroom projection and are based on the Module 1 setup guide in this project. Tool versions, sign-in screens, and download pages should follow the current official pages when used.</span></p></div>
+</div>
+</section>
+<table>
+<thead><tr><th>症狀</th><th>原因與解法</th></tr></thead>
+<tbody>
+<tr><td>'xxx' 不是內部或外部命令 / command not found</td><td>多半是 PATH 還沒更新。<strong>關閉並重新開啟終端機</strong>後再試；仍不行就重跑一鍵安裝腳本。</td></tr>
+<tr><td>找不到 winget (Windows)</td><td>到 Microsoft Store 安裝「應用程式安裝程式 (App Installer)」，或先用手動安裝。</td></tr>
+<tr><td>找不到 brew (macOS)</td><td>重開終端機讓 Homebrew 進入 PATH；或重跑一鍵安裝腳本 (它會自動安裝 Homebrew)。</td></tr>
+<tr><td>雙擊 .bat 後黑視窗一閃就消失</td><td>改從已開啟的終端機執行 (見「一鍵安裝」的指令)，才看得到訊息；或在腳本最後保留 pause。</td></tr>
+<tr><td>找不到 gh (GitHub CLI)</td><td>關閉並重新開啟終端機；仍不行就重跑一鍵安裝腳本。</td></tr>
+<tr><td>codex mcp list 沒有 playwright</td><td>手動執行 <code class="inline">codex mcp add playwright -- npx -y @playwright/mcp@latest</code> 重新註冊；確認 Codex CLI 已安裝。</td></tr>
+<tr><td>Codex 操作瀏覽器時找不到瀏覽器 (browser not found)</td><td>執行 <code class="inline">npx -y playwright install chromium</code> 重新下載瀏覽器。</td></tr>
+<tr><td>gh auth login 沒有自動開啟瀏覽器</td><td>把畫面顯示的網址複製起來，自己貼到瀏覽器開啟，再輸入一次性代碼。</td></tr>
+<tr><td>GitHub Pages 顯示 404</td><td>等約一分鐘再重新整理；並確認 Pages 的 Branch 為 main、資料夾為 / (root)。</td></tr>
+<tr><td>下載很慢或卡住</td><td>多半是網路或代理 (proxy) 問題。換較穩定的網路，或請授課老師協助設定 proxy。</td></tr>
+<tr><td>一直跳出權限/UAC 視窗</td><td>屬正常現象，按「是 / 允許」即可。</td></tr>
+</tbody>
+</table>
+</section>
+<!-- ================= English ================= -->
+<section class="en">
+<h1>Module 1 — Setup Guide (Windows 11 &amp; macOS)</h1><section class="embedded-slide" data-embedded-slide="slide-01" data-for-section="Module 1">
+<div class="slide-label">Orientation</div>
+<h2><span class="zh">Module 1 的目標，是把每台筆電變成可驗收的 AI Agent 工作環境。</span><span class="en">Module 1 turns each laptop into a reviewable AI agent workspace.</span></h2>
+<p class="lead"><span class="zh">學員不需要先會寫程式；重點是照流程裝好工具、登入、連接 GitHub，並用四項任務確認環境真的能工作。</span><span class="en">Learners do not need prior coding experience. The goal is to install the tools, sign in, connect GitHub, and prove the environment works with four checks.</span></p>
+</section>
+<p class="lead">A step-by-step setup guide for teachers with zero programming experience. Follow it to get a working AI Agent environment on your own laptop. Start with "One-command setup"; if anything fails, use "Manual install" and "Troubleshooting."</p>
+<figure class="infographic-panel"><img alt="Infographic showing a laptop connected to the core AI Agent workspace tools." src="assets/module1-agent-workspace-infographic.png"/></figure>
+<h2>Before you start</h2><section class="embedded-slide" data-embedded-slide="slide-02" data-for-section="Before you start">
+<div class="slide-label">Before Setup</div>
+<h2><span class="zh">安裝時不要猜錯誤；保留訊息，比自己亂試更重要。</span><span class="en">Do not guess at setup errors; preserve the message and ask for help.</span></h2>
+<div class="grid-3">
+<div class="card"><strong><span class="zh">先看一鍵安裝</span><span class="en">Start with one-command setup</span></strong><p><span class="zh">腳本會安裝主要工具，且可重複執行。</span><span class="en">The scripts install the core tools and can be re-run safely.</span></p></div>
+<div class="card"><strong><span class="zh">看到紅字要複製</span><span class="en">Copy red errors</span></strong><p><span class="zh">把完整錯誤貼給老師或 AI Agent 解讀。</span><span class="en">Copy the whole error for the instructor or AI agent to interpret.</span></p></div>
+<div class="card"><strong><span class="zh">重開終端機</span><span class="en">Reopen Terminal</span></strong><p><span class="zh">很多工具裝好後，需要重新開啟終端機才會進 PATH。</span><span class="en">Many tools need a fresh terminal before they appear on PATH.</span></p></div>
+</div>
+</section>
+<p>This guide installs the following tools on your laptop:</p>
+<table>
+<thead><tr><th>Tool</th><th>Purpose</th></tr></thead>
+<tbody>
+<tr><td>VS Code</td><td>Code editor and your main window for driving the AI Agent later</td></tr>
+<tr><td>Git</td><td>Version-control tool used by many AI tools</td></tr>
+<tr><td>Node.js + npm</td><td>JavaScript runtime, used to start a local web server and install the Codex CLI</td></tr>
+<tr><td>uv (Python)</td><td>Manages Python and packages; easy to install, update, and remove</td></tr>
+<tr><td>Codex CLI</td><td>OpenAI's AI Agent command-line tool; works with a free or ChatGPT Plus account</td></tr>
+<tr><td>Playwright MCP</td><td>Codex browser plugin that lets the AI Agent open pages, click, fill forms, and take screenshots</td></tr>
+<tr><td>GitHub CLI (gh)</td><td>Sign in to GitHub via browser; clone projects, push, and deploy GitHub Pages</td></tr>
+<tr><td>VS Code extensions</td><td>Python, Jupyter, Git, JavaScript, and the Codex coding agent</td></tr>
+</tbody>
+</table>
+<ul>
+<li class="big-time">Estimated time: about 20 to 40 minutes (depending on your network).</li>
+<li>Make sure your laptop allows installing software (a normal personal account is fine).</li>
+<li>Stay connected to the internet throughout.</li>
+</ul>
+<div class="warn">
+<strong>The one rule to remember:</strong> if you see a red error message, <strong>copy the whole text</strong> and paste it to your instructor or to the AI Agent and ask it to explain. Do not guess, and do not just close it.
+  </div>
+<h2>Minimum computer requirements</h2><section class="embedded-slide" data-embedded-slide="slide-03" data-for-section="Minimum computer requirements">
+<div class="slide-label">Requirements</div>
+<h2><span class="zh">8 GB 可以完成任務；16 GB 會讓工作坊明顯順很多。</span><span class="en">8 GB can finish the tasks; 16 GB makes the workshop much smoother.</span></h2>
+<div class="grid-2">
+<div class="card"><strong>Windows 11</strong><p><span class="zh">64 位元、App Installer / winget、10 GB 以上空間、可安裝軟體與穩定網路。</span><span class="en">64-bit Windows, App Installer / winget, 10 GB free space, install permission, and stable network.</span></p></div>
+<div class="card"><strong>macOS</strong><p><span class="zh">macOS 12 以上、Apple Silicon 或 Intel、10 GB 以上空間、可執行 Homebrew 與 sudo。</span><span class="en">macOS 12 or later, Apple Silicon or Intel, 10 GB free space, and permission for Homebrew and sudo.</span></p></div>
+</div>
+<p><span class="tag">VS Code</span> <span class="tag">Node.js</span> <span class="tag">Python / uv</span> <span class="tag">Chromium</span></p>
+</section>
+<p>This workshop runs VS Code, Node.js, Python, and a Chromium browser driven by Codex at the same time. Make sure your laptop meets the specs below ("Recommended" is the threshold for a smoother experience).</p>
+<h3>Windows 11</h3>
+<table>
+<thead><tr><th>Item</th><th>Minimum</th><th>Recommended</th></tr></thead>
+<tbody>
+<tr><td>Operating system</td><td>Windows 11 (64-bit) with App Installer (winget)</td><td>Windows 11, fully updated</td></tr>
+<tr><td>Processor</td><td>64-bit x64 dual-core</td><td>Quad-core or better</td></tr>
+<tr><td>Memory (RAM)</td><td>8 GB</td><td>16 GB</td></tr>
+<tr><td>Free disk space</td><td>10 GB</td><td>20 GB or more</td></tr>
+<tr><td>Privileges</td><td>Administrator rights (install software, allow UAC)</td><td>Same</td></tr>
+<tr><td>Network</td><td>Stable broadband reaching GitHub and AI services</td><td>Same</td></tr>
+<tr><td>Browser</td><td>Microsoft Edge or Chrome (for sign-in flows)</td><td>Same</td></tr>
+</tbody>
+</table>
+<h3>macOS</h3>
+<table>
+<thead><tr><th>Item</th><th>Minimum</th><th>Recommended</th></tr></thead>
+<tbody>
+<tr><td>Operating system</td><td>macOS 12 Monterey</td><td>macOS 13 Ventura or later</td></tr>
+<tr><td>Processor</td><td>Apple Silicon (M1+) or Intel x86_64</td><td>Apple Silicon</td></tr>
+<tr><td>Memory (RAM)</td><td>8 GB</td><td>16 GB</td></tr>
+<tr><td>Free disk space</td><td>10 GB</td><td>20 GB or more</td></tr>
+<tr><td>Privileges</td><td>Admin account (run Homebrew and sudo)</td><td>Same</td></tr>
+<tr><td>Network</td><td>Stable broadband reaching GitHub and AI services</td><td>Same</td></tr>
+<tr><td>Browser</td><td>Safari or Chrome (for sign-in flows)</td><td>Same</td></tr>
+</tbody>
+</table>
+<div class="note">8 GB of RAM completes every task, but 16 GB is noticeably smoother when VS Code, the browser, and several terminals are open together. Disk space covers the toolchain, the Chromium browser, and per-project node_modules and Python packages.</div>
+<h2>One-command setup</h2><section class="embedded-slide" data-embedded-slide="slide-04" data-for-section="One-command setup">
+<div class="slide-label">One-command Setup</div>
+<h2><span class="zh">優先走一鍵安裝；失敗時重開終端機再跑一次。</span><span class="en">Use one-command setup first; if it fails, reopen Terminal and run it again.</span></h2>
+<div class="flow">
+<div class="flow-step"><strong><span class="zh">取得腳本</span><span class="en">Get script</span></strong><p><span class="zh">Windows 用 <code>setup-windows.bat</code>；macOS 用 <code>setup-macos.sh</code>。</span><span class="en">Windows uses <code>setup-windows.bat</code>; macOS uses <code>setup-macos.sh</code>.</span></p></div>
+<div class="flow-step"><strong><span class="zh">執行</span><span class="en">Run</span></strong><p><span class="zh">照平台步驟執行，允許必要權限。</span><span class="en">Follow the platform steps and allow required permissions.</span></p></div>
+<div class="flow-step"><strong><span class="zh">看總結</span><span class="en">Read summary</span></strong><p><span class="zh">結束時確認 OK / FAIL 數量。</span><span class="en">Check the OK / FAIL count at the end.</span></p></div>
+<div class="flow-step"><strong><span class="zh">重開</span><span class="en">Restart</span></strong><p><span class="zh">關閉並重新開啟終端機，再繼續登入。</span><span class="en">Close and reopen Terminal before sign-in.</span></p></div>
+</div>
+</section>
+<p>Pick your operating system below and follow the three steps. The scripts are <strong>safe to re-run</strong>: if something fails midway, reopen Terminal and run it again; installed tools are skipped automatically.</p>
+<figure class="infographic-panel"><img alt="Infographic showing Windows and macOS one-command setup flows merging into a completion check." src="assets/module1-one-command-setup-infographic.png"/></figure>
+<div class="platform-tabs">
+<button class="tabbtn active" data-os="win" onclick="selectOS('win')">Windows 11</button>
+<button class="tabbtn" data-os="mac" onclick="selectOS('mac')">macOS</button>
+</div>
+<div class="platform-pane active" data-os="win">
+<h3>Step 1 — Get the setup script</h3>
+<p>Get <code class="inline">setup-windows.bat</code> from your instructor (or the workshop download link) and save it to your <strong>Downloads</strong> folder.</p>
+<h3>Step 2 — Run the script</h3>
+<p>Easiest way: open your Downloads folder and <strong>double-click <code class="inline">setup-windows.bat</code></strong> to start the install.</p>
+<p>If you prefer running it from a terminal, press <code class="inline">Win + X</code> and choose "Terminal", then paste the line that matches your prompt:</p>
+<p>PowerShell (prompt looks like <code class="inline">PS C:\…&gt;</code>):</p>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">Copy</button><pre>&amp; "$HOME\Downloads\setup-windows.bat"</pre></div>
+<p>Command Prompt (prompt looks like <code class="inline">C:\…&gt;</code>):</p>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">Copy</button><pre>"%USERPROFILE%\Downloads\setup-windows.bat"</pre></div>
+<p>Press <code class="inline">Enter</code> and wait. A permission or User Account Control (UAC) window may appear; click "Yes / Allow." At the end you will see a count of <code class="inline">[OK]</code> and <code class="inline">[FAIL]</code> items. The script is <strong>safe to re-run</strong>: if something fails, reopen Terminal and run it again.</p>
+<div class="note">After you see "All done!", <strong>close and reopen</strong> Terminal, then go to "Sign in to the Agent" below.</div>
+</div>
+<div class="platform-pane" data-os="mac">
+<h3>Step 1 — Get the setup script</h3>
+<p>Get <code class="inline">setup-macos.sh</code> from your instructor (or the workshop download link) and save it to your <strong>Downloads</strong> folder.</p>
+<h3>Step 2 — Open Terminal</h3>
+<p>Press <code class="inline">Command + Space</code> to open Spotlight, type "Terminal", and press <code class="inline">Enter</code>.</p>
+<h3>Step 3 — Paste and run this one line</h3>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">Copy</button><pre>bash ~/Downloads/setup-macos.sh</pre></div>
+<p>Press <code class="inline">Enter</code> and wait. Installing Homebrew may ask for your login password (characters will not show as you type, which is normal). At the end you will see an <code class="inline">OK</code>/<code class="inline">FAIL</code> summary per tool.</p>
+<div class="note">After you see "All done!", <strong>close and reopen</strong> Terminal, then go to "Sign in to the Agent" below.</div>
+</div>
+<h2>Manual install (fallback)</h2><section class="embedded-slide" data-embedded-slide="slide-05" data-for-section="Manual install">
+<div class="slide-label">Manual Fallback</div>
+<h2><span class="zh">手動安裝不是另一套課程，而是用來補救失敗項目。</span><span class="en">Manual install is not a second course; it is a fallback for failed items.</span></h2>
+<div class="grid-3">
+<div class="card"><strong><span class="zh">基礎工具</span><span class="en">Base tools</span></strong><p>VS Code, Git, Node.js LTS, uv</p></div>
+<div class="card"><strong><span class="zh">Agent 工具</span><span class="en">Agent tools</span></strong><p>Codex CLI, Playwright MCP, GitHub CLI</p></div>
+<div class="card"><strong><span class="zh">VS Code 擴充</span><span class="en">VS Code extensions</span></strong><p>Python, Jupyter, GitLens, ESLint, Codex</p></div>
+</div>
+<p class="lead"><span class="zh">每裝完一項就重開終端機，再用檢查清單確認版本。</span><span class="en">After installing each item, reopen Terminal and confirm it with the checklist.</span></p>
+</section>
+<p>If one item fails in the one-command setup, or you prefer to do it step by step, install each tool from the table. After each one, <strong>close and reopen</strong> Terminal, then confirm with the checklist.</p>
+<table>
+<thead><tr><th>Tool</th><th>Download / install</th><th>Note</th></tr></thead>
+<tbody>
+<tr><td>VS Code</td><td><a href="https://code.visualstudio.com/download" rel="noopener" target="_blank">code.visualstudio.com/download</a></td><td>Double-click to install; tick "Add to PATH"</td></tr>
+<tr><td>Git</td><td><a href="https://git-scm.com/downloads" rel="noopener" target="_blank">git-scm.com/downloads</a></td><td>Accept the defaults (keep clicking Next)</td></tr>
+<tr><td>Node.js LTS</td><td><a href="https://nodejs.org" rel="noopener" target="_blank">nodejs.org</a></td><td>Choose the "LTS" version; npm comes with it</td></tr>
+<tr><td>uv (Python)</td><td><a href="https://docs.astral.sh/uv/getting-started/installation/" rel="noopener" target="_blank">docs.astral.sh/uv</a></td><td>Use the one-line install command on that page</td></tr>
+<tr><td>Codex CLI</td><td>Run <code class="inline">npm install -g @openai/codex</code> in Terminal</td><td>Install Node.js first</td></tr>
+<tr><td>Playwright MCP</td><td>Run <code class="inline">npx -y playwright install chromium</code> to get the browser, then <code class="inline">codex mcp add playwright -- npx -y @playwright/mcp@latest</code> to register it with Codex</td><td>Install Node.js and the Codex CLI first</td></tr>
+<tr><td>GitHub CLI</td><td><a href="https://cli.github.com/" rel="noopener" target="_blank">cli.github.com</a></td><td>After install, run <code class="inline">gh auth login</code></td></tr>
+</tbody>
+</table>
+<h3>VS Code extensions</h3>
+<p>Open VS Code, click the square Extensions icon on the left, search for and install the items below; or run the commands in Terminal.</p>
+<ul>
+<li><code class="inline">ms-python.python</code> — Python</li>
+<li><code class="inline">ms-toolsai.jupyter</code> — Jupyter Notebook</li>
+<li><code class="inline">eamodio.gitlens</code> — Git</li>
+<li><code class="inline">dbaeumer.vscode-eslint</code> — JavaScript</li>
+<li><strong>Codex</strong> — OpenAI's coding agent (install ID: <code class="inline">openai.chatgpt</code>)</li>
+</ul>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">Copy</button><pre>code --install-extension ms-python.python
+code --install-extension ms-toolsai.jupyter
+code --install-extension eamodio.gitlens
+code --install-extension dbaeumer.vscode-eslint
+code --install-extension openai.chatgpt</pre></div>
+<div class="note">If Terminal says "code: command not found", <strong>close and reopen</strong> Terminal; on macOS you can open VS Code, press <code class="inline">Cmd+Shift+P</code>, and run "Shell Command: Install 'code' command in PATH".</div>
+<h2>Sign in to the Agent</h2><section class="embedded-slide" data-embedded-slide="slide-06" data-for-section="Sign in to the Agent">
+<div class="slide-label">Sign In</div>
+<h2><span class="zh">登入完成後，先用一個最小任務確認 Agent 真的能動。</span><span class="en">After sign-in, use one tiny task to confirm the agent really works.</span></h2>
+<pre>codex "請建立一個名為 hello.txt 的檔案，內容寫上 Hello, AI Agent"</pre>
+<div class="grid-2">
+<div class="card"><strong><span class="zh">終端機登入</span><span class="en">Terminal sign-in</span></strong><p><span class="zh">輸入 <code>codex</code>，依瀏覽器登入流程完成授權。</span><span class="en">Run <code>codex</code> and finish the browser-based authorization flow.</span></p></div>
+<div class="card"><strong><span class="zh">VS Code 共用帳號</span><span class="en">VS Code shares the account</span></strong><p><span class="zh">Codex CLI 與 VS Code 擴充套件使用同一個 ChatGPT 帳號。</span><span class="en">Codex CLI and the VS Code extension use the same ChatGPT account.</span></p></div>
+</div>
+</section>
+<ol>
+<li>Open Terminal, type <code class="inline">codex</code> and press <code class="inline">Enter</code>.</li>
+<li>Follow the prompt to sign in; your browser opens a login page. Sign in with your free or ChatGPT Plus account and return to Terminal.</li>
+<li>Run the "Hello, AI Agent" test below to confirm the agent receives instructions and responds.</li>
+</ol>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">Copy</button><pre>codex "Create a file named hello.txt containing the text Hello, AI Agent"</pre></div>
+<p>If the agent creates the file and reports back, your AI Agent environment is working.</p>
+<div class="note">The Codex extension inside VS Code (<code class="inline">openai.chatgpt</code>) shares the same ChatGPT account as the Codex CLI here, so signing in once works in both the terminal and the editor.</div>
+<h2>Let Codex drive a browser (Playwright MCP)</h2><section class="embedded-slide" data-embedded-slide="slide-07" data-for-section="Let Codex drive a browser">
+<div class="slide-label">Browser Plugin</div>
+<h2><span class="zh">Playwright MCP 讓 Codex 能開網頁、點擊、填表單與擷取畫面。</span><span class="en">Playwright MCP lets Codex open pages, click, fill forms, and capture screens.</span></h2>
+<div class="flow">
+<div class="flow-step"><strong><span class="zh">下載瀏覽器</span><span class="en">Install browser</span></strong><p><code>npx -y playwright install chromium</code></p></div>
+<div class="flow-step"><strong><span class="zh">註冊外掛</span><span class="en">Register plugin</span></strong><p><code>codex mcp add playwright -- npx -y @playwright/mcp@latest</code></p></div>
+<div class="flow-step"><strong><span class="zh">確認啟用</span><span class="en">Confirm enabled</span></strong><p><code>codex mcp list</code></p></div>
+<div class="flow-step"><strong><span class="zh">做畫面測試</span><span class="en">Run a screen test</span></strong><p><span class="zh">請 Codex 開網頁並截圖。</span><span class="en">Ask Codex to open a page and save a screenshot.</span></p></div>
+</div>
+</section>
+<p>To let the AI Agent <strong>open pages, click, fill forms, and take screenshots</strong>, install the <strong>Playwright MCP plugin</strong> for Codex. The one-command setup already installs and registers it; if you went the manual route, run the two steps below.</p>
+<figure class="infographic-panel"><img alt="Infographic showing browser control, account authorization, repository sync, and static site publishing." src="assets/module1-browser-repo-pages-infographic.png"/></figure>
+<h3>Step 1 — Download the browser</h3>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">Copy</button><pre>npx -y playwright install chromium</pre></div>
+<h3>Step 2 — Register the plugin with Codex</h3>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">Copy</button><pre>codex mcp add playwright -- npx -y @playwright/mcp@latest</pre></div>
+<h3>Step 3 — Confirm the plugin is enabled</h3>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">Copy</button><pre>codex mcp list</pre></div>
+<p>You should see <code class="inline">playwright</code> with status <code class="inline">enabled</code>. Then ask Codex to open a page and screenshot it to confirm it can drive the browser.</p>
+<div class="note">The commands are safe to re-run: if <code class="inline">playwright</code> is already registered, re-running the setup script skips it.</div>
+<h2>Connect to GitHub</h2><section class="embedded-slide" data-embedded-slide="slide-08" data-for-section="Connect to GitHub">
+<div class="slide-label">GitHub</div>
+<h2><span class="zh">GitHub CLI 用瀏覽器完成登入，讓 clone、push、部署少掉一堆帳密問題。</span><span class="en">GitHub CLI signs in through the browser, reducing credential friction for clone, push, and deployment.</span></h2>
+<div class="grid-3">
+<div class="card"><strong><span class="zh">登入</span><span class="en">Sign in</span></strong><p><code>gh auth login</code></p></div>
+<div class="card"><strong><span class="zh">確認</span><span class="en">Confirm</span></strong><p><code>gh auth status</code></p></div>
+<div class="card"><strong><span class="zh">設定提交身分</span><span class="en">Set commit identity</span></strong><p><code>git config --global user.name</code><br/><code>git config --global user.email</code></p></div>
+</div>
+</section>
+<p>To clone a project or upload a site to GitHub, your computer first needs to be "connected" to your GitHub account. We use the <strong>GitHub CLI (<code class="inline">gh</code>)</strong>, which signs in entirely through the browser: <strong>no SSH keys to generate, and no password typed in the terminal</strong>.</p>
+<div class="note">The setup script already installed <code class="inline">gh</code> for you. If you see "gh: command not found", close and reopen Terminal.</div>
+<h3>Step 1 — Sign in</h3>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">Copy</button><pre>gh auth login</pre></div>
+<p>Use the arrow keys to choose, in order: <code class="inline">GitHub.com</code> → <code class="inline">HTTPS</code> → <code class="inline">Yes</code> when asked to authenticate Git → <code class="inline">Login with a web browser</code>. A one-time code appears; press <code class="inline">Enter</code> to open the browser, paste the code, and authorize. It also configures git automatically, so future clone / push need no further login.</p>
+<h3>Step 2 — Confirm sign-in</h3>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">Copy</button><pre>gh auth status</pre></div>
+<h3>Step 3 — Set your commit identity (once)</h3>
+<p>Commits need your name and email. Replace the values below with your own:</p>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">Copy</button><pre>git config --global user.name "Your Name"
+git config --global user.email "you@example.com"</pre></div>
+<h3>Step 4 — Clone a project</h3>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">Copy</button><pre>gh repo clone your-account/your-repo</pre></div>
+<h2>Deploy to GitHub Pages</h2><section class="embedded-slide" data-embedded-slide="slide-09" data-for-section="Deploy to GitHub Pages">
+<div class="slide-label">Publishing</div>
+<h2><span class="zh">GitHub Pages 的教學重點，是把本機資料夾變成可分享的靜態網站。</span><span class="en">GitHub Pages turns a local folder into a shareable static website.</span></h2>
+<div class="flow">
+<div class="flow-step"><strong><span class="zh">建立紀錄</span><span class="en">Create history</span></strong><p><code>git init</code><br/><code>git add .</code><br/><code>git commit</code></p></div>
+<div class="flow-step"><strong><span class="zh">建立 repo</span><span class="en">Create repo</span></strong><p><code>gh repo create ... --push</code></p></div>
+<div class="flow-step"><strong><span class="zh">開啟 Pages</span><span class="en">Enable Pages</span></strong><p><span class="zh">用指令或 GitHub 網頁設定。</span><span class="en">Use the command or GitHub web settings.</span></p></div>
+<div class="flow-step"><strong><span class="zh">等待上線</span><span class="en">Wait for publish</span></strong><p><span class="zh">網址通常約一分鐘後可用。</span><span class="en">The site usually appears after about a minute.</span></p></div>
+</div>
+</section>
+<p>GitHub Pages publishes a static website (e.g. a folder with just an <code class="inline">index.html</code>) to a free public URL. In Terminal, first go into your website folder, then run these in order.</p>
+<h3>Step 1 — Create a local history</h3>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">Copy</button><pre>git init
+git add .
+git commit -m "first site"</pre></div>
+<h3>Step 2 — Create the GitHub repo and push</h3>
+<p>This one line creates a public repo, sets the remote, and pushes (replace <code class="inline">my-site</code> with the name you want):</p>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">Copy</button><pre>gh repo create my-site --public --source=. --remote=origin --push</pre></div>
+<h3>Step 3 — Turn on Pages</h3>
+<p>Option A (command):</p>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">Copy</button><pre>gh api -X POST repos/{owner}/{repo}/pages -f "source[branch]=main" -f "source[path]=/"</pre></div>
+<p>Option B (web, more visual): go to the repo's <strong>Settings → Pages</strong>, set Branch to <code class="inline">main</code> and folder to <code class="inline">/ (root)</code>, then Save.</p>
+<div class="note">Your site URL will be <code class="inline">https://your-account.github.io/my-site/</code>. It can take about a minute to go live.</div>
+<h2>Verify (four tasks)</h2><section class="embedded-slide" data-embedded-slide="slide-10" data-for-section="Verify">
+<div class="slide-label">Verification</div>
+<h2><span class="zh">不是看到安裝完成就結束；要用四項任務驗收工具鏈。</span><span class="en">Setup is not done when install ends; verify the toolchain with four tasks.</span></h2>
+<div class="grid-4">
+<div class="card"><strong><span class="zh">Excel</span><span class="en">Excel</span></strong><p><span class="zh">讀取資料並輸出新 Excel。</span><span class="en">Read data and output a new Excel file.</span></p></div>
+<div class="card"><strong><span class="zh">Word</span><span class="en">Word</span></strong><p><span class="zh">讀取 Word 並產出修改版。</span><span class="en">Read a Word file and produce an edited version.</span></p></div>
+<div class="card"><strong><span class="zh">Local server</span><span class="en">Local server</span></strong><p><span class="zh">用 Node.js 啟動本機網站。</span><span class="en">Start a local site with Node.js.</span></p></div>
+<div class="card"><strong><span class="zh">Browser</span><span class="en">Browser</span></strong><p><span class="zh">讓 Codex 開網頁並截圖。</span><span class="en">Have Codex open a page and save a screenshot.</span></p></div>
+</div>
+</section>
+<p>These four match the Module 1 verification tasks. Paste each command to <code class="inline">codex</code>, or run them yourself in Terminal.</p>
+<figure class="infographic-panel"><img alt="Infographic showing four verification tasks and a troubleshooting retry loop." src="assets/module1-verification-troubleshooting-infographic.png"/></figure>
+<table>
+<thead><tr><th>Task</th><th>Content</th><th>Focus</th></tr></thead>
+<tbody>
+<tr><td>Python check</td><td>Read an Excel file, process data, output a new Excel</td><td>Packages and file handling work</td></tr>
+<tr><td>Word check</td><td>Read a Word file, produce a modified Word</td><td>Office document handling works</td></tr>
+<tr><td>JavaScript check</td><td>Start a simple local web server</td><td>Node.js and local host work</td></tr>
+<tr><td>Browser check</td><td>Ask Codex to open a given page via Playwright MCP and screenshot or read it</td><td>Browser plugin and agent browser control work</td></tr>
+</tbody>
+</table>
+<h3>Set up the Python project (Excel + Word)</h3>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">Copy</button><pre>uv init verify-python
+cd verify-python
+uv add openpyxl python-docx</pre></div>
+<p>Then ask the AI Agent to write a program: read an Excel and output a new one, then read a Word and output a modified version.</p>
+<h3>Start a local web server (JavaScript)</h3>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">Copy</button><pre>npx http-server</pre></div>
+<p>When you see a URL (e.g. <code class="inline">http://127.0.0.1:8080</code>), open it in a browser to confirm. Press <code class="inline">Ctrl + C</code> to stop.</p>
+<h3>Let Codex drive a browser (Playwright)</h3>
+<p>After confirming <code class="inline">playwright</code> is <code class="inline">enabled</code> in <code class="inline">codex mcp list</code>, ask Codex to open a page and screenshot it:</p>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">Copy</button><pre>codex "Open https://example.com in a browser and save a full-page screenshot as example.png"</pre></div>
+<p>If the agent produces the screenshot, the browser plugin works.</p>
+<h2>Checklist</h2><section class="embedded-slide" data-embedded-slide="slide-11" data-for-section="Checklist">
+<div class="slide-label">Checklist</div>
+<h2><span class="zh">完成的標準，是每一個核心命令都有回應，且 Playwright 顯示 enabled。</span><span class="en">Completion means every core command responds, and Playwright shows enabled.</span></h2>
+<div class="grid-2">
+<div class="card"><div class="checkline"><span class="checkmark">✓</span><p><span class="zh">VS Code 與必要 extensions 已安裝。</span><span class="en">VS Code and required extensions are installed.</span></p></div></div>
+<div class="card"><div class="checkline"><span class="checkmark">✓</span><p><span class="zh"><code>code</code>, <code>git</code>, <code>node</code>, <code>npm</code>, <code>uv</code>, <code>gh</code>, <code>codex</code> 都有版本資訊。</span><span class="en"><code>code</code>, <code>git</code>, <code>node</code>, <code>npm</code>, <code>uv</code>, <code>gh</code>, and <code>codex</code> all report versions.</span></p></div></div>
+<div class="card"><div class="checkline"><span class="checkmark">✓</span><p><span class="zh"><code>codex mcp list</code> 有 <code>playwright</code> 且為 enabled。</span><span class="en"><code>codex mcp list</code> includes <code>playwright</code> and shows enabled.</span></p></div></div>
+<div class="card"><div class="checkline"><span class="checkmark">✓</span><p><span class="zh">Hello 測試與四項驗證任務都成功。</span><span class="en">The Hello test and all four verification tasks succeed.</span></p></div></div>
+</div>
+</section>
+<p>Run each command in Terminal; every line should print a version number (not "command not found").</p>
+<div class="codeblock"><button class="copybtn" onclick="copyCode(this)">Copy</button><pre>code --version
+git --version
+node -v
+npm -v
+uv --version
+gh --version
+codex --version
+codex mcp list</pre></div>
+<ul class="check">
+<li>VS Code opens, with Python / Jupyter / GitLens / ESLint / Codex extensions installed</li>
+<li>All seven commands above print a version or result</li>
+<li><code class="inline">codex mcp list</code> shows <code class="inline">playwright</code> with status <code class="inline">enabled</code></li>
+<li><code class="inline">codex</code> signs in and the Hello, AI Agent test passes</li>
+<li>All four verification tasks (Excel, Word, local server, browser) succeed</li>
+</ul>
+<h2>Troubleshooting</h2><section class="embedded-slide" data-embedded-slide="slide-12" data-for-section="Troubleshooting">
+<div class="slide-label">Troubleshooting and Notes</div>
+<h2><span class="zh">常見問題多半不是「不會寫程式」，而是 PATH、權限、網路或登入狀態。</span><span class="en">Most setup issues are not coding issues; they are PATH, permission, network, or sign-in state.</span></h2>
+<div class="grid-2">
+<div class="source-note"><strong><span class="zh">處理原則</span><span class="en">Handling rule</span></strong><p><span class="zh">先複製完整錯誤，再重開終端機、重跑腳本，或依常見問題逐項排除。</span><span class="en">Copy the full error first, then reopen Terminal, rerun the script, or follow the troubleshooting table.</span></p></div>
+<div class="source-note"><strong><span class="zh">使用與來源說明</span><span class="en">Use and source notes</span></strong><p><span class="zh">本投影片供 AI Agent 工作坊 Module 1 課堂投影使用，重點整理自同專案的 Module 1 安裝指南。實際工具版本、登入畫面與下載連結仍以使用當下官方頁面為準。</span><span class="en">These slides are for AI Agent Workshop Module 1 classroom projection and are based on the Module 1 setup guide in this project. Tool versions, sign-in screens, and download pages should follow the current official pages when used.</span></p></div>
+</div>
+</section>
+<table>
+<thead><tr><th>Symptom</th><th>Cause and fix</th></tr></thead>
+<tbody>
+<tr><td>'xxx' is not recognized / command not found</td><td>Usually PATH has not refreshed. <strong>Close and reopen</strong> Terminal and try again; if it still fails, re-run the one-command script.</td></tr>
+<tr><td>winget not found (Windows)</td><td>Install "App Installer" from the Microsoft Store, or use the manual install.</td></tr>
+<tr><td>brew not found (macOS)</td><td>Reopen Terminal so Homebrew is on PATH; or re-run the one-command script (it installs Homebrew automatically).</td></tr>
+<tr><td>Double-clicking the .bat flashes a black window and closes</td><td>Run it from an already-open Terminal (see "One-command setup") so you can read the messages; the script also keeps a pause at the end.</td></tr>
+<tr><td>gh: command not found (GitHub CLI)</td><td>Close and reopen Terminal; if it still fails, re-run the one-command script.</td></tr>
+<tr><td>playwright missing from codex mcp list</td><td>Re-register it manually with <code class="inline">codex mcp add playwright -- npx -y @playwright/mcp@latest</code>; make sure the Codex CLI is installed.</td></tr>
+<tr><td>"browser not found" when Codex drives the browser</td><td>Run <code class="inline">npx -y playwright install chromium</code> to download the browser again.</td></tr>
+<tr><td>gh auth login did not open a browser</td><td>Copy the URL shown on screen, open it in your browser yourself, then enter the one-time code.</td></tr>
+<tr><td>GitHub Pages shows 404</td><td>Wait about a minute and refresh; confirm Pages Branch is main and folder is / (root).</td></tr>
+<tr><td>Downloads are slow or stuck</td><td>Usually a network or proxy issue. Switch to a more stable network, or ask your instructor to help configure the proxy.</td></tr>
+<tr><td>Repeated permission/UAC prompts</td><td>This is normal; click "Yes / Allow".</td></tr>
+</tbody>
+</table>
+</section>
+<footer>智慧雨林產業創生人才育成計畫 (南臺科技大學 電子系 楊榮林 教授)</footer>
+</div>
+<script>
+
+  function updateSlideToggleText() {
+    const btn = document.getElementById('slideToggle');
+    if (!btn) return;
+    const lang = document.documentElement.getAttribute('data-lang');
+    const hidden = document.body.classList.contains('slides-hidden');
+    const text = lang === 'en' ? (hidden ? 'Show Slides' : 'Hide Slides') : (hidden ? '顯示投影片' : '隱藏投影片');
+    btn.textContent = text;
+  }
+  function toggleEmbeddedSlides() {
+    document.body.classList.toggle('slides-hidden');
+    updateSlideToggleText();
+    buildSpy();
+    updateSlideToggleText();
+  }
+  function gotoSection(i) {
+    const lang = document.documentElement.getAttribute('data-lang');
+    const section = document.querySelector('section.' + lang);
+    const heads = [...section.querySelectorAll('h2')].filter(h => !h.closest('.embedded-slide'));
+    if (heads[i]) heads[i].scrollIntoView({ behavior:'smooth', block:'start' });
+    closeMenu();
+  }
+  function gotoSlide(i) {
+    const lang = document.documentElement.getAttribute('data-lang');
+    const section = document.querySelector('section.' + lang);
+    const slides = [...section.querySelectorAll('.embedded-slide')];
+    if (slides[i]) slides[i].scrollIntoView({ behavior:'smooth', block:'start' });
+    closeMenu();
+  }
+  // Mobile drawer: toggle the off-canvas sidebar + backdrop.
+  function toggleMenu() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('backdrop').classList.toggle('show');
+  }
+  function closeMenu() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('backdrop').classList.remove('show');
+  }
+  // Scrollspy: highlight the nav item for the section currently near the top.
+  let spy;
+  function buildSpy() {
+    if (spy) spy.disconnect();
+    const lang = document.documentElement.getAttribute('data-lang');
+    const slideMode = !document.body.classList.contains('slides-hidden');
+    const section = document.querySelector('section.' + lang);
+    const targets = slideMode
+      ? [...section.querySelectorAll('.embedded-slide')]
+      : [...section.querySelectorAll('h2')].filter(h => !h.closest('.embedded-slide'));
+    const btns = [...document.querySelectorAll(slideMode ? '.slide-catalog .navbtn' : '.handout-nav .navbtn')];
+    document.querySelectorAll('.navbtn').forEach(b => b.classList.remove('active'));;
+        spy = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const idx = targets.indexOf(e.target);
+          btns.forEach((b, i) => b.classList.toggle('active', i === idx));
+        }
+      });
+    }, { rootMargin: '0px 0px -75% 0px', threshold: 0 });
+    targets.forEach(target => spy.observe(target));
+  }
+  document.addEventListener('DOMContentLoaded', () => { buildSpy(); updateSlideToggleText(); });
+  // Buttons label the TARGET state (what you switch to), not the current state.
+  function toggleTheme() {
+    const html = document.documentElement;
+    const goingDark = html.getAttribute('data-theme') === 'light';
+    html.setAttribute('data-theme', goingDark ? 'dark' : 'light');
+    document.getElementById('themeBtn').textContent = goingDark ? '☀️ Light' : '🌙 Dark';
+  }
+  function toggleLang() {
+    const html = document.documentElement;
+    const goingEn = html.getAttribute('data-lang') === 'zh';
+    html.setAttribute('data-lang', goingEn ? 'en' : 'zh');
+    html.setAttribute('lang', goingEn ? 'en' : 'zh-Hant');
+    document.getElementById('langBtn').textContent = goingEn ? '中文' : 'English';
+    buildSpy();
+  }
+  // Switch the Windows / macOS panes in both language sections at once.
+  function selectOS(os) {
+    document.querySelectorAll('.tabbtn').forEach(b =>
+      b.classList.toggle('active', b.getAttribute('data-os') === os));
+    document.querySelectorAll('.platform-pane').forEach(p =>
+      p.classList.toggle('active', p.getAttribute('data-os') === os));
+  }
+  // Copy the <pre> text next to the clicked button.
+  function copyCode(btn) {
+    const pre = btn.parentElement.querySelector('pre');
+    const label = btn.textContent;
+    navigator.clipboard.writeText(pre.innerText).then(() => {
+      btn.textContent = (document.documentElement.getAttribute('data-lang') === 'en') ? 'Copied' : '已複製';
+      setTimeout(() => { btn.textContent = label; }, 1500);
+    });
+  }
+</script>
+</body>
+</html>

@@ -1,81 +1,251 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Workshop 2026</title>
   <style>
     :root {
-      color-scheme: light;
-      --bg: #f6f7fb;
-      --card: #ffffff;
-      --text: #1f2430;
-      --muted: #5c6475;
-      --accent: #0b66d4;
-      --border: #d9deea;
+      color-scheme: dark;
+      --bg: #090d16;
+      --bg-soft: #0f1522;
+      --card: #131a2a;
+      --card-2: #182235;
+      --text: #e6ecf7;
+      --muted: #a8b3c7;
+      --accent: #7fb0ff;
+      --accent-2: #5393ff;
+      --line: #2a3a58;
+      --shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
     }
 
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      font-family: "Avenir Next", "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top right, #e8f1ff 0%, var(--bg) 45%);
+      font-family: "Avenir Next", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      background:
+        radial-gradient(1100px 600px at 8% -10%, #1b2b48 0%, transparent 55%),
+        radial-gradient(1000px 500px at 92% 0%, #1c2740 0%, transparent 52%),
+        var(--bg);
       color: var(--text);
       min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 24px;
+      line-height: 1.65;
     }
 
-    main {
-      width: min(720px, 100%);
-      background: var(--card);
-      border: 1px solid var(--border);
+    .page {
+      width: min(980px, 100% - 32px);
+      margin: 34px auto 50px;
+    }
+
+    .hero,
+    .panel,
+    .links {
+      background: linear-gradient(160deg, rgba(27, 38, 61, 0.55) 0%, rgba(18, 25, 41, 0.9) 60%);
+      border: 1px solid var(--line);
       border-radius: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
       padding: 28px;
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
+      margin-bottom: 18px;
+    }
+
+    .kicker {
+      margin: 0;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      font-size: 0.82rem;
+      text-transform: uppercase;
     }
 
     h1 {
-      margin: 0 0 10px;
-      font-size: clamp(1.5rem, 3vw, 2rem);
+      margin: 10px 0 0;
+      font-size: clamp(1.8rem, 3.2vw, 2.8rem);
+      line-height: 1.15;
     }
 
-    p {
-      margin: 0 0 18px;
-      color: var(--muted);
-      line-height: 1.5;
+    .panel {
+      padding: 24px;
+      margin-bottom: 18px;
     }
 
-    ul {
+    h2 {
       margin: 0;
-      padding-left: 1.1rem;
+      font-size: 1.95rem;
     }
 
-    li + li {
-      margin-top: 10px;
+    .divider {
+      height: 2px;
+      border: 0;
+      margin: 12px 0 18px;
+      background: linear-gradient(90deg, var(--accent-2), transparent 70%);
     }
 
-    a {
-      color: var(--accent);
+    .meta {
+      margin: 0;
+      padding-left: 1.2rem;
+      color: var(--text);
+      font-size: 1.03rem;
+    }
+
+    .meta li + li {
+      margin-top: 6px;
+    }
+
+    .section-label {
+      margin: 22px 0 10px;
+      font-size: 1.35rem;
+      font-weight: 700;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(9, 14, 24, 0.66);
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(47, 66, 97, 0.58);
+      font-size: 1.05rem;
+    }
+
+    th {
+      background: var(--card-2);
+      font-size: 1.08rem;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .links {
+      padding: 20px;
+    }
+
+    .links h3 {
+      margin: 0 0 10px;
+      font-size: 1.2rem;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+    }
+
+    .link-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    }
+
+    .link-card {
+      display: block;
       text-decoration: none;
-      font-weight: 600;
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(22, 30, 48, 0.72);
+      padding: 14px 15px;
+      transition: transform .15s ease, border-color .15s ease;
     }
 
-    a:hover {
-      text-decoration: underline;
+    .link-card strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 1.05rem;
+    }
+
+    .link-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .link-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+    }
+
+    @media (max-width: 640px) {
+      .hero,
+      .panel,
+      .links {
+        padding: 16px;
+      }
+
+      th,
+      td {
+        padding: 11px 10px;
+        font-size: 0.96rem;
+      }
+
+      h2 {
+        font-size: 1.6rem;
+      }
     }
   </style>
 </head>
 <body>
-  <main>
-    <h1>Workshop 2026</h1>
-    <p>Select a published workshop set:</p>
-    <ul>
-      <li><a href="./0709/index.html">0709 Workshop</a></li>
-      <li><a href="./0702/index.html">0702 Workshop</a></li>
-    </ul>
+  <main class="page">
+    <section class="hero">
+      <p class="kicker">Workshop 2026</p>
+      <h1>AI Agent 教學應用工作坊 (一)</h1>
+    </section>
+
+    <section class="panel" aria-labelledby="course-info">
+      <h2 id="course-info">課程資訊</h2>
+      <hr class="divider">
+      <ul class="meta">
+        <li>主辦：教育部智慧雨林產業創生人才育成計畫辦公室</li>
+        <li>主題：AI Agent 工作環境建立與使用</li>
+        <li>對象：智慧雨林產業創生人才育成計畫團隊教師</li>
+        <li>主講人：南臺科技大學電子系 楊榮林 教授</li>
+        <li>地點：南臺科技大學 J 棟 J301 教室</li>
+      </ul>
+
+      <p class="section-label">活動日期及時間：</p>
+      <table aria-label="活動日期及時間">
+        <thead>
+          <tr>
+            <th>場次</th>
+            <th>日期</th>
+            <th>時間</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>場次一</td>
+            <td>115 年 7 月 2 日（四）</td>
+            <td>13：00 - 17：30</td>
+          </tr>
+          <tr>
+            <td>場次二</td>
+            <td>115 年 7 月 9 日（四）</td>
+            <td>13：00 - 17：30</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="links" aria-labelledby="entry-links">
+      <h3 id="entry-links">工作坊入口</h3>
+      <div class="link-grid">
+        <a class="link-card" href="./0709/index.html">
+          <strong>Workshop 1 (0709)</strong>
+          <span>AI Agent 教學應用工作坊（一）站點入口（7/9 場次）</span>
+        </a>
+        <a class="link-card" href="./0702/index.html">
+          <strong>Workshop 1 (0702)</strong>
+          <span>AI Agent 教學應用工作坊（一）站點入口（7/2 場次）</span>
+        </a>
+      </div>
+    </section>
   </main>
 </body>
 </html>

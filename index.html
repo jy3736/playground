@@ -1,145 +1,81 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Workshop 2026 — 課程講義</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Workshop 2026</title>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      color-scheme: light;
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --text: #1f2430;
+      --muted: #5c6475;
+      --accent: #0b66d4;
+      --border: #d9deea;
+    }
+
+    * { box-sizing: border-box; }
 
     body {
-      font-family: "Helvetica Neue", "PingFang TC", "Microsoft JhengHei", Arial, sans-serif;
-      background: #0f172a;
-      color: #e2e8f0;
+      margin: 0;
+      font-family: "Avenir Next", "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top right, #e8f1ff 0%, var(--bg) 45%);
+      color: var(--text);
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem 1rem;
-    }
-
-    header {
-      text-align: center;
-      margin-bottom: 3rem;
-    }
-
-    header h1 {
-      font-size: 2.2rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      background: linear-gradient(135deg, #60a5fa, #a78bfa);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 0.5rem;
-    }
-
-    header p {
-      color: #94a3b8;
-      font-size: 1rem;
-    }
-
-    .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-      width: 100%;
-      max-width: 960px;
+      place-items: center;
+      padding: 24px;
     }
 
-    .card {
-      background: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 1rem;
-      padding: 1.75rem 1.5rem;
-      text-decoration: none;
-      color: inherit;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    main {
+      width: min(720px, 100%);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
     }
 
-    .card:hover {
-      border-color: #60a5fa;
-      transform: translateY(-4px);
-      box-shadow: 0 8px 30px rgba(96, 165, 250, 0.15);
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.5rem, 3vw, 2rem);
     }
 
-    .card .badge {
-      display: inline-block;
-      font-size: 0.7rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 0.25rem 0.6rem;
-      border-radius: 9999px;
-      width: fit-content;
-    }
-
-    .badge-codex  { background: #1d4ed8; color: #bfdbfe; }
-    .badge-m1     { background: #065f46; color: #6ee7b7; }
-    .badge-m2     { background: #7c3aed; color: #ddd6fe; }
-    .badge-m3     { background: #b45309; color: #fde68a; }
-
-    .card h2 {
-      font-size: 1.05rem;
-      font-weight: 600;
+    p {
+      margin: 0 0 18px;
+      color: var(--muted);
       line-height: 1.5;
-      color: #f1f5f9;
     }
 
-    .card .arrow {
-      margin-top: auto;
-      color: #60a5fa;
-      font-size: 1.1rem;
+    ul {
+      margin: 0;
+      padding-left: 1.1rem;
     }
 
-    footer {
-      margin-top: 3rem;
-      color: #475569;
-      font-size: 0.8rem;
-      text-align: center;
+    li + li {
+      margin-top: 10px;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-
-  <header>
-    <h1>AI Workshop 2026</h1>
-    <p>課程講義 &amp; 練習手冊</p>
-  </header>
-
-  <div class="card-grid">
-
-    <a class="card" href="codex-完整介紹-revision-self-learning-embedded.html">
-      <span class="badge badge-codex">Codex</span>
-      <h2>Codex 完整介紹</h2>
-      <span class="arrow">→ 開啟講義</span>
-    </a>
-
-    <a class="card" href="module1-setup-guide-self-learning-embedded.html">
-      <span class="badge badge-m1">Module 1</span>
-      <h2>Module 1 — 安裝指南 / Setup Guide (Windows 11 &amp; macOS)</h2>
-      <span class="arrow">→ 開啟講義</span>
-    </a>
-
-    <a class="card" href="module2-exercise-self-learning-embedded.html">
-      <span class="badge badge-m2">Module 2</span>
-      <h2>Module 2 練習講義 — 三種 AI 使用情境與 AI Agent 能力體驗</h2>
-      <span class="arrow">→ 開啟講義</span>
-    </a>
-
-    <a class="card" href="module3-playground-self-learning-embedded.html">
-      <span class="badge badge-m3">Module 3</span>
-      <h2>Module 3 練習講義 — Scrape Playground 與 AI Agent 網頁擷取</h2>
-      <span class="arrow">→ 開啟講義</span>
-    </a>
-
-  </div>
-
-  <footer>jy3736.github.io/workshop2026_01</footer>
-
+  <main>
+    <h1>Workshop 2026</h1>
+    <p>Select a published workshop set:</p>
+    <ul>
+      <li><a href="./0709/index.html">0709 Workshop</a></li>
+      <li><a href="./0702/index.html">0702 Workshop</a></li>
+    </ul>
+  </main>
 </body>
 </html>

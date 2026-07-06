@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html data-theme="dark" lang="zh-Hant">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Module 3 練習講義 — Scrape Playground 與 AI Agent 網頁擷取</title>
+<style>
+  :root {
+    --bg:#fff; --fg:#1a1a1a; --muted:#555; --card:#f6f7f9;
+    --border:#e0e3e8; --accent:#2563eb; --th-bg:#eef1f6; --shadow:0 1px 3px rgba(0,0,0,.08);
+    --codebg:#f0f2f5;
+    --sidebar-w:260px; --content-max:920px; --content-pad-x:40px; --content-pad-y:40px;
+    --measure:74ch;
+    color-scheme: dark;
+  }
+  [data-theme="dark"] {
+    --bg:#0f1115; --fg:#e6e8ec; --muted:#9aa3af; --card:#181b21;
+    --border:#2a2f37; --accent:#60a5fa; --th-bg:#1f242c; --shadow:0 1px 3px rgba(0,0,0,.4);
+    --codebg:#11141a;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { min-width:0; margin:0; background:var(--bg); color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei",Roboto,Helvetica,Arial,sans-serif;
+    font-size:17px; line-height:1.78; transition:background .25s,color .25s; text-rendering:optimizeLegibility; }
+  .wrap {
+    width:min(var(--content-max), calc(100vw - var(--sidebar-w) - (var(--content-pad-x) * 2)));
+    margin-left:calc(var(--sidebar-w) + max(var(--content-pad-x), (100vw - var(--sidebar-w) - var(--content-max)) / 2));
+    padding:var(--content-pad-y) var(--content-pad-x) 88px;
+  }
+  .sidebar { position:fixed; top:0; left:0; width:var(--sidebar-w); height:100vh; overflow-y:auto;
+    background:var(--card); border-right:1px solid var(--border);
+    display:flex; flex-direction:column; gap:10px; padding:18px 14px; z-index:30; }
+  .brand { font-weight:700; font-size:1rem; line-height:1.35; padding:0 6px; }
+  .toprow { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+  .nav { display:flex; flex-direction:column; gap:4px; margin-top:6px; }
+  .navbtn { cursor:pointer; border:1px solid transparent; background:transparent;
+    color:var(--muted); border-radius:7px; padding:7px 10px; font-size:14px;
+    font-weight:600; text-align:left; width:100%; white-space:normal; }
+  .navbtn:hover { color:var(--accent); border-color:var(--border); background:var(--bg); }
+  .navbtn.active { color:var(--accent); border-color:var(--border); background:var(--bg); }
+  .btn { cursor:pointer; border:1px solid var(--border); background:var(--bg); color:var(--fg);
+    border-radius:8px; padding:6px 12px; font-size:13px; font-weight:600; }
+  .btn:hover { border-color:var(--accent); }
+  .menu-toggle { display:none; position:fixed; top:12px; left:12px; z-index:40;
+    cursor:pointer; border:1px solid var(--border); background:var(--card); color:var(--fg);
+    border-radius:8px; padding:6px 12px; font-size:18px; line-height:1; }
+  .backdrop { display:none; position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:20; }
+  h1 { max-width:var(--measure); font-size:2.05rem; line-height:1.28; margin:.2em 0 .45em; }
+  h2 { max-width:var(--measure); font-size:1.42rem; line-height:1.35; margin-top:2em; padding-bottom:.28em;
+    border-bottom:2px solid var(--border); scroll-margin-top:24px; }
+  h3 { max-width:var(--measure); font-size:1.1rem; margin-top:1.45em; color:var(--accent); }
+  h4 { font-size:1rem; margin:1.1em 0 .3em; }
+  .lead { max-width:var(--measure); color:var(--muted); }
+  p { max-width:var(--measure); margin:.75em 0; }
+  blockquote { max-width:var(--measure); margin:1.2em 0; padding:12px 16px; border-left:4px solid var(--accent);
+    background:var(--card); color:var(--fg); }
+  ul, ol { max-width:var(--measure); padding-left:1.3em; }
+  li { margin:.35em 0; }
+  table { width:100%; border-collapse:collapse; margin:1.1em 0 1.35em; font-size:.94rem;
+    box-shadow:var(--shadow); border-radius:8px; overflow:hidden; }
+  th,td { text-align:left; padding:10px 14px; border:1px solid var(--border); vertical-align:top; }
+  th { background:var(--th-bg); font-weight:700; }
+  td:first-child, th:first-child { white-space:nowrap; }
+  tbody tr:nth-child(even) td { background:var(--card); }
+  code { background:var(--codebg); padding:.1em .4em; border-radius:4px; font-size:.9em; }
+  pre { max-width:100%; background:var(--codebg); border:1px solid var(--border); border-radius:8px;
+    padding:14px 16px; overflow-x:auto; line-height:1.58; -webkit-overflow-scrolling:touch; }
+  pre code { background:none; padding:0; }
+  .tag { display:inline-block; font-size:.72rem; font-weight:700; padding:2px 8px;
+    border-radius:999px; background:var(--th-bg); color:var(--accent); margin-left:6px;
+    vertical-align:middle; }
+  hr { border:none; border-top:1px solid var(--border); margin:2.4em 0; }
+  footer { margin-top:3em; color:var(--muted); font-size:.85rem;
+    border-top:1px solid var(--border); padding-top:1em; }
+  a { color:var(--accent); overflow-wrap:anywhere; }
+
+  .embedded-slide { max-width:100%; margin:1.35em 0 1.9em; padding:22px; border:1px solid var(--border); border-radius:8px; background:linear-gradient(180deg, color-mix(in srgb, var(--card) 88%, var(--accent) 12%), var(--card)); box-shadow:var(--shadow); }
+  .embedded-slide .slide-label { margin:0 0 .75em; color:var(--accent); font-size:.78rem; font-weight:800; text-transform:uppercase; letter-spacing:0; }
+  .embedded-slide h2 { margin:.05em 0 .45em; padding:0; border:0; color:var(--fg); font-size:1.34rem; line-height:1.35; scroll-margin-top:24px; }
+  .embedded-slide p { max-width:100%; margin:.35em 0; color:var(--muted); font-size:1rem; line-height:1.65; }
+  .embedded-slide .lead { max-width:100%; color:var(--fg); font-size:1.08rem; line-height:1.6; }
+  .embedded-slide .grid-2, .embedded-slide .grid-3, .embedded-slide .grid-4, .embedded-slide .flow { display:grid; gap:12px; margin-top:.8em; }
+  .embedded-slide .grid-2 { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .embedded-slide .grid-3 { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .embedded-slide .grid-4, .embedded-slide .flow { grid-template-columns:repeat(4,minmax(0,1fr)); }
+  .embedded-slide .card, .embedded-slide .mini-card, .embedded-slide .source-note, .embedded-slide .flow-step, .embedded-slide .prompt-box { border:1px solid var(--border); border-radius:8px; background:var(--bg); padding:14px; }
+  .embedded-slide .card strong, .embedded-slide .mini-card strong, .embedded-slide .source-note strong, .embedded-slide .flow-step strong { display:block; margin-bottom:6px; color:var(--fg); font-size:1rem; line-height:1.35; }
+  .embedded-slide .visual { max-width:100%; margin:.8em 0 0; border:1px solid var(--border); border-radius:8px; background:var(--bg); overflow:hidden; }
+  .embedded-slide .visual img, .embedded-slide img { display:block; max-width:100%; height:auto; }
+  .embedded-slide .prompt-box { overflow-x:auto; color:var(--fg); font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.92rem; line-height:1.5; white-space:pre-wrap; }
+  .embedded-slide .checkline { display:grid; grid-template-columns:28px minmax(0,1fr); gap:10px; align-items:start; }
+  .embedded-slide .checkmark { display:inline-grid; place-items:center; width:24px; height:24px; border-radius:999px; background:var(--th-bg); color:var(--accent); font-weight:900; }
+  .embedded-slide table { display:table; width:100%; margin:.8em 0 0; border-collapse:collapse; font-size:.92rem; box-shadow:none; border-radius:8px; overflow:hidden; }
+  .embedded-slide th, .embedded-slide td { padding:8px 10px; border:1px solid var(--border); vertical-align:top; white-space:normal; }
+  .embedded-slide th { background:var(--th-bg); }
+  body:not(.slides-hidden) .handout-nav { display:none; }
+  body.slides-hidden .slide-catalog { display:none; }
+  body.slides-hidden .embedded-slide { display:none; }
+  .embedded-slide .en, .slide-catalog .en { display:none !important; }
+  .callout { border:1px solid var(--border); border-radius:8px; background:var(--card); padding:14px 16px; margin:1em 0; }
+  .artifact-list code { white-space:nowrap; }
+
+  @media (min-width:1440px) {
+    :root { --sidebar-w:280px; --content-max:1040px; --content-pad-x:52px; --content-pad-y:46px; --measure:78ch; }
+    .navbtn { font-size:15px; }
+  }
+  @media (max-width:1180px) {
+    :root { --sidebar-w:232px; --content-max:860px; --content-pad-x:28px; --content-pad-y:34px; --measure:72ch; }
+    .sidebar { padding:16px 10px; }
+    .brand { font-size:.95rem; }
+    .navbtn { font-size:13px; padding:7px 8px; }
+    .wrap table { display:block; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  }
+  @media (max-width:1100px) {
+    .embedded-slide .grid-3, .embedded-slide .grid-4, .embedded-slide .flow { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  }
+  @media (max-width:880px) {
+    :root { --sidebar-w:min(84vw, 320px); --content-pad-x:22px; --content-pad-y:0px; --measure:100%; }
+    .sidebar { transform:translateX(-100%); transition:transform .25s; }
+    .sidebar.open { transform:none; }
+    .wrap { width:100%; margin-left:0; padding:72px var(--content-pad-x) 80px; }
+    .menu-toggle { display:block; }
+    .backdrop.show { display:block; }
+    h1 { font-size:1.75rem; }
+    h2 { font-size:1.26rem; margin-top:1.75em; }
+    h3 { font-size:1.05rem; }
+    p, li, blockquote { max-width:100%; }
+  }
+  @media (max-width:720px) {
+    body { overflow-x:hidden; }
+    .wrap { max-width:100%; overflow-x:hidden; padding-left:18px; padding-right:18px; }
+    .wrap table { display:block; max-width:100%; overflow-x:auto; }
+    .wrap pre { max-width:100%; overflow-x:auto; }
+    .embedded-slide { padding:16px; }
+    .embedded-slide .grid-2, .embedded-slide .grid-3, .embedded-slide .grid-4, .embedded-slide .flow { grid-template-columns:1fr; }
+    .embedded-slide h2 { font-size:1.16rem; }
+    .embedded-slide table { display:block; overflow-x:auto; }
+  }
+  @media (max-width:520px) {
+    :root { --sidebar-w:min(88vw, 300px); --content-pad-x:14px; }
+    body { font-size:16px; line-height:1.72; }
+    .wrap { padding-top:68px; padding-left:14px; padding-right:14px; }
+    .menu-toggle { top:10px; left:10px; padding:7px 11px; }
+    .sidebar { padding:14px 10px; }
+    .toprow { gap:6px; }
+    .btn { padding:6px 10px; font-size:12px; }
+    .navbtn { font-size:13px; }
+    h1 { font-size:1.55rem; line-height:1.32; }
+    h2 { font-size:1.18rem; }
+    th,td { padding:8px 10px; }
+    pre { padding:12px; font-size:.9rem; }
+    .embedded-slide { padding:14px; }
+  }
+</style>
+</head>
+<body>
+<button class="menu-toggle" id="menuToggle" onclick="toggleMenu()">☰</button>
+<aside class="sidebar" id="sidebar">
+<div class="brand">Module 3 練習講義</div>
+<div class="toprow">
+<button class="btn" id="themeBtn" onclick="toggleTheme()">☀️ Light</button>
+<button class="btn" id="slideToggle" onclick="toggleEmbeddedSlides()"><span class="zh">隱藏投影片</span><span class="en">Hide Slides</span></button>
+</div>
+<nav aria-label="講義目錄" class="nav handout-nav">
+<button class="navbtn" onclick="gotoSection(0)">如何使用本講義</button>
+<button class="navbtn" onclick="gotoSection(1)">練習前準備</button>
+<button class="navbtn" onclick="gotoSection(2)">練習 0：任務地圖</button>
+<button class="navbtn" onclick="gotoSection(3)">練習 1：公開名冊</button>
+<button class="navbtn" onclick="gotoSection(4)">練習 2：登入牆</button>
+<button class="navbtn" onclick="gotoSection(5)">練習 3：深層導覽</button>
+<button class="navbtn" onclick="gotoSection(6)">練習 4：分頁與 AJAX</button>
+<button class="navbtn" onclick="gotoSection(7)">練習 5：JS 動態渲染</button>
+<button class="navbtn" onclick="gotoSection(8)">封裝成 Codex Skill</button>
+<button class="navbtn" onclick="gotoSection(9)">資料驗證</button>
+<button class="navbtn" onclick="gotoSection(10)">Prompt 速查</button>
+<button class="navbtn" onclick="gotoSection(11)">常見問題</button>
+<button class="navbtn" onclick="gotoSection(12)">完成檢核</button>
+<button class="navbtn" onclick="gotoSection(13)">延伸資源</button>
+</nav><nav aria-label="投影片目錄" class="nav slide-catalog">
+<button class="navbtn" onclick="gotoSlide(0)"><span class="zh">1. Module 3 主線</span><span class="en">1. Module 3 Thread</span></button>
+<button class="navbtn" onclick="gotoSlide(1)"><span class="zh">2. 練習場階梯</span><span class="en">2. Challenge Ladder</span></button>
+<button class="navbtn" onclick="gotoSlide(2)"><span class="zh">3. 啟動與驗證</span><span class="en">3. Launch and Verify</span></button>
+<button class="navbtn" onclick="gotoSlide(3)"><span class="zh">4. 公開名冊</span><span class="en">4. Public Roster</span></button>
+<button class="navbtn" onclick="gotoSlide(4)"><span class="zh">5. 受保護資料</span><span class="en">5. Protected Data</span></button>
+<button class="navbtn" onclick="gotoSlide(5)"><span class="zh">6. 深層導覽</span><span class="en">6. Nested Navigation</span></button>
+<button class="navbtn" onclick="gotoSlide(6)"><span class="zh">7. 分頁與 API</span><span class="en">7. Pagination and API</span></button>
+<button class="navbtn" onclick="gotoSlide(7)"><span class="zh">8. JS 渲染</span><span class="en">8. JS Rendering</span></button>
+<button class="navbtn" onclick="gotoSlide(8)"><span class="zh">9. 封裝 Skill</span><span class="en">9. Package a Skill</span></button>
+<button class="navbtn" onclick="gotoSlide(9)"><span class="zh">10. 驗證觀念</span><span class="en">10. Verification</span></button>
+<button class="navbtn" onclick="gotoSlide(10)"><span class="zh">11. 完成標準</span><span class="en">11. Success Criteria</span></button>
+<button class="navbtn" onclick="gotoSlide(11)"><span class="zh">12. 帶回去使用</span><span class="en">12. Take-home Use</span></button>
+</nav>
+</aside>
+<div class="backdrop" id="backdrop" onclick="toggleMenu()"></div>
+<div class="wrap">
+<h1>Module 3 練習講義 — Scrape Playground 與 AI Agent 網頁擷取</h1>
+<section class="embedded-slide" data-embedded-slide="slide-01" data-for-section="Module 3 練習講義">
+<div class="slide-label">Orientation</div>
+<h2><span class="zh">Module 3 的主線：讓 AI Agent 看懂網頁、操作網頁、取回資料，最後留下可驗證的本機檔案。</span><span class="en">Module 3 teaches the agent to read pages, operate pages, retrieve data, and leave a verifiable local file.</span></h2>
+<p class="lead"><span class="zh">本模組使用本機 Scrape Playground，所有資料皆為虛構，適合練習登入、分頁、AJAX、JavaScript 渲染與 skill 封裝。</span><span class="en">This module uses a local Scrape Playground with fictional data for login, pagination, AJAX, JavaScript rendering, and skill packaging practice.</span></p>
+</section>
+<p class="lead">本講義對應 <code>module03-playground/</code>，把本機網站操作、資料擷取與 Codex Skill 封裝串成一條可自學的流程。重點不是「背 API」，而是練習如何指揮 AI Agent 觀察畫面、選擇策略、保存資料、驗證結果。</p>
+<blockquote>本練習場刻意包含弱密碼、固定 token、可略過登入等不安全設定，只能在本機 <code>127.0.0.1</code> 練習，不可部署到公開網路。</blockquote>
+
+<h2>如何使用本講義</h2>
+<table>
+<thead><tr><th>對象</th><th>建議用法</th></tr></thead>
+<tbody>
+<tr><td>現場學員</td><td>跟著講師逐關操作，先用瀏覽器看畫面，再請 Codex 操作與驗證。</td></tr>
+<tr><td>課後自學</td><td>從啟動網站開始，至少完成練習 1、2、4 與 Skill Replay，進階再做練習 5。</td></tr>
+<tr><td>帶領講師</td><td>可先投影投影片模式，再切到講義模式展示 prompt、預期產物與檢核方式。</td></tr>
+</tbody>
+</table>
+<p>每個練習固定包含：<strong>目標 → 動手做 → 預期結果 → 想一想 → 驗收</strong>。請要求 Agent 每次都回報它讀到的欄位、列數與保存路徑。</p>
+
+<h2>練習前準備</h2>
+<section class="embedded-slide" data-embedded-slide="slide-03" data-for-section="練習前準備">
+<div class="slide-label">Launch</div>
+<h2><span class="zh">先啟動本機網站，再確認網頁與 CSV 端點都正常。</span><span class="en">Launch the local site first, then verify both the page and CSV endpoint.</span></h2>
+<div class="flow">
+<div class="flow-step"><strong><span class="zh">進入資料夾</span><span class="en">Enter folder</span></strong><p><code>cd module03-playground</code></p></div>
+<div class="flow-step"><strong><span class="zh">啟動服務</span><span class="en">Start server</span></strong><p><code>SCRAPE_PLAYGROUND_OPEN_BROWSER=0 .venv/bin/python app.py</code></p></div>
+<div class="flow-step"><strong><span class="zh">開啟網站</span><span class="en">Open site</span></strong><p><code>http://127.0.0.1:5000</code></p></div>
+<div class="flow-step"><strong><span class="zh">測試下載</span><span class="en">Test download</span></strong><p><code>curl -I /public/buttons/</code></p></div>
+</div>
+</section>
+<h3>啟動指令</h3>
+<pre><code>cd module03-playground
+SCRAPE_PLAYGROUND_OPEN_BROWSER=0 .venv/bin/python app.py</code></pre>
+<p>若沒有既有虛擬環境，可先安裝相依套件：</p>
+<pre><code>python -m venv .venv
+.venv/bin/pip install -r requirements.txt</code></pre>
+<h3>確認服務</h3>
+<pre><code>curl -I http://127.0.0.1:5000/public/buttons/
+curl -fsS "http://127.0.0.1:5000/public/roster.csv?course=datastruct" | sed -n '1,5p'</code></pre>
+<p>CSV 前幾列應看到 <code>student_id,name,class_name</code>，且中文姓名與班級不是亂碼。</p>
+<blockquote>講師提示：先讓學員知道這是一個本機服務，不是公開網站。Agent 可以操作瀏覽器，也可以在必要時用 terminal 驗證端點。</blockquote>
+
+<h2>練習 0 — 任務地圖與關卡階梯</h2>
+<section class="embedded-slide" data-embedded-slide="slide-02" data-for-section="練習 0">
+<div class="slide-label">Challenge Ladder</div>
+<h2><span class="zh">六道關卡由易到難，分別對應真實網頁擷取常見障礙。</span><span class="en">Six levels map to common real-world scraping obstacles.</span></h2>
+<table>
+<thead><tr><th><span class="zh">關卡</span><span class="en">Level</span></th><th><span class="zh">主要障礙</span><span class="en">Obstacle</span></th><th><span class="zh">能力</span><span class="en">Skill</span></th></tr></thead>
+<tbody>
+<tr><td>1</td><td><span class="zh">按鈕選課</span><span class="en">Course buttons</span></td><td><span class="zh">點擊、下載、驗證 CSV</span><span class="en">Click, download, verify CSV</span></td></tr>
+<tr><td>2</td><td><span class="zh">下拉選單</span><span class="en">Dropdown</span></td><td><span class="zh">表單狀態與 URL 參數</span><span class="en">Form state and URL params</span></td></tr>
+<tr><td>3</td><td><span class="zh">登入牆</span><span class="en">Login wall</span></td><td><span class="zh">Session 與受保護表格</span><span class="en">Session and protected table</span></td></tr>
+<tr><td>4</td><td><span class="zh">深層導覽 + 搜尋</span><span class="en">Nested nav + search</span></td><td><span class="zh">多步驟路徑與查詢條件</span><span class="en">Multi-step path and query</span></td></tr>
+<tr><td>5</td><td><span class="zh">分頁 / AJAX</span><span class="en">Pagination / AJAX</span></td><td><span class="zh">逐頁彙整或直接呼叫 API</span><span class="en">Iterate pages or call API</span></td></tr>
+<tr><td>6</td><td><span class="zh">JavaScript 動態渲染</span><span class="en">JavaScript rendering</span></td><td><span class="zh">真瀏覽器渲染或找 JSON 端點</span><span class="en">Render with browser or find JSON endpoint</span></td></tr>
+</tbody>
+</table>
+</section>
+<p><strong>目標</strong>：先把每一關對應到一種網頁障礙，讓後面的操作有清楚判斷依據。</p>
+<table>
+<thead><tr><th>練習</th><th>起點</th><th>要練的能力</th></tr></thead>
+<tbody>
+<tr><td>練習一：公開名冊（按鈕選課）</td><td><code>/public/buttons/</code></td><td>點按鈕、下載 CSV、保存到 <code>data/</code></td></tr>
+<tr><td>練習二：公開名冊（下拉選單）</td><td><code>/public/</code></td><td>操作 select、比較同一資料不同入口</td></tr>
+<tr><td>練習三：登入牆</td><td><code>/login</code> → <code>/l2/dashboard</code></td><td>登入後擷取受保護表格</td></tr>
+<tr><td>練習四：深層導覽 + 搜尋</td><td><code>/l3/courses</code></td><td>課程 → 場次 → 點名，輸入正確日期才出現資料</td></tr>
+<tr><td>練習五：分頁 / AJAX</td><td><code>/l4/attendance?page=1</code></td><td>逐頁收集或使用 <code>/api/l4/rows</code></td></tr>
+<tr><td>練習六：JS 動態渲染</td><td><code>/l5/</code></td><td>原始 HTML 無表格，需瀏覽器渲染或呼叫 <code>/api/l5/data</code></td></tr>
+</tbody>
+</table>
+<h3>想一想</h3>
+<ul>
+<li>如果 Agent 只用 <code>curl</code> 抓原始 HTML，哪些關卡會失敗？</li>
+<li>如果網站有穩定 CSV 或 JSON 端點，什麼時候可以不用真的點完所有畫面？</li>
+</ul>
+
+<h2>練習 1 — 公開名冊：按鈕選課與 CSV 下載</h2>
+<section class="embedded-slide" data-embedded-slide="slide-04" data-for-section="練習 1">
+<div class="slide-label">Exercise 1</div>
+<h2><span class="zh">第一關的重點是讓 Agent 先看畫面，再找出穩定下載連結。</span><span class="en">The first level asks the agent to inspect the page, then identify a stable download link.</span></h2>
+<div class="visual"><img alt="Scrape Playground public roster buttons page" src="assets/module3-practice1-buttons.png"/></div>
+</section>
+<p><strong>目標</strong>：請 Codex 操作 Practice 1，選擇指定課程，下載名冊 CSV，並保存到專案的 <code>data/</code> 資料夾。</p>
+<h3>動手做</h3>
+<p>在 Codex 對話中貼上：</p>
+<pre><code>請開啟本機 Scrape Playground，進入「練習一 · 公開名冊（按鈕選課）」。
+請選擇「資料結構（datastruct）」課程，下載 roster CSV。
+下載後請把檔案保存到目前專案的 module03-playground/data/datastruct.csv，
+並驗證 CSV 欄位、前 5 筆資料與頁面表格一致。</code></pre>
+<h3>預期結果</h3>
+<ul class="artifact-list">
+<li>頁面切到 <code>/public/buttons/?course=datastruct</code>。</li>
+<li>CSV 下載連結是 <code>/public/roster.csv?course=datastruct</code>。</li>
+<li>專案中出現或更新 <code>module03-playground/data/datastruct.csv</code>。</li>
+<li>檔案欄位為 <code>student_id,name,class_name</code>。</li>
+</ul>
+<h3>直接驗證指令</h3>
+<pre><code>curl -fsS "http://127.0.0.1:5000/public/roster.csv?course=datastruct" \
+  -o module03-playground/data/datastruct.csv
+sed -n '1,6p' module03-playground/data/datastruct.csv</code></pre>
+<h3>想一想</h3>
+<ul>
+<li>Agent 是先找按鈕、再點下載，還是直接推導 CSV URL？哪一種比較適合教學？</li>
+<li>如果 UI 文字切成英文，<code>?course=datastruct</code> 與 CSV 欄位 key 會不會改變？</li>
+</ul>
+
+<h2>練習 2 — 登入牆：受保護資料與 Session</h2>
+<section class="embedded-slide" data-embedded-slide="slide-05" data-for-section="練習 2">
+<div class="slide-label">Protected Data</div>
+<h2><span class="zh">公開名冊沒有成績；形成性評量分數必須先用教師帳號登入。</span><span class="en">The public roster has no grades; formative scores require teacher login first.</span></h2>
+<div class="grid-3">
+<div class="card"><strong><span class="zh">登入頁</span><span class="en">Login page</span></strong><p><code>/login</code></p></div>
+<div class="card"><strong><span class="zh">教師帳密</span><span class="en">Teacher login</span></strong><p><code>yang1234 / 1234</code><br/><code>lin2468 / 2468</code></p></div>
+<div class="card"><strong><span class="zh">資料頁</span><span class="en">Data page</span></strong><p><code>/l2/dashboard</code></p></div>
+</div>
+</section>
+<p><strong>目標</strong>：讓 Agent 完成登入，取得登入後才可見的成績表，並能說清楚「公開資料」與「受保護資料」的差異。</p>
+<h3>動手做</h3>
+<pre><code>請登入 Scrape Playground 的教師帳號 yang1234，密碼 1234。
+登入後進入「練習三 · 登入牆」，選擇 datastruct 課程。
+請擷取成績表，存成 module03-playground/data/datastruct-grades.csv。
+完成後請回報欄位名稱、資料列數，以及平均分數欄位是否存在。</code></pre>
+<p>也可使用新手捷徑確認 session 概念：</p>
+<pre><code>http://127.0.0.1:5000/auto-login/yang1234?token=DEMO</code></pre>
+<h3>預期結果</h3>
+<ul>
+<li>未登入直接開 <code>/l2/dashboard</code> 會回到登入頁。</li>
+<li>登入後可看到形成性評量分數、平均與總成績。</li>
+<li>Agent 應保存成績 CSV，並驗證列數與欄位。</li>
+</ul>
+<h3>想一想</h3>
+<ul>
+<li>名冊資料為什麼可以公開，成績資料為什麼要登入？</li>
+<li>如果 Agent 要操作真實校務系統，你會要求它在哪些步驟先停下來讓人確認？</li>
+</ul>
+
+<h2>練習 3 — 深層導覽 + 搜尋條件</h2>
+<section class="embedded-slide" data-embedded-slide="slide-06" data-for-section="練習 3">
+<div class="slide-label">Nested Navigation</div>
+<h2><span class="zh">深層導覽不是只抓一個 URL，而是要保留每一步的線索。</span><span class="en">Nested navigation is not one URL; the agent must preserve the clues at each step.</span></h2>
+<div class="flow">
+<div class="flow-step"><strong><span class="zh">課程列表</span><span class="en">Course list</span></strong><p><code>/l3/courses</code></p></div>
+<div class="flow-step"><strong><span class="zh">場次列表</span><span class="en">Sessions</span></strong><p><code>/l3/course/PY101/sessions</code></p></div>
+<div class="flow-step"><strong><span class="zh">點名頁</span><span class="en">Attendance</span></strong><p><code>/l3/session/&lt;id&gt;/attendance</code></p></div>
+<div class="flow-step"><strong><span class="zh">輸入日期</span><span class="en">Enter date</span></strong><p><code>YYYY-MM-DD</code></p></div>
+</div>
+</section>
+<p><strong>目標</strong>：請 Agent 從課程列表逐層進入點名頁，找到正確場次日期，輸入日期後才擷取表格。</p>
+<h3>動手做</h3>
+<pre><code>請從 /l3/courses 開始，進入 Python 課程的上課場次列表。
+請選一個場次，先記下該場次日期，再進入點名頁。
+在搜尋框輸入完全相同的日期，顯示點名表格後，存成 data/python-attendance-one-session.csv。
+請回報你選的 session id、日期、欄位名稱與列數。</code></pre>
+<h3>預期結果</h3>
+<ul>
+<li>Agent 不能只停在「尚未顯示資料」狀態。</li>
+<li>必須從場次列表取得正確日期，並在點名頁輸入相同日期。</li>
+<li>輸出的 CSV 至少包含學號、姓名、出席狀態等欄位。</li>
+</ul>
+<h3>想一想</h3>
+<ul>
+<li>為什麼「看得到頁面」不代表「資料已經顯示」？</li>
+<li>Agent 應該如何記錄它在多層頁面中取得的中間線索？</li>
+</ul>
+
+<h2>練習 4 — 分頁 / AJAX：逐頁彙整全部列</h2>
+<section class="embedded-slide" data-embedded-slide="slide-07" data-for-section="練習 4">
+<div class="slide-label">Pagination</div>
+<h2><span class="zh">遇到分頁時，驗收重點不是第一頁，而是 total 是否全部取完。</span><span class="en">With pagination, the key check is not page one; it is whether total rows were collected.</span></h2>
+<div class="grid-2">
+<div class="card"><strong><span class="zh">頁面路徑</span><span class="en">Page path</span></strong><p><code>/l4/attendance?page=1</code></p></div>
+<div class="card"><strong><span class="zh">AJAX 端點</span><span class="en">AJAX endpoint</span></strong><p><code>/api/l4/rows?offset=0&amp;limit=8</code></p></div>
+</div>
+</section>
+<p><strong>目標</strong>：讓 Agent 認出頁面只顯示部分列，並用逐頁或 API offset/limit 方式取回完整資料。</p>
+<h3>動手做</h3>
+<pre><code>請開啟 /l4/attendance?page=1，判斷總共有幾列資料與幾頁。
+請把所有頁面的點名資料彙整成 module03-playground/data/attendance-all.csv。
+你可以逐頁操作，也可以檢查 Network/API 端點後用 /api/l4/rows 取得全部列。
+完成後請回報 total、實際輸出列數，以及是否有重複列。</code></pre>
+<h3>直接 API 思路</h3>
+<pre><code>curl -fsS "http://127.0.0.1:5000/api/l4/rows?offset=0&amp;limit=8"
+curl -fsS "http://127.0.0.1:5000/api/l4/rows?offset=8&amp;limit=8"</code></pre>
+<h3>想一想</h3>
+<ul>
+<li>如果只抓第一頁，報告會錯在哪裡？</li>
+<li>什麼時候逐頁點擊比較適合，什麼時候直接呼叫 API 比較穩定？</li>
+</ul>
+
+<h2>練習 5 — JavaScript 動態渲染 <span class="tag">進階</span></h2>
+<section class="embedded-slide" data-embedded-slide="slide-08" data-for-section="練習 5">
+<div class="slide-label">JavaScript Rendering</div>
+<h2><span class="zh">原始 HTML 沒有表格列時，Agent 要改用真瀏覽器或找出 JSON 端點。</span><span class="en">When raw HTML has no table rows, the agent must use a real browser or find the JSON endpoint.</span></h2>
+<div class="visual"><img alt="Scrape Playground JavaScript rendered exercise" src="assets/module3-js-rendered.png"/></div>
+</section>
+<p><strong>目標</strong>：理解為什麼單純抓 HTML 會看不到資料，並讓 Agent 用 Playwright 渲染後擷取，或直接取用 JSON 端點。</p>
+<h3>動手做</h3>
+<pre><code>請開啟 /l5/，先確認原始 HTML 裡是否有成績表格列。
+如果沒有，請用真正的瀏覽器等待 JavaScript 渲染完成，再擷取 #grades 表格。
+也請找出頁面呼叫的 JSON 端點，說明直接抓端點與渲染後抓表格的差異。
+最後存成 module03-playground/data/js-rendered-grades.csv。</code></pre>
+<h3>可驗證端點</h3>
+<pre><code>curl -fsS "http://127.0.0.1:5000/api/l5/data" | head</code></pre>
+<h3>想一想</h3>
+<ul>
+<li>為什麼瀏覽器畫面看得到資料，但 <code>curl /l5/</code> 看不到資料列？</li>
+<li>當網站改版時，抓 DOM 表格與抓 JSON 端點，哪一種比較不容易壞？</li>
+</ul>
+
+<h2>封裝成 Codex Skill — 從一次操作到可重播流程</h2>
+<section class="embedded-slide" data-embedded-slide="slide-09" data-for-section="封裝 Skill">
+<div class="slide-label">Reusable Workflow</div>
+<h2><span class="zh">當流程穩定、會重複用，就把它寫成 local Codex Skill。</span><span class="en">When a workflow is stable and repeated, package it as a local Codex skill.</span></h2>
+<div class="flow">
+<div class="flow-step"><strong><span class="zh">確認服務</span><span class="en">Check server</span></strong><p><code>curl -I /public/buttons/</code></p></div>
+<div class="flow-step"><strong><span class="zh">選課</span><span class="en">Select course</span></strong><p><code>python</code>, <code>digital</code>, <code>datastruct</code></p></div>
+<div class="flow-step"><strong><span class="zh">下載</span><span class="en">Download</span></strong><p><code>/public/roster.csv?course=...</code></p></div>
+<div class="flow-step"><strong><span class="zh">保存與驗證</span><span class="en">Save and verify</span></strong><p><code>data/&lt;course&gt;.csv</code></p></div>
+</div>
+</section>
+<p><strong>目標</strong>：把「下載公開課程名冊」整理成可重複呼叫的 local skill，而不是每次重新講一遍。</p>
+<h3>本專案已有範例 Skill</h3>
+<p>來源位於：</p>
+<pre><code>module03-playground/skills/course-roster-csv-download/SKILL.md</code></pre>
+<p>它的核心流程是：</p>
+<ol>
+<li>確認 <code>http://127.0.0.1:5000</code> 可連線。</li>
+<li>開啟 <code>/public/buttons/</code>。</li>
+<li>依課程選擇 <code>python</code>、<code>digital</code> 或 <code>datastruct</code>。</li>
+<li>確認 CSV 下載連結。</li>
+<li>保存到專案 <code>data/</code> 並用 <code>sed</code> 或 <code>cmp</code> 驗證。</li>
+</ol>
+<h3>Skill Replay 練習</h3>
+<pre><code>請使用 module03-playground/skills/course-roster-csv-download 這個 local skill，
+幫我下載 digital 課程的公開 roster CSV，
+保存到 module03-playground/data/digital.csv，
+並回報前 5 筆資料與檔案路徑。</code></pre>
+<h3>想一想</h3>
+<ul>
+<li>哪些資訊應寫進 skill，哪些資訊應讓使用者每次指定？</li>
+<li>如果新增一門課，skill 需要改哪裡？</li>
+</ul>
+
+<h2>資料驗證 — 不只「有檔案」</h2>
+<section class="embedded-slide" data-embedded-slide="slide-10" data-for-section="資料驗證">
+<div class="slide-label">Verification</div>
+<h2><span class="zh">完成擷取的最低標準：來源、列數、欄位、內容抽樣都能對得上。</span><span class="en">Minimum scraping success: source, row count, columns, and sampled content all match.</span></h2>
+<div class="grid-2">
+<div class="card"><div class="checkline"><span class="checkmark">✓</span><p><span class="zh">保存路徑在專案內，不是只留在 Downloads。</span><span class="en">Saved inside the project, not only in Downloads.</span></p></div></div>
+<div class="card"><div class="checkline"><span class="checkmark">✓</span><p><span class="zh">欄位符合來源頁面或 API 文件。</span><span class="en">Columns match the source page or API.</span></p></div></div>
+<div class="card"><div class="checkline"><span class="checkmark">✓</span><p><span class="zh">列數符合頁面 total 或課程人數。</span><span class="en">Row count matches page total or course size.</span></p></div></div>
+<div class="card"><div class="checkline"><span class="checkmark">✓</span><p><span class="zh">抽樣前 5 筆，中文沒有亂碼。</span><span class="en">First five rows sampled; Chinese text is intact.</span></p></div></div>
+</div>
+</section>
+<p>請把「驗證」寫進每個 prompt。建議固定要求 Agent 回報：</p>
+<ul>
+<li>來源 URL 或操作路徑。</li>
+<li>輸出檔案的專案相對路徑。</li>
+<li>欄位名稱。</li>
+<li>資料列數。</li>
+<li>前 5 筆抽樣。</li>
+<li>是否有缺漏、重複或亂碼。</li>
+</ul>
+<h3>常用檢查指令</h3>
+<pre><code>wc -l module03-playground/data/datastruct.csv
+sed -n '1,6p' module03-playground/data/datastruct.csv
+awk -F, 'NR==1 {print NF, $0}' module03-playground/data/datastruct.csv</code></pre>
+<blockquote>講師提示：請學員不要接受「已完成」三個字。要看實際檔名、欄位、列數與抽樣內容。</blockquote>
+
+<h2>課後速查 — 可重複使用的 Prompt 範本</h2>
+<section class="embedded-slide" data-embedded-slide="slide-12" data-for-section="Prompt 速查">
+<div class="slide-label">Take-home Use</div>
+<h2><span class="zh">Module 3 帶回去的是一套網頁資料任務的提問模板。</span><span class="en">The take-home is a prompt template for web data tasks.</span></h2>
+<div class="grid-2">
+<div class="source-note"><strong><span class="zh">先指定目標</span><span class="en">Specify target</span></strong><p><span class="zh">頁面、課程、登入方式、輸出格式與保存位置。</span><span class="en">Page, course, login, output format, and save path.</span></p></div>
+<div class="source-note"><strong><span class="zh">再指定驗證</span><span class="en">Specify verification</span></strong><p><span class="zh">欄位、列數、抽樣內容與來源對照。</span><span class="en">Columns, row count, samples, and source comparison.</span></p></div>
+</div>
+</section>
+<h4>公開表格下載</h4>
+<pre><code>請開啟 &lt;本機或公開網站 URL&gt;，找到 &lt;目標資料&gt;。
+請優先用畫面操作確認資料，再找出穩定下載連結或 API。
+請存成 &lt;path/file.csv&gt;，並回報來源 URL、欄位、列數與前 5 筆。</code></pre>
+<h4>登入後資料擷取</h4>
+<pre><code>請登入 &lt;系統&gt;，帳號 &lt;account&gt;，密碼 &lt;password&gt;。
+登入後進入 &lt;頁面或功能&gt;，擷取 &lt;表格名稱&gt;。
+請不要輸出敏感資料到對話中，只回報欄位、列數、保存路徑與抽樣是否正常。</code></pre>
+<h4>分頁 / AJAX</h4>
+<pre><code>請判斷這個表格是否分頁或由 API 載入。
+請取得全部資料，不要只抓第一頁。
+完成後請回報 total、輸出列數、是否重複，以及使用的方法。</code></pre>
+<h4>JavaScript 渲染</h4>
+<pre><code>請先比較原始 HTML 與瀏覽器渲染後 DOM。
+如果原始 HTML 沒有資料，請用真瀏覽器等待表格出現，或找出 JSON 端點。
+請保存結果並說明你採用哪一種方法。</code></pre>
+
+<h2>常見問題</h2>
+<table>
+<thead><tr><th>狀況</th><th>處理方式</th></tr></thead>
+<tbody>
+<tr><td>網站打不開</td><td>確認 Flask server 還在跑，且網址是 <code>http://127.0.0.1:5000</code>。</td></tr>
+<tr><td>下載檔只在 Downloads</td><td>請 Agent 複製到專案 <code>module03-playground/data/</code> 並驗證。</td></tr>
+<tr><td>登入後又回登入頁</td><td>確認帳密格式，例如 <code>yang1234</code> / <code>1234</code>，且同一瀏覽器 session 持續使用。</td></tr>
+<tr><td>深層導覽沒有資料</td><td>確認已輸入與場次完全相同的日期，格式為 <code>YYYY-MM-DD</code>。</td></tr>
+<tr><td>只抓到第一頁</td><td>要求 Agent 回報 total 與輸出列數，並逐頁或使用 API offset 補齊。</td></tr>
+<tr><td>JS 頁面抓不到表格</td><td>改用 Playwright 等真瀏覽器等待 DOM，或直接取 <code>/api/l5/data</code>。</td></tr>
+</tbody>
+</table>
+
+<h2>完成檢核</h2>
+<section class="embedded-slide" data-embedded-slide="slide-11" data-for-section="完成檢核">
+<div class="slide-label">Success Criteria</div>
+<h2><span class="zh">離開 Module 3 前，學員要能把一個網頁資料任務做成可驗證、可重播的流程。</span><span class="en">Before leaving Module 3, learners should turn a web-data task into a verifiable, replayable workflow.</span></h2>
+<div class="grid-2">
+<div class="card"><div class="checkline"><span class="checkmark">✓</span><p><span class="zh">能啟動本機 Scrape Playground 並確認服務正常。</span><span class="en">Launch the local Scrape Playground and verify service health.</span></p></div></div>
+<div class="card"><div class="checkline"><span class="checkmark">✓</span><p><span class="zh">能下載至少一門課程名冊 CSV 並保存到 data/。</span><span class="en">Download at least one course roster CSV into data/.</span></p></div></div>
+<div class="card"><div class="checkline"><span class="checkmark">✓</span><p><span class="zh">能處理登入、分頁或 JS 渲染其中至少一種障礙。</span><span class="en">Handle at least one obstacle: login, pagination, or JS rendering.</span></p></div></div>
+<div class="card"><div class="checkline"><span class="checkmark">✓</span><p><span class="zh">能把穩定流程整理成 local Codex Skill 或重播 prompt。</span><span class="en">Package a stable workflow as a local Codex skill or replay prompt.</span></p></div></div>
+</div>
+</section>
+<ul>
+<li>☐ 我能啟動 <code>module03-playground</code>，並用 <code>curl</code> 確認服務正常。</li>
+<li>☐ 我能完成練習一，下載 <code>datastruct.csv</code> 或另一門課程名冊。</li>
+<li>☐ 我能說明公開名冊與登入後成績資料的差異。</li>
+<li>☐ 我能完成至少一個進階障礙：深層導覽、分頁 / AJAX、或 JavaScript 渲染。</li>
+<li>☐ 我能要求 Agent 回報來源、欄位、列數、前 5 筆與保存路徑。</li>
+<li>☐ 我能使用或改寫 <code>course-roster-csv-download</code> local skill。</li>
+</ul>
+
+<section id="resources">
+<h2>延伸資源 <span class="tag">Videos</span></h2>
+<ul>
+<li><a href="https://youtu.be/JTC9cPGc-h0" rel="noopener" target="_blank">AI Agent 實作：用 VS Code Codex 自動擷取成績資料 | Module 3 Demo</a></li>
+<li><a href="https://youtu.be/qXjPRCBrElM" rel="noopener" target="_blank">AI Agent 實作：網頁瀏覽與資料擷取 | Module 3 Demo</a></li>
+</ul>
+</section>
+
+<footer>智慧雨林產業創生人才育成計畫 (南臺科技大學 電子系 楊榮林 教授)</footer>
+</div>
+<script>
+  function updateSlideToggleText() {
+    const btn = document.getElementById('slideToggle');
+    if (!btn) return;
+    const hidden = document.body.classList.contains('slides-hidden');
+    btn.textContent = hidden ? '顯示投影片' : '隱藏投影片';
+  }
+  function toggleEmbeddedSlides() {
+    document.body.classList.toggle('slides-hidden');
+    updateSlideToggleText();
+    buildSpy();
+  }
+  function gotoSection(i) {
+    const heads = [...document.querySelectorAll('.wrap h2')].filter(h => !h.closest('.embedded-slide'));
+    if (heads[i]) heads[i].scrollIntoView({ behavior:'smooth', block:'start' });
+    closeMenu();
+  }
+  function gotoSlide(i) {
+    const slides = [...document.querySelectorAll('.wrap .embedded-slide')];
+    if (slides[i]) slides[i].scrollIntoView({ behavior:'smooth', block:'start' });
+    closeMenu();
+  }
+  function toggleMenu() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('backdrop').classList.toggle('show');
+  }
+  function closeMenu() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('backdrop').classList.remove('show');
+  }
+  let spy;
+  function buildSpy() {
+    if (spy) spy.disconnect();
+    const slideMode = !document.body.classList.contains('slides-hidden');
+    const targets = slideMode
+      ? [...document.querySelectorAll('.wrap .embedded-slide')]
+      : [...document.querySelectorAll('.wrap h2')].filter(h => !h.closest('.embedded-slide'));
+    const btns = [...document.querySelectorAll(slideMode ? '.slide-catalog .navbtn' : '.handout-nav .navbtn')];
+    document.querySelectorAll('.navbtn').forEach(b => b.classList.remove('active'));
+    spy = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const idx = targets.indexOf(e.target);
+          btns.forEach((b, j) => b.classList.toggle('active', j === idx));
+        }
+      });
+    }, { rootMargin: '0px 0px -75% 0px', threshold: 0 });
+    targets.forEach(target => spy.observe(target));
+  }
+  document.addEventListener('DOMContentLoaded', () => { buildSpy(); updateSlideToggleText(); });
+  function toggleTheme() {
+    const html = document.documentElement;
+    const goingDark = html.getAttribute('data-theme') === 'light';
+    html.setAttribute('data-theme', goingDark ? 'dark' : 'light');
+    document.getElementById('themeBtn').textContent = goingDark ? '☀️ Light' : '🌙 Dark';
+  }
+</script>
+</body>
+</html>

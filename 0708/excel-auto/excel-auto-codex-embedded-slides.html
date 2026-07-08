@@ -61,7 +61,6 @@
   .subject-card p { font-size:1.02rem; margin-bottom:0; }
   .slide-figure { margin:18px 0 18px; }
   .slide-figure img { display:block; width:100%; max-width:100%; height:auto; border-radius:13px; border:1px solid var(--border); box-shadow:0 14px 34px rgba(0,0,0,.22); }
-  body.slides-hidden .slide-figure { display:none; }
   .source-note { max-width:var(--measure); margin:0 0 14px; color:var(--muted); font-size:.86rem; line-height:1.55; }
   .source-note strong { color:var(--accent2); font-weight:800; }
   figcaption { color:var(--muted); font-size:.85rem; margin-top:8px; }
@@ -115,7 +114,6 @@
     <a class="btn" href="../index.html"><span class="zh">返回目錄</span><span class="en">Back to Catalog</span></a>
     <button class="btn" id="langBtn" onclick="toggleLang()">中文</button>
     <button class="btn" id="themeBtn" onclick="toggleTheme()">☀️ Light</button>
-    <button class="btn" id="slideToggle" onclick="toggleEmbeddedSlides()">隱藏投影片</button>
   </div>
   <nav class="nav">
     <button class="navbtn" onclick="gotoSection(0)"><span class="zh">1. 為什麼主管該關心</span><span class="en">1. 為什麼主管該關心</span></button>
@@ -256,10 +254,6 @@ function toggleLang() {
   document.documentElement.setAttribute('data-lang', 'zh');
   document.getElementById('langBtn').textContent = '中文';
   buildSpy();
-}
-function toggleEmbeddedSlides() {
-  const hidden = document.body.classList.toggle('slides-hidden');
-  document.getElementById('slideToggle').textContent = hidden ? '顯示投影片' : '隱藏投影片';
 }
 </script>
 </body>

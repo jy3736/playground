@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="dark" data-lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>用 AI 處理日常辦公 Excel：從個人效率到公司導入決策</title>
+<style>
+  :root {
+    --bg:#f7f8fb; --fg:#171a20; --muted:#596273; --card:#ffffff;
+    --border:#d9dee8; --accent:#0f766e; --accent2:#b45309; --danger:#dc2626;
+    --th-bg:#eef2f7; --shadow:0 16px 40px rgba(15,23,42,.10);
+    --sidebar-w:280px; --content-max:1120px; --content-pad-x:42px; --content-pad-y:42px;
+    --measure:76ch;
+  }
+  [data-theme="dark"] {
+    --bg:#080b12; --fg:#eef3f8; --muted:#a7b1c2; --card:#101722;
+    --border:#243244; --accent:#39d7c6; --accent2:#f5b84b; --danger:#ff6b6b;
+    --th-bg:#172130; --shadow:0 22px 60px rgba(0,0,0,.45);
+  }
+  html { scroll-behavior:smooth; }
+  * { box-sizing:border-box; }
+  body { min-width:0; margin:0; background:radial-gradient(circle at top right, rgba(57,215,198,.14), transparent 34%), var(--bg); color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei",Roboto,Helvetica,Arial,sans-serif;
+    font-size:16px; line-height:1.75; transition:background .25s,color .25s; }
+  .wrap {
+    width:min(var(--content-max), calc(100vw - var(--sidebar-w) - (var(--content-pad-x) * 2)));
+    margin-left:calc(var(--sidebar-w) + max(var(--content-pad-x), (100vw - var(--sidebar-w) - var(--content-max)) / 2));
+    padding:var(--content-pad-y) var(--content-pad-x) 88px;
+  }
+  .sidebar { position:fixed; top:0; left:0; width:var(--sidebar-w); height:100vh; overflow-y:auto;
+    background:color-mix(in srgb, var(--card) 92%, transparent); border-right:1px solid var(--border);
+    display:flex; flex-direction:column; gap:10px; padding:18px 14px; z-index:30; backdrop-filter:blur(12px); }
+  .brand { font-weight:800; font-size:1rem; line-height:1.35; padding:0 6px; color:var(--fg); }
+  .brand small { display:block; margin-top:5px; color:var(--muted); font-weight:600; }
+  .toprow { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+  .nav { display:flex; flex-direction:column; gap:4px; margin-top:6px; }
+  .navbtn { cursor:pointer; border:1px solid transparent; background:transparent;
+    color:var(--muted); border-radius:8px; padding:8px 10px; font-size:14px;
+    font-weight:700; text-align:left; width:100%; white-space:normal; line-height:1.35; }
+  .navbtn:hover { color:var(--accent); border-color:var(--border); background:var(--bg); }
+  .navbtn.active { color:var(--accent); border-color:var(--border); background:var(--bg); }
+  .btn { cursor:pointer; border:1px solid var(--border); background:var(--bg); color:var(--fg);
+    border-radius:8px; padding:6px 12px; font-size:13px; font-weight:700; }
+  .btn:hover { border-color:var(--accent); }
+  .menu-toggle { display:none; position:fixed; top:12px; left:12px; z-index:40;
+    cursor:pointer; border:1px solid var(--border); background:var(--card); color:var(--fg);
+    border-radius:8px; padding:6px 12px; font-size:18px; line-height:1; }
+  .backdrop { display:none; position:fixed; inset:0; background:rgba(0,0,0,.52); z-index:20; }
+  h1 { max-width:var(--measure); font-size:2.45rem; line-height:1.18; margin:.2em 0 .35em; letter-spacing:0; }
+  h2 { font-size:1.42rem; margin-top:0; padding-bottom:.25em; border-bottom:1px solid var(--border); scroll-margin-top:24px; }
+  h3 { font-size:1.1rem; margin-top:1.4em; color:var(--accent); }
+  .lead { max-width:var(--measure); color:var(--muted); font-size:1.05rem; }
+  p, li, blockquote { max-width:var(--measure); overflow-wrap:break-word; }
+  ul, ol { padding-left:1.3em; }
+  li { margin:.35em 0; }
+  a { color:var(--accent); overflow-wrap:anywhere; }
+  code { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.92em; padding:.1em .35em; border-radius:6px; background:var(--th-bg); color:var(--fg); }
+  .hero { margin:22px 0 34px; padding:18px; border:1px solid var(--border); border-radius:18px; background:linear-gradient(145deg, color-mix(in srgb, var(--card) 96%, transparent), color-mix(in srgb, var(--accent) 9%, var(--card))); box-shadow:var(--shadow); }
+  .hero img { display:block; width:100%; height:auto; border-radius:13px; border:1px solid var(--border); }
+  .subject-card { margin:34px 0 42px; padding:22px; border:1px solid var(--border); border-radius:18px; background:linear-gradient(145deg, color-mix(in srgb, var(--card) 96%, transparent), color-mix(in srgb, var(--accent) 5%, var(--card))); box-shadow:var(--shadow); }
+  .subject-card p { font-size:1.02rem; margin-bottom:0; }
+  .slide-figure { margin:18px 0 18px; }
+  .slide-figure img { display:block; width:100%; max-width:100%; height:auto; border-radius:13px; border:1px solid var(--border); box-shadow:0 14px 34px rgba(0,0,0,.22); }
+  body.slides-hidden .slide-figure { display:none; }
+  .source-note { max-width:var(--measure); margin:0 0 14px; color:var(--muted); font-size:.86rem; line-height:1.55; }
+  .source-note strong { color:var(--accent2); font-weight:800; }
+  figcaption { color:var(--muted); font-size:.85rem; margin-top:8px; }
+  table { width:100%; border-collapse:collapse; margin:1em 0; font-size:.95rem; box-shadow:var(--shadow); border-radius:8px; overflow:hidden; }
+  th,td { text-align:left; padding:10px 14px; border:1px solid var(--border); vertical-align:top; }
+  th { background:var(--th-bg); font-weight:700; }
+  td:first-child, th:first-child { white-space:nowrap; }
+  [data-lang="zh"] .en, [data-lang="en"] .zh { display:none; }
+  footer { margin-top:3em; color:var(--muted); font-size:.85rem; border-top:1px solid var(--border); padding-top:1em; }
+  @media (min-width:1440px) {
+    :root { --sidebar-w:300px; --content-max:1160px; --content-pad-x:54px; --content-pad-y:48px; }
+  }
+  @media (max-width:1100px) {
+    :root { --sidebar-w:230px; --content-max:820px; --content-pad-x:26px; --content-pad-y:32px; }
+    .sidebar { padding:16px 10px; }
+    .brand { font-size:.95rem; }
+    .navbtn { font-size:13px; padding:7px 8px; }
+    table { display:block; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  }
+  @media (max-width:860px) {
+    :root { --sidebar-w:min(84vw, 330px); --content-pad-x:18px; --content-pad-y:0px; --measure:100%; }
+    .sidebar { transform:translateX(-100%); transition:transform .25s; }
+    .sidebar.open { transform:none; }
+    .wrap { width:100%; margin-left:0; padding:72px var(--content-pad-x) 80px; }
+    .menu-toggle { display:block; }
+    .backdrop.show { display:block; }
+    table { display:block; overflow-x:auto; }
+    h1 { font-size:1.78rem; }
+    h2 { font-size:1.24rem; }
+    p, li, blockquote { max-width:100%; }
+    .subject-card { padding:16px; border-radius:14px; }
+    .hero { padding:12px; border-radius:14px; }
+  }
+  @media (max-width:520px) {
+    :root { --sidebar-w:min(90vw, 310px); --content-pad-x:14px; }
+    .wrap { padding-top:68px; }
+    .menu-toggle { top:10px; left:10px; padding:7px 11px; }
+    .sidebar { padding:14px 10px; }
+    .btn { padding:6px 10px; font-size:12px; }
+    .navbtn { font-size:13px; }
+    h1 { font-size:1.52rem; }
+    h2 { font-size:1.12rem; }
+  }
+</style>
+</head>
+<body>
+<button class="menu-toggle" id="menuToggle" onclick="toggleMenu()">☰</button>
+<aside class="sidebar" id="sidebar">
+  <div class="brand"><span class="zh">Excel Auto Codex</span><span class="en">Excel Auto Codex</span><small><span class="zh">AI 辦公流程案例</span><span class="en">AI Office Workflow Case</span></small></div>
+  <div class="toprow">
+    <button class="btn" id="langBtn" onclick="toggleLang()">中文</button>
+    <button class="btn" id="themeBtn" onclick="toggleTheme()">☀️ Light</button>
+    <button class="btn" id="slideToggle" onclick="toggleEmbeddedSlides()">隱藏投影片</button>
+  </div>
+  <nav class="nav">
+    <button class="navbtn" onclick="gotoSection(0)"><span class="zh">1. 為什麼主管該關心</span><span class="en">1. 為什麼主管該關心</span></button>
+    <button class="navbtn" onclick="gotoSection(1)"><span class="zh">2. 把問題講清楚</span><span class="en">2. 把問題講清楚</span></button>
+    <button class="navbtn" onclick="gotoSection(2)"><span class="zh">3. 資料不乾淨</span><span class="en">3. 資料不乾淨</span></button>
+    <button class="navbtn" onclick="gotoSection(3)"><span class="zh">4. 規則要明文化</span><span class="en">4. 規則要明文化</span></button>
+    <button class="navbtn" onclick="gotoSection(4)"><span class="zh">5. 純 Excel 公式版</span><span class="en">5. 純 Excel 公式版</span></button>
+    <button class="navbtn" onclick="gotoSection(5)"><span class="zh">6. 公式版的成本</span><span class="en">6. 公式版的成本</span></button>
+    <button class="navbtn" onclick="gotoSection(6)"><span class="zh">7. Python 自動化</span><span class="en">7. Python 自動化</span></button>
+    <button class="navbtn" onclick="gotoSection(7)"><span class="zh">8. 驗證與擴充</span><span class="en">8. 驗證與擴充</span></button>
+    <button class="navbtn" onclick="gotoSection(8)"><span class="zh">9. 導入判斷</span><span class="en">9. 導入判斷</span></button>
+    <button class="navbtn" onclick="gotoSection(9)"><span class="zh">10. 落地路徑</span><span class="en">10. 落地路徑</span></button>
+  </nav>
+</aside>
+<div class="backdrop" id="backdrop" onclick="toggleMenu()"></div>
+<div class="wrap">
+  <section class="zh">
+    <h1>用 AI 處理日常辦公 Excel：從個人效率到公司導入決策</h1>
+    <p class="lead">這份材料以 <code>excel-auto-codex</code> 子專案為案例，說明台南在地公司員工、主管與 AI 導入決策者，如何把日常辦公中的 Excel 整理問題，轉化成 AI 可以協助完成、驗證與重複使用的工作流程。案例核心是員工出勤資料：原始活頁簿採區段式報表格式，目標是依照明確規則計算每位員工每月的工作天數與工作總時數，並保護員工姓名與編號。<sup><a href="#ref-problem">[problem]</a></sup></p>
+    <article class="subject-card">
+      <h2>1. 為什麼主管該關心</h2>
+      <figure class="slide-figure"><img src="assets/slides/slide-01-manager-concern.png" alt="1. 為什麼主管該關心"><figcaption>1. 為什麼主管該關心</figcaption></figure>
+      <p>這個案例值得主管關心，因為它不是單純的「幫我算 Excel」問題，而是典型的辦公流程改善問題。原始報表格式複雜、資料欄位不乾淨、規則分散在人的經驗裡，每個月又可能重複發生。若每次都靠人工檢查、手動整理與口頭交接，公司會持續承擔時間成本、錯誤成本與人員交接風險。</p>
+      <p>從管理角度來看，這類任務正好適合用來判斷公司哪些工作值得 AI 化。它有明確規則、可驗收結果、可追蹤明細，也有個資遮蔽需求。這代表 AI 導入不只是追求工具新鮮感，而是把日常辦公問題轉成可執行、可驗證、可重複使用的流程。<sup><a href="#ref-problem">[problem]</a></sup></p>
+    </article>
+    <article class="subject-card">
+      <h2>2. 把問題講清楚</h2>
+      <figure class="slide-figure"><img src="assets/slides/slide-02-clear-ai-task.png" alt="2. 把問題講清楚"><figcaption>2. 把問題講清楚</figcaption></figure>
+      <p>員工要有效使用 AI，第一步不是學會寫程式，而是把自己的辦公需求講成可執行規格。以本案例來說，不能只對 AI 說「幫我算工時」，而要清楚交代來源檔案、來源工作表、輸出欄位、計算規則、例外情況、隱私要求與驗收方式。</p>
+      <p>本專案的題目文件已經把這些要求具體化：來源是 <code>2026.06月份.xlsx</code>，主要工作表包含 <code>算工作數</code> 與 <code>員工出勤明細表</code>；計算規則包含六日不計、下班時間最多算到 <code>19:30</code>、文字註記中要抓出最後出現的時間、同一員工同一天只算一次工作天數，以及成果中的員工資料需馬賽克。這種規格化描述，是公司推動 AI 辦公應用的基礎能力。<sup><a href="#ref-problem">[problem]</a></sup></p>
+    </article>
+    <article class="subject-card">
+      <h2>3. 資料不乾淨</h2>
+      <figure class="slide-figure"><img src="assets/slides/slide-03-messy-attendance-data.png" alt="3. 資料不乾淨"><figcaption>3. 資料不乾淨</figcaption></figure>
+      <p>這份出勤資料的困難在於，它看起來是 Excel 表格，但實際上不是乾淨的分析資料表。每位員工都有自己的區段標題，每個區段又重複欄位名稱；員工標題列、製表資訊、日期列與空白列混在同一張工作表中。這會讓一般加總公式很難直接使用。</p>
+      <p>此外，日期可能以文字儲存，例如 <code>2026/06/08</code>；上班與下班欄位也可能混入文字註記，例如 <code>遲到08:25</code>、<code>早退15:39</code>、<code>病假12:23</code>。同一位員工同一天還可能有多筆紀錄，因此工作天數不能重複計算，但工時仍可能需要分段加總。這些特徵讓本案例成為很好的辦公 AI 導入範例：它不是單一公式問題，而是資料清理、規則套用與結果驗證的組合。<sup><a href="#ref-problem">[problem]</a></sup></p>
+    </article>
+    <article class="subject-card">
+      <h2>4. 規則要明文化</h2>
+      <figure class="slide-figure"><img src="assets/slides/slide-04-explicit-business-rules.png" alt="4. 規則要明文化"><figcaption>4. 規則要明文化</figcaption></figure>
+      <p>AI 是否能產出可用結果，取決於業務規則是否被明確告知。本案例的規則包含：星期六與星期日不計入工作天數與工作總時數；下班晚於 <code>19:30</code> 時只算到 <code>19:30</code>；上班或下班空白時不計入工時；同一員工同一天只計一次工作天數；同一天多筆有效紀錄的工時可以加總；員工姓名與編號必須馬賽克。<sup><a href="#ref-problem">[problem]</a></sup></p>
+      <p>這些規則如果只存在於資深同仁腦中，就很難交給 AI、也很難交接給新人。導入 AI 的重要工作之一，是把隱性的作業知識寫成可檢查的規格。當規則被明文化後，不論最後採用純 Excel 公式或 Python 自動化，都能用同一組驗收條件檢查結果是否正確。<sup><a href="#ref-results">[results]</a></sup></p>
+    </article>
+    <article class="subject-card">
+      <h2>5. 純 Excel 公式版</h2>
+      <figure class="slide-figure"><img src="assets/slides/slide-05-excel-formula-solution.png" alt="5. 純 Excel 公式版"><figcaption>5. 純 Excel 公式版</figcaption></figure>
+      <p>第一種方案是請 AI 產生純 Excel 公式解法。這個方式保留原始 <code>員工出勤明細表</code>，新增 <code>計算明細</code> 工作表，用公式解析員工、日期、上班時間、下班時間、計算下班、工作時數與每日計數，再於 <code>算工作數</code> 彙總每位員工每月的工作天數與總工時。專案中已保存對應的純 Excel 解法說明與成果檔。<sup><a href="#ref-excel_solution">[excel_solution]</a></sup><sup><a href="#ref-excel_workbook">[excel_workbook]</a></sup></p>
+      <p>純 Excel 解法的價值在於可視化與可稽核。主管或行政同仁可以直接在 Excel 中看到中間欄位，逐步追蹤結果是如何產生的。對於導入初期、固定格式、少量檔案或需要人工複核的情境，這是一個容易被接受的第一版 AI 成果。<sup><a href="#ref-analysis">[analysis]</a></sup></p>
+    </article>
+    <article class="subject-card">
+      <h2>6. 公式版的成本</h2>
+      <figure class="slide-figure"><img src="assets/slides/slide-06-excel-costs-risks.png" alt="6. 公式版的成本"><figcaption>6. 公式版的成本</figcaption></figure>
+      <p>純 Excel 公式法的限制也很明顯。由於原始資料不是乾淨表格，公式解法需要多個輔助欄位來處理來源列、員工識別、日期解析、時間解析、工作日鍵、每日計數、月份與馬賽克員工名稱。這些欄位讓結果容易稽核，但也提高了建置與維護成本。<sup><a href="#ref-analysis">[analysis]</a></sup></p>
+      <p>如果欄位順序、日期格式、員工標題格式或資料範圍改變，公式就可能需要調整。更大的風險是公式被覆蓋、拖曳錯位，或輔助欄位不小心留下未遮蔽個資。因此，純 Excel 解法適合導入初期與人工稽核，但若公司每月都要處理大量不同來源檔案，就不適合作為唯一長期方案。<sup><a href="#ref-analysis">[analysis]</a></sup></p>
+    </article>
+    <article class="subject-card">
+      <h2>7. Python 自動化</h2>
+      <figure class="slide-figure"><img src="assets/slides/slide-07-python-automation.png" alt="7. Python 自動化"><figcaption>7. Python 自動化</figcaption></figure>
+      <p>第二種方案是請 AI 產生 Python 自動化流程。專案中的 <code>attendance_python_solution.py</code> 會讀取來源 Excel，自動偵測出勤明細工作表，解析員工區段與日期列，處理文字日期、Excel 日期、文字時間、Excel 時間，以及結尾含時間的文字欄位。只要欄位標題可辨識，它也能支援欄位順序調整。<sup><a href="#ref-python_script">[python_script]</a></sup><sup><a href="#ref-python_doc">[python_doc]</a></sup></p>
+      <p>Python 解法會產生新的輸出活頁簿，不覆蓋原始檔；輸出保留原本工作簿結構，填入既有的 <code>算工作數</code> 工作表，並在員工欄套用 ID / 姓名遮蔽。它另外加入 <code>計算明細</code> 作為稽核用逐筆明細，但不新增 <code>處理說明</code> 這類非稽核工作表。對管理者來說，這代表 AI 不只是在回答一次性問題，而是可以協助建立公司內部可重複使用且可檢查的小工具。<sup><a href="#ref-python_doc">[python_doc]</a></sup></p>
+    </article>
+    <article class="subject-card">
+      <h2>8. 驗證與擴充</h2>
+      <figure class="slide-figure"><img src="assets/slides/slide-08-validation-scalability.png" alt="8. 驗證與擴充"><figcaption>8. 驗證與擴充</figcaption></figure>
+      <p>本專案已對 2026 年 6 月原始檔做驗證。Python 解法解析出 <code>538</code> 筆日期列與 <code>16</code> 位員工，並與既有驗算結果比對為 <code>0</code> 筆不一致。純 Excel 公式版也保留了同一組預期結果，讓兩種方法可以互相參照與交叉驗證。<sup><a href="#ref-results">[results]</a></sup><sup><a href="#ref-python_june_output">[python_june_output]</a></sup></p>
+      <p>為了測試泛用性，專案另外建立 2026 年 5 月隨機測試檔，使用 50 位虛構員工，保留相似的區段式報表結構，並加入空白日、週末測試資料、同日多筆出勤、遲到、早退、病假與晚於 <code>19:30</code> 的下班時間。Python 解法成功解析 <code>1691</code> 筆出勤日期列與 <code>50</code> 位員工，並產生對應結果檔。這個驗證重點不只是「能跑」，而是確認流程能處理類似但不完全相同的輸入資料。<sup><a href="#ref-random_input">[random_input]</a></sup><sup><a href="#ref-python_may_output">[python_may_output]</a></sup></p>
+    </article>
+    <article class="subject-card">
+      <h2>9. 導入判斷</h2>
+      <figure class="slide-figure"><img src="assets/slides/slide-09-adoption-decision.png" alt="9. 導入判斷"><figcaption>9. 導入判斷</figcaption></figure>
+      <p>主管與決策者在評估 AI 導入時，可以優先尋找這類工作：每月或每週重複發生、規則明確但人工處理繁瑣、原始資料格式不完美但結構大致固定、結果需要彙總檢查與留存，而且錯誤會造成管理或溝通成本。本案例符合這些條件，因此適合作為公司內部 AI 辦公導入的示範案例。</p>
+      <p>本案例能對應的管理價值包括減少人工整理時間、降低公式錯誤與漏算風險、建立標準化驗收規則、保留可追蹤計算明細，以及推動部門知識文件化。決策者不一定要要求每位員工都會寫程式，而是要建立一套方法，讓員工能把問題交代清楚，讓 AI 產出可驗證成果，再由主管決定哪些流程值得進一步標準化或自動化。<sup><a href="#ref-analysis">[analysis]</a></sup></p>
+    </article>
+    <article class="subject-card">
+      <h2>10. 落地路徑</h2>
+      <figure class="slide-figure"><img src="assets/slides/slide-10-rollout-roadmap.png" alt="10. 落地路徑"><figcaption>10. 落地路徑</figcaption></figure>
+      <p>建議的落地方式，是從低風險、高重複性的辦公任務開始，例如出勤彙總、報表整理、名單比對、費用分類或月報初稿。第一步先要求員工用固定格式描述任務，包含資料來源、處理規則、例外情況、輸出格式、驗收條件、個資與權限限制。這能把人的經驗整理成 AI 可以執行的規格。</p>
+      <p>第二步先產出可人工稽核的版本，例如純 Excel 公式版或含計算明細的輸出檔。當某項任務被證明會重複發生、規則穩定且驗收方式明確時，再進一步建立 Python 這類自動化腳本，保留輸入檔、輸出檔與稽核用計算明細。最終目標不是讓 AI 取代員工，而是讓員工把日常辦公經驗變成可重複、可檢查、可管理的公司流程。<sup><a href="#ref-excel_workbook">[excel_workbook]</a></sup><sup><a href="#ref-python_script">[python_script]</a></sup><sup><a href="#ref-analysis">[analysis]</a></sup></p>
+    </article>
+    <h2>References</h2>
+    <ol>
+      <li id="ref-problem"><a href="assets/docs/common/problem-statement.md">員工出勤工時計算問題</a></li>
+      <li id="ref-excel_solution"><a href="assets/docs/pure-excel/solution.md">純 Excel 公式解法說明</a></li>
+      <li id="ref-excel_workbook"><a href="assets/docs/pure-excel/2026.06月份-純Excel公式解.xlsx">2026.06月份-純Excel公式解.xlsx</a></li>
+      <li id="ref-results"><a href="assets/docs/pure-excel/results.md">2026.06 純 Excel 公式解驗算結果</a></li>
+      <li id="ref-analysis"><a href="assets/docs/analysis/excel-vs-python-analysis.md">純 Excel 公式法與 Python 解法比較分析</a></li>
+      <li id="ref-python_doc"><a href="assets/docs/python-solution/python-solution.md">Python-based attendance solution</a></li>
+      <li id="ref-python_script"><a href="assets/docs/python-solution/attendance_python_solution.py">attendance_python_solution.py</a></li>
+      <li id="ref-python_june_output"><a href="assets/docs/python-solution/outputs/2026.06月份-python工時計算.xlsx">2026.06月份-python工時計算.xlsx</a></li>
+      <li id="ref-random_input"><a href="assets/data/2026.05月份-隨機出勤.xlsx">2026.05月份-隨機出勤.xlsx</a></li>
+      <li id="ref-python_may_output"><a href="assets/docs/python-solution/outputs/2026.05月份-python工時計算.xlsx">2026.05月份-python工時計算.xlsx</a></li>
+    </ol>
+  </section>
+  <footer>教育部智慧雨林產業創生人才育成計畫 (南臺科技大學 電子系 楊榮林 教授)</footer>
+</div>
+<script>
+function gotoSection(i) {
+  const lang = document.documentElement.getAttribute('data-lang');
+  const section = document.querySelector('section.' + lang) || document.querySelector('section.zh');
+  const heads = section.querySelectorAll('h2');
+  if (heads[i]) heads[i].scrollIntoView({ behavior:'smooth', block:'start' });
+  closeMenu();
+}
+function toggleMenu() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('backdrop').classList.toggle('show');
+}
+function closeMenu() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('backdrop').classList.remove('show');
+}
+let spy;
+function buildSpy() {
+  if (spy) spy.disconnect();
+  const lang = document.documentElement.getAttribute('data-lang');
+  const section = document.querySelector('section.' + lang) || document.querySelector('section.zh');
+  const heads = Array.from(section.querySelectorAll('h2'));
+  const buttons = Array.from(document.querySelectorAll('.navbtn'));
+  spy = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = heads.indexOf(entry.target);
+        buttons.forEach(b => b.classList.remove('active'));
+        if (buttons[idx]) buttons[idx].classList.add('active');
+      }
+    });
+  }, { rootMargin:'-20% 0px -70% 0px', threshold:0 });
+  heads.forEach(h => spy.observe(h));
+}
+document.addEventListener('DOMContentLoaded', buildSpy);
+function toggleTheme() {
+  const root = document.documentElement;
+  const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  root.setAttribute('data-theme', next);
+  document.getElementById('themeBtn').textContent = next === 'dark' ? '☀️ Light' : '🌙 Dark';
+}
+function toggleLang() {
+  document.documentElement.setAttribute('data-lang', 'zh');
+  document.getElementById('langBtn').textContent = '中文';
+  buildSpy();
+}
+function toggleEmbeddedSlides() {
+  const hidden = document.body.classList.toggle('slides-hidden');
+  document.getElementById('slideToggle').textContent = hidden ? '顯示投影片' : '隱藏投影片';
+}
+</script>
+</body>
+</html>

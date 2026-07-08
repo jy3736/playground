@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>2026 年 6 月員工出勤工時計算問題</title>
+  <style>:root{color-scheme:dark;--bg:#080b12;--fg:#eef3f8;--muted:#a7b1c2;--card:#101722;--border:#243244;--accent:#39d7c6;--accent2:#f5b84b;--th-bg:#172130;--code:#0d1420}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 88% 0,rgba(57,215,198,.15),transparent 34%),var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei",Roboto,Helvetica,Arial,sans-serif;line-height:1.72;letter-spacing:0}.wrap{width:min(1040px,calc(100% - 32px));margin:0 auto;padding:34px 0 64px}.top{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:24px}.btn{display:inline-flex;align-items:center;min-height:38px;padding:7px 12px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--fg);text-decoration:none;font-weight:700}.btn:hover{border-color:var(--accent)}header{border-bottom:1px solid var(--border);margin-bottom:24px;padding-bottom:18px}.kicker{margin:0 0 8px;color:var(--accent);font-weight:750}h1{margin:0;font-size:clamp(1.8rem,4vw,2.8rem);line-height:1.18;letter-spacing:0}h2{margin-top:1.8em;padding-bottom:.25em;border-bottom:1px solid var(--border);font-size:1.35rem}h3{color:var(--accent);margin-top:1.4em}p,li{max-width:78ch}a{color:var(--accent)}code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--code);border:1px solid var(--border);border-radius:6px;padding:.08em .35em}pre{overflow:auto;padding:14px;background:var(--code);border:1px solid var(--border);border-radius:8px}pre code{border:0;background:transparent;padding:0}.table-wrap{overflow-x:auto;margin:1rem 0;border:1px solid var(--border);border-radius:8px}table{width:100%;border-collapse:collapse;font-size:.95rem}th,td{border:1px solid var(--border);padding:8px 10px;vertical-align:top;text-align:left}th{background:var(--th-bg);font-weight:750}.meta{color:var(--muted)}.panel{border:1px solid var(--border);border-radius:8px;background:var(--card);padding:14px 16px;margin:16px 0}.sheet-title{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}.sheet-title small{color:var(--muted)}footer{margin-top:36px;color:var(--muted);font-size:.9rem;border-top:1px solid var(--border);padding-top:14px}@media(max-width:680px){.wrap{width:min(100% - 24px,1040px);padding-top:22px}th,td{padding:7px 8px}}</style>
+</head>
+<body>
+  <main class="wrap">
+    <nav class="top" aria-label="page actions">
+      <a class="btn" href="../../../excel-auto-codex-embedded-slides.html">回 Excel 自動化頁面</a>
+      <a class="btn" href="problem-statement.md" download>下載原始檔</a>
+    </nav>
+    <header>
+      <p class="kicker">Markdown Reference</p>
+      <h1>2026 年 6 月員工出勤工時計算問題</h1>
+    </header>
+<h2>2026 年 6 月員工出勤工時計算問題</h2>
+<h2>問題描述</h2>
+<p>請根據 2026 年 6 月的員工出勤明細，計算每位員工當月的「工作天數」與「工作總時數」。</p>
+<p>計算時需要套用以下條件：</p>
+<ul>
+<li>六日不算入工作天數，也不計入工作總時數。</li>
+<li>加班時數最多只算到晚上 19:30。</li>
+<li>員工名字與編號需要以馬賽克方式處理。</li>
+<li>扣除上述條件後，彙整出每位員工的工作天數與工作總時數。</li>
+</ul>
+<h2>原始資料</h2>
+<p>資料檔案：</p>
+<p><code>2026.06月份.xlsx</code></p>
+<p>工作簿中主要有兩張工作表：</p>
+<div class="table-wrap"><table><thead><tr><th>工作表</th><th>說明</th></tr></thead><tbody><tr><td><code>算工作數</code></td><td>放置要完成的計算題目與欄位</td></tr><tr><td><code>員工出勤明細表</code></td><td>放置員工每日出勤紀錄</td></tr></tbody></table></div>
+<h2>出勤資料結構</h2>
+<p><code>員工出勤明細表</code> 以員工為區段排列。每位員工區段開頭會標示員工代號與姓名，後面列出該員工在 2026 年 6 月的每日出勤資料。</p>
+<p>主要欄位如下：</p>
+<div class="table-wrap"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody><tr><td>日期</td><td>出勤日期</td></tr><tr><td>星期</td><td>星期幾，例如一、二、三、四、五、六、日</td></tr><tr><td>班次代號</td><td>出勤班別代號</td></tr><tr><td>班次名稱</td><td>出勤班別名稱</td></tr><tr><td>上班</td><td>上班時間，可能含有文字註記</td></tr><tr><td>下班</td><td>下班時間，可能含有文字註記</td></tr><tr><td>備註</td><td>其他說明</td></tr></tbody></table></div>
+<h2>時間欄位處理</h2>
+<p>上班與下班欄位不一定只有單純時間，可能會包含文字註記。計算時要抓出欄位最後出現的時間。</p>
+<p>範例：</p>
+<div class="table-wrap"><table><thead><tr><th>原始內容</th><th>計算用時間</th></tr></thead><tbody><tr><td><code>07:53</code></td><td><code>07:53</code></td></tr><tr><td><code>遲到08:25</code></td><td><code>08:25</code></td></tr><tr><td><code>早退15:39</code></td><td><code>15:39</code></td></tr><tr><td><code>病假12:23</code></td><td><code>12:23</code></td></tr><tr><td><code>特休假09:21</code></td><td><code>09:21</code></td></tr></tbody></table></div>
+<p>如果上班或下班欄位為空白，該筆紀錄不計入工作時數。</p>
+<h2>工作天數規則</h2>
+<ol>
+<li>星期六與星期日不計入。</li>
+<li>平日有有效上班與下班時間，才可計入工作天。</li>
+<li>同一位員工同一天只計 1 個工作天。</li>
+<li>同一天如果有多筆出勤紀錄，不能重複計算工作天數。</li>
+</ol>
+<h2>工作總時數規則</h2>
+<p>每筆有效出勤紀錄的工作時數計算方式：</p>
+<p><code>工作時數 = 計算後下班時間 - 上班時間</code></p>
+<p>下班時間需先套用上限：</p>
+<div class="table-wrap"><table><thead><tr><th>實際下班時間</th><th>計算用下班時間</th></tr></thead><tbody><tr><td>17:08</td><td>17:08</td></tr><tr><td>19:30</td><td>19:30</td></tr><tr><td>19:41</td><td>19:30</td></tr><tr><td>20:36</td><td>19:30</td></tr></tbody></table></div>
+<p>同一位員工同一天若有多筆有效出勤紀錄：</p>
+<ul>
+<li>工作天數仍只算 1 天。</li>
+<li>工作總時數可以依有效出勤區段加總。</li>
+</ul>
+<h2>需要完成的結果</h2>
+<p>請在 <code>算工作數</code> 或新增的彙總區中完成以下欄位：</p>
+<div class="table-wrap"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody><tr><td>每月</td><td>統計月份</td></tr><tr><td>工作天數</td><td>每位員工該月符合條件的工作天數</td></tr><tr><td>工作總時數</td><td>每位員工該月符合條件的工作時數合計</td></tr></tbody></table></div>
+<p>建議另外建立逐筆計算明細，方便檢查：</p>
+<div class="table-wrap"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody><tr><td>員工</td><td>員工代號與姓名</td></tr><tr><td>日期</td><td>出勤日期</td></tr><tr><td>星期</td><td>星期幾</td></tr><tr><td>上班原始</td><td>原始上班欄位</td></tr><tr><td>下班原始</td><td>原始下班欄位</td></tr><tr><td>上班時間</td><td>解析後的上班時間</td></tr><tr><td>下班時間</td><td>解析後的下班時間</td></tr><tr><td>計算下班</td><td>套用 19:30 上限後的下班時間</td></tr><tr><td>工作時數</td><td>該筆紀錄計入的工時</td></tr><tr><td>每日計數</td><td>同一員工同一天只計一次工作天</td></tr></tbody></table></div>
+<h2>驗收條件</h2>
+<p>完成後應確認：</p>
+<ul>
+<li>六日資料沒有計入工作天數。</li>
+<li>六日資料沒有計入工作總時數。</li>
+<li>晚於 19:30 的下班時間都只算到 19:30。</li>
+<li>早於 19:30 的下班時間使用實際下班時間。</li>
+<li>含有文字註記的上班、下班欄位仍能正確抓出時間。</li>
+<li>同一員工同一天多筆紀錄不會重複增加工作天數。</li>
+<li>同一員工同一天多筆有效紀錄的工作時數可以加總。</li>
+<li>原始出勤明細不可被刪除或覆蓋。</li>
+<li>員工名字與編號在成果或檢查資料中已完成馬賽克處理。</li>
+</ul>
+    <footer>Published for jy3736.github.io/workshop2026_01/0708/</footer>
+  </main>
+</body>
+</html>

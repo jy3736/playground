@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>2026.06 出勤工時計算純 Excel 解法</title>
+  <style>:root{color-scheme:dark;--bg:#080b12;--fg:#eef3f8;--muted:#a7b1c2;--card:#101722;--border:#243244;--accent:#39d7c6;--accent2:#f5b84b;--th-bg:#172130;--code:#0d1420}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 88% 0,rgba(57,215,198,.15),transparent 34%),var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei",Roboto,Helvetica,Arial,sans-serif;line-height:1.72;letter-spacing:0}.wrap{width:min(1040px,calc(100% - 32px));margin:0 auto;padding:34px 0 64px}.top{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:24px}.btn{display:inline-flex;align-items:center;min-height:38px;padding:7px 12px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--fg);text-decoration:none;font-weight:700}.btn:hover{border-color:var(--accent)}header{border-bottom:1px solid var(--border);margin-bottom:24px;padding-bottom:18px}.kicker{margin:0 0 8px;color:var(--accent);font-weight:750}h1{margin:0;font-size:clamp(1.8rem,4vw,2.8rem);line-height:1.18;letter-spacing:0}h2{margin-top:1.8em;padding-bottom:.25em;border-bottom:1px solid var(--border);font-size:1.35rem}h3{color:var(--accent);margin-top:1.4em}p,li{max-width:78ch}a{color:var(--accent)}code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--code);border:1px solid var(--border);border-radius:6px;padding:.08em .35em}pre{overflow:auto;padding:14px;background:var(--code);border:1px solid var(--border);border-radius:8px}pre code{border:0;background:transparent;padding:0}.table-wrap{overflow-x:auto;margin:1rem 0;border:1px solid var(--border);border-radius:8px}table{width:100%;border-collapse:collapse;font-size:.95rem}th,td{border:1px solid var(--border);padding:8px 10px;vertical-align:top;text-align:left}th{background:var(--th-bg);font-weight:750}.meta{color:var(--muted)}.panel{border:1px solid var(--border);border-radius:8px;background:var(--card);padding:14px 16px;margin:16px 0}.sheet-title{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}.sheet-title small{color:var(--muted)}footer{margin-top:36px;color:var(--muted);font-size:.9rem;border-top:1px solid var(--border);padding-top:14px}@media(max-width:680px){.wrap{width:min(100% - 24px,1040px);padding-top:22px}th,td{padding:7px 8px}}</style>
+</head>
+<body>
+  <main class="wrap">
+    <nav class="top" aria-label="page actions">
+      <a class="btn" href="../../../excel-auto-codex-embedded-slides.html">回 Excel 自動化頁面</a>
+      <a class="btn" href="solution.md" download>下載原始檔</a>
+    </nav>
+    <header>
+      <p class="kicker">Markdown Reference</p>
+      <h1>2026.06 出勤工時計算純 Excel 解法</h1>
+    </header>
+<h2>2026.06 出勤工時計算純 Excel 解法</h2>
+<p>以下做法只用 Excel 公式，不用 VBA、Power Query、Python。</p>
+<p>限制先說明：目前這個資料夾內沒有原始活頁簿 <code>2026.06月份.xlsx</code>，因此這份解法提供的是可直接套進工作簿的公式設計，而不是已代填完成的 <code>.xlsx</code> 檔。</p>
+<h2>做法概述</h2>
+<ol>
+<li>保留原始工作表 <code>員工出勤明細表</code> 不動。</li>
+<li>新增一張工作表 <code>計算明細</code>，逐列引用原始資料並做清洗。</li>
+<li>在 <code>算工作數</code> 彙總每位員工的 <code>工作天數</code> 與 <code>工作總時數</code>。</li>
+</ol>
+<h2>假設的原始欄位</h2>
+<p><code>員工出勤明細表</code> 欄位如下：</p>
+<div class="table-wrap"><table><thead><tr><th>欄</th><th>內容</th></tr></thead><tbody><tr><td>A</td><td>日期，或員工區段標題</td></tr><tr><td>B</td><td>星期</td></tr><tr><td>C</td><td>班次代號</td></tr><tr><td>D</td><td>班次名稱</td></tr><tr><td>E</td><td>上班</td></tr><tr><td>F</td><td>下班</td></tr><tr><td>G</td><td>備註</td></tr></tbody></table></div>
+<p>這份解法的關鍵假設只有兩個：</p>
+<ol>
+<li>員工區段標題列放在 A 欄，而且不是日期數值。</li>
+<li>上班、下班欄位若含文字註記，最後 5 個字元是 <code>hh:mm</code> 時間。</li>
+</ol>
+<p>如果你的實際欄位位置不同，只要把公式中的欄位參照改掉即可。</p>
+<h2>一、建立 <code>計算明細</code> 工作表</h2>
+<p>在新工作表 <code>計算明細</code> 建立以下欄位：</p>
+<div class="table-wrap"><table><thead><tr><th>欄</th><th>標題</th></tr></thead><tbody><tr><td>A</td><td>來源列</td></tr><tr><td>B</td><td>員工</td></tr><tr><td>C</td><td>日期</td></tr><tr><td>D</td><td>星期</td></tr><tr><td>E</td><td>上班原始</td></tr><tr><td>F</td><td>下班原始</td></tr><tr><td>G</td><td>上班時間</td></tr><tr><td>H</td><td>下班時間</td></tr><tr><td>I</td><td>計算下班</td></tr><tr><td>J</td><td>工作時數</td></tr><tr><td>K</td><td>工作日鍵</td></tr><tr><td>L</td><td>每日計數</td></tr><tr><td>M</td><td>每月</td></tr><tr><td>N</td><td>員工(馬賽克)</td></tr></tbody></table></div>
+<h3>A 欄：來源列</h3>
+<p><code>A2</code> 先手動輸入原始資料第一列的列號，通常是 <code>2</code>。</p>
+<p><code>A3</code> 輸入：</p>
+<pre><code>=A2+1</code></pre>
+<p>然後往下填滿，直到超過原始資料最後一列即可。</p>
+<h3>B 欄：帶出員工名稱並向下延續</h3>
+<p><code>B2</code>：</p>
+<pre><code>=LET(r,$A2,v,INDEX(&#x27;員工出勤明細表&#x27;!$A:$A,r),IF(AND(v&lt;&gt;&quot;&quot;,NOT(ISNUMBER(v))),v,IF(ROW()=2,&quot;&quot;,B1)))</code></pre>
+<p>說明：</p>
+<ol>
+<li>若原始 A 欄該列是文字，就視為員工標題。</li>
+<li>若原始 A 欄該列是日期，則沿用上一列員工名稱。</li>
+</ol>
+<h3>C 欄：只保留真正的日期列</h3>
+<p><code>C2</code>：</p>
+<pre><code>=LET(r,$A2,v,INDEX(&#x27;員工出勤明細表&#x27;!$A:$A,r),IF(ISNUMBER(v),v,&quot;&quot;))</code></pre>
+<p>把儲存格格式設成日期。</p>
+<h3>D 到 F 欄：帶出原始欄位</h3>
+<p><code>D2</code>：</p>
+<pre><code>=IF($C2=&quot;&quot;,&quot;&quot;,INDEX(&#x27;員工出勤明細表&#x27;!$B:$B,$A2))</code></pre>
+<p><code>E2</code>：</p>
+<pre><code>=IF($C2=&quot;&quot;,&quot;&quot;,INDEX(&#x27;員工出勤明細表&#x27;!$E:$E,$A2))</code></pre>
+<p><code>F2</code>：</p>
+<pre><code>=IF($C2=&quot;&quot;,&quot;&quot;,INDEX(&#x27;員工出勤明細表&#x27;!$F:$F,$A2))</code></pre>
+<h3>G、H 欄：解析最後出現的時間</h3>
+<p><code>G2</code>：</p>
+<pre><code>=LET(t,TRIM(E2&amp;&quot;&quot;),IF(t=&quot;&quot;,&quot;&quot;,IF(ISNUMBER(E2),MOD(E2,1),TIMEVALUE(RIGHT(t,5)))))</code></pre>
+<p><code>H2</code>：</p>
+<pre><code>=LET(t,TRIM(F2&amp;&quot;&quot;),IF(t=&quot;&quot;,&quot;&quot;,IF(ISNUMBER(F2),MOD(F2,1),TIMEVALUE(RIGHT(t,5)))))</code></pre>
+<p>把 G:H 設成時間格式 <code>hh:mm</code>。</p>
+<p>這兩格會把以下內容正確轉成時間：</p>
+<ol>
+<li><code>07:53</code></li>
+<li><code>遲到08:25</code></li>
+<li><code>早退15:39</code></li>
+<li><code>病假12:23</code></li>
+<li><code>特休假09:21</code></li>
+</ol>
+<h3>I 欄：下班時間上限 19:30</h3>
+<p><code>I2</code>：</p>
+<pre><code>=IF(H2=&quot;&quot;,&quot;&quot;,MIN(H2,TIME(19,30,0)))</code></pre>
+<h3>J 欄：計算每筆有效工時</h3>
+<p><code>J2</code>：</p>
+<pre><code>=IF(OR(C2=&quot;&quot;,D2=&quot;六&quot;,D2=&quot;日&quot;,G2=&quot;&quot;,H2=&quot;&quot;),&quot;&quot;,MAX(0,I2-G2))</code></pre>
+<p>規則已包含：</p>
+<ol>
+<li>六日不計。</li>
+<li>上班或下班空白不計。</li>
+<li>下班晚於 <code>19:30</code> 時，自動截到 <code>19:30</code>。</li>
+<li>若異常造成下班早於上班，工時至少為 <code>0</code>。</li>
+</ol>
+<p>把 J 欄格式設成 <code>[h]:mm</code>。</p>
+<h3>K 欄：同人同日唯一鍵</h3>
+<p><code>K2</code>：</p>
+<pre><code>=IF(J2=&quot;&quot;,&quot;&quot;,B2&amp;&quot;|&quot;&amp;TEXT(C2,&quot;yyyy-mm-dd&quot;))</code></pre>
+<h3>L 欄：每日只計 1 個工作天</h3>
+<p><code>L2</code>：</p>
+<pre><code>=IF(K2=&quot;&quot;,&quot;&quot;,--(COUNTIF($K$2:K2,K2)=1))</code></pre>
+<p>說明：</p>
+<ol>
+<li>同一位員工同一天第一筆有效紀錄記為 <code>1</code>。</li>
+<li>同一天後續有效紀錄記為 <code>0</code>。</li>
+<li>這樣工作天數不會重複，但工時仍可在 J 欄加總。</li>
+</ol>
+<h3>M 欄：月份鍵</h3>
+<p><code>M2</code>：</p>
+<pre><code>=IF(C2=&quot;&quot;,&quot;&quot;,TEXT(C2,&quot;yyyy-mm&quot;))</code></pre>
+<h3>N 欄：員工代號與姓名馬賽克</h3>
+<p><code>N2</code>：</p>
+<pre><code>=LET(s,TRIM(SUBSTITUTE(B2,&quot;員工代號:&quot;,&quot;&quot;)),id,TEXTBEFORE(s,&quot; &quot;),nm,TEXTAFTER(s,&quot; &quot;),&quot;員工代號:&quot;&amp;LEFT(id,2)&amp;REPT(&quot;*&quot;,MAX(1,LEN(id)-4))&amp;RIGHT(id,2)&amp;&quot; &quot;&amp;LEFT(nm,1)&amp;REPT(&quot;*&quot;,MAX(1,LEN(nm)-2))&amp;RIGHT(nm,1))</code></pre>
+<p>說明：</p>
+<ol>
+<li>員工代號會保留前 2 碼與後 2 碼，中間以 <code>*</code> 取代。</li>
+<li>中文姓名會保留首尾字，中間以 <code>*</code> 取代。</li>
+<li>所有成果與檢查明細請使用 N 欄，不直接暴露 B 欄原始員工資訊。</li>
+</ol>
+<h3>向下填滿</h3>
+<p>把 <code>B2:N2</code> 全部往下填滿到和 A 欄一樣的最後一列。</p>
+<h2>二、在 <code>算工作數</code> 做彙總</h2>
+<p>若 <code>算工作數</code> 已有員工名單，可直接套公式。假設：</p>
+<ol>
+<li>A 欄是員工。</li>
+<li>B 欄是每月。</li>
+<li>C 欄要算工作天數。</li>
+<li>D 欄要算工作總時數。</li>
+</ol>
+<p>若 B2 要填 2026 年 6 月，可直接放文字：</p>
+<pre><code>2026-06</code></pre>
+<h3>工作天數</h3>
+<p><code>C2</code>：</p>
+<pre><code>=COUNTIFS(&#x27;計算明細&#x27;!$N:$N,$A2,&#x27;計算明細&#x27;!$M:$M,$B2,&#x27;計算明細&#x27;!$L:$L,1)</code></pre>
+<h3>工作總時數</h3>
+<p><code>D2</code>：</p>
+<pre><code>=SUMIFS(&#x27;計算明細&#x27;!$J:$J,&#x27;計算明細&#x27;!$N:$N,$A2,&#x27;計算明細&#x27;!$M:$M,$B2)</code></pre>
+<p>把 D 欄格式設成 <code>[h]:mm</code>。</p>
+<p>然後將 <code>B2:D2</code> 往下填滿全部員工。</p>
+<h2>三、如果 <code>算工作數</code> 沒有員工清單</h2>
+<p>可先在空白區產生唯一員工名單。</p>
+<p>若你用的是 Excel 365，在某個空白欄輸入：</p>
+<pre><code>=SORT(UNIQUE(FILTER(&#x27;計算明細&#x27;!$N$2:$N$5000,&#x27;計算明細&#x27;!$L$2:$L$5000&lt;&gt;&quot;&quot;)))</code></pre>
+<p>再對這份名單套用上一節的彙總公式即可。</p>
+<h2>四、驗收方式</h2>
+<p>完成後可直接檢查以下幾點：</p>
+<ol>
+<li><code>計算明細!J:J</code> 中，星期六、星期日的列應為空白。</li>
+<li><code>計算明細!I:I</code> 中，凡晚於 <code>19:30</code> 的下班時間都應顯示為 <code>19:30</code>。</li>
+<li><code>計算明細!G:H</code> 應能把 <code>遲到08:25</code>、<code>早退15:39</code> 這類欄位轉成時間。</li>
+<li>同一員工同一天多筆紀錄時，<code>L</code> 欄只有第一筆為 <code>1</code>，其他為 <code>0</code>。</li>
+<li><code>算工作數</code> 的工作總時數應為所有有效 <code>J</code> 欄工時加總。</li>
+</ol>
+<h2>五、最小可用公式組合</h2>
+<p>如果你只想先做出結果，最少只需要這 6 個公式欄位：</p>
+<ol>
+<li><code>B2</code> 員工</li>
+<li><code>C2</code> 日期</li>
+<li><code>G2</code> 上班時間</li>
+<li><code>H2</code> 下班時間</li>
+<li><code>J2</code> 工作時數</li>
+<li><code>L2</code> 每日計數</li>
+</ol>
+<p>但實務上仍建議保留完整 <code>B:N</code> 欄，因為比較容易人工驗算。</p>
+<h2>六、舊版 Excel 替代寫法</h2>
+<p>如果你的 Excel 沒有 <code>LET</code>，可改用以下寫法。</p>
+<h3>上班時間</h3>
+<pre><code>=IF(E2=&quot;&quot;,&quot;&quot;,IF(ISNUMBER(E2),MOD(E2,1),TIMEVALUE(RIGHT(TRIM(E2&amp;&quot;&quot;),5))))</code></pre>
+<h3>下班時間</h3>
+<pre><code>=IF(F2=&quot;&quot;,&quot;&quot;,IF(ISNUMBER(F2),MOD(F2,1),TIMEVALUE(RIGHT(TRIM(F2&amp;&quot;&quot;),5))))</code></pre>
+<h3>工作時數</h3>
+<pre><code>=IF(OR(C2=&quot;&quot;,D2=&quot;六&quot;,D2=&quot;日&quot;,G2=&quot;&quot;,H2=&quot;&quot;),&quot;&quot;,MAX(0,MIN(H2,TIME(19,30,0))-G2))</code></pre>
+<h2>結論</h2>
+<p>這套公式完全符合題目規則：</p>
+<ol>
+<li>六日不計工作天數與工時。</li>
+<li>下班時間最多算到 <code>19:30</code>。</li>
+<li>含文字註記的上下班欄位可抓最後的時間。</li>
+<li>同員工同日只加 1 個工作天。</li>
+<li>同員工同日多筆有效紀錄的工時可累加。</li>
+<li>成果與檢查明細使用馬賽克後的員工代號與姓名。</li>
+</ol>
+<p>如果你之後把原始 <code>2026.06月份.xlsx</code> 放進這個資料夾，我可以在不離開這個工作資料夾的前提下，直接幫你把這份公式方案對到實際欄位與實際儲存格位置。</p>
+    <footer>Published for jy3736.github.io/workshop2026_01/0708/</footer>
+  </main>
+</body>
+</html>

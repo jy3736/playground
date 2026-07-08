@@ -173,7 +173,7 @@
     <article class="subject-card">
       <h2>7. Python 自動化</h2>
       <figure class="slide-figure"><img src="assets/slides/slide-07-python-automation.png" alt="7. Python 自動化"><figcaption>7. Python 自動化</figcaption></figure>
-      <p>第二種方案是請 AI 產生 Python 自動化流程。專案中的 <code>attendance_python_solution.py</code> 會讀取來源 Excel，自動偵測出勤明細工作表，解析員工區段與日期列，處理文字日期、Excel 日期、文字時間、Excel 時間，以及結尾含時間的文字欄位。只要欄位標題可辨識，它也能支援欄位順序調整。<sup><a href="#ref-python_script">[python_script]</a></sup><sup><a href="#ref-python_doc">[python_doc]</a></sup></p>
+      <p>第二種方案是請 AI 產生 Python 自動化流程。專案中的自動化流程會讀取來源 Excel，自動偵測出勤明細工作表，解析員工區段與日期列，處理文字日期、Excel 日期、文字時間、Excel 時間，以及結尾含時間的文字欄位。只要欄位標題可辨識，它也能支援欄位順序調整。<sup><a href="#ref-python_doc">[python_doc]</a></sup></p>
       <p>Python 解法會產生新的輸出活頁簿，不覆蓋原始檔；輸出保留原本工作簿結構，填入既有的 <code>算工作數</code> 工作表，並在員工欄套用 ID / 姓名遮蔽。它另外加入 <code>計算明細</code> 作為稽核用逐筆明細，但不新增 <code>處理說明</code> 這類非稽核工作表。對管理者來說，這代表 AI 不只是在回答一次性問題，而是可以協助建立公司內部可重複使用且可檢查的小工具。<sup><a href="#ref-python_doc">[python_doc]</a></sup></p>
     </article>
     <article class="subject-card">
@@ -192,20 +192,19 @@
       <h2>10. 落地路徑</h2>
       <figure class="slide-figure"><img src="assets/slides/slide-10-rollout-roadmap.png" alt="10. 落地路徑"><figcaption>10. 落地路徑</figcaption></figure>
       <p>建議的落地方式，是從低風險、高重複性的辦公任務開始，例如出勤彙總、報表整理、名單比對、費用分類或月報初稿。第一步先要求員工用固定格式描述任務，包含資料來源、處理規則、例外情況、輸出格式、驗收條件、個資與權限限制。這能把人的經驗整理成 AI 可以執行的規格。</p>
-      <p>第二步先產出可人工稽核的版本，例如純 Excel 公式版或含計算明細的輸出檔。當某項任務被證明會重複發生、規則穩定且驗收方式明確時，再進一步建立 Python 這類自動化腳本，保留輸入檔、輸出檔與稽核用計算明細。最終目標不是讓 AI 取代員工，而是讓員工把日常辦公經驗變成可重複、可檢查、可管理的公司流程。<sup><a href="#ref-excel_workbook">[excel_workbook]</a></sup><sup><a href="#ref-python_script">[python_script]</a></sup><sup><a href="#ref-analysis">[analysis]</a></sup></p>
+      <p>第二步先產出可人工稽核的版本，例如純 Excel 公式版或含計算明細的輸出檔。當某項任務被證明會重複發生、規則穩定且驗收方式明確時，再進一步建立自動化流程，保留輸入檔、輸出檔與稽核用計算明細。最終目標不是讓 AI 取代員工，而是讓員工把日常辦公經驗變成可重複、可檢查、可管理的公司流程。<sup><a href="#ref-excel_workbook">[excel_workbook]</a></sup><sup><a href="#ref-analysis">[analysis]</a></sup></p>
     </article>
     <h2>References</h2>
     <ol>
-      <li id="ref-problem"><a href="assets/docs/common/problem-statement.md">員工出勤工時計算問題</a></li>
-      <li id="ref-excel_solution"><a href="assets/docs/pure-excel/solution.md">純 Excel 公式解法說明</a></li>
-      <li id="ref-excel_workbook"><a href="assets/docs/pure-excel/2026.06月份-純Excel公式解.xlsx">2026.06月份-純Excel公式解.xlsx</a></li>
-      <li id="ref-results"><a href="assets/docs/pure-excel/results.md">2026.06 純 Excel 公式解驗算結果</a></li>
-      <li id="ref-analysis"><a href="assets/docs/analysis/excel-vs-python-analysis.md">純 Excel 公式法與 Python 解法比較分析</a></li>
-      <li id="ref-python_doc"><a href="assets/docs/python-solution/python-solution.md">Python-based attendance solution</a></li>
-      <li id="ref-python_script"><a href="assets/docs/python-solution/attendance_python_solution.py">attendance_python_solution.py</a></li>
-      <li id="ref-python_june_output"><a href="assets/docs/python-solution/outputs/2026.06月份-python工時計算.xlsx">2026.06月份-python工時計算.xlsx</a></li>
-      <li id="ref-random_input"><a href="assets/data/2026.05月份-隨機出勤.xlsx">2026.05月份-隨機出勤.xlsx</a></li>
-      <li id="ref-python_may_output"><a href="assets/docs/python-solution/outputs/2026.05月份-python工時計算.xlsx">2026.05月份-python工時計算.xlsx</a></li>
+      <li id="ref-problem"><a href="assets/docs/common/problem-statement.html" target="_blank" rel="noopener noreferrer">員工出勤工時計算問題</a></li>
+      <li id="ref-excel_solution"><a href="assets/docs/pure-excel/solution.html" target="_blank" rel="noopener noreferrer">純 Excel 公式解法說明</a></li>
+      <li id="ref-excel_workbook"><a href="assets/docs/pure-excel/2026.06月份-純Excel公式解.xlsx.html" target="_blank" rel="noopener noreferrer">2026.06月份-純Excel公式解.xlsx</a></li>
+      <li id="ref-results"><a href="assets/docs/pure-excel/results.html" target="_blank" rel="noopener noreferrer">2026.06 純 Excel 公式解驗算結果</a></li>
+      <li id="ref-analysis"><a href="assets/docs/analysis/excel-vs-python-analysis.html" target="_blank" rel="noopener noreferrer">純 Excel 公式法與 Python 解法比較分析</a></li>
+      <li id="ref-python_doc"><a href="assets/docs/python-solution/python-solution.html" target="_blank" rel="noopener noreferrer">自動化出勤計算流程說明</a></li>
+      <li id="ref-python_june_output"><a href="assets/docs/python-solution/outputs/2026.06月份-python工時計算.xlsx.html" target="_blank" rel="noopener noreferrer">2026.06月份-python工時計算.xlsx</a></li>
+      <li id="ref-random_input"><a href="assets/data/2026.05月份-隨機出勤.xlsx.html" target="_blank" rel="noopener noreferrer">2026.05月份-隨機出勤.xlsx</a></li>
+      <li id="ref-python_may_output"><a href="assets/docs/python-solution/outputs/2026.05月份-python工時計算.xlsx.html" target="_blank" rel="noopener noreferrer">2026.05月份-python工時計算.xlsx</a></li>
     </ol>
   </section>
   <footer>教育部智慧雨林產業創生人才育成計畫 (南臺科技大學 電子系 楊榮林 教授)</footer>

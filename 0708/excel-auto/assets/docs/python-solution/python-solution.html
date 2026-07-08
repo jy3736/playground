@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>自動化出勤計算流程說明</title>
+  <style>:root{color-scheme:dark;--bg:#080b12;--fg:#eef3f8;--muted:#a7b1c2;--card:#101722;--border:#243244;--accent:#39d7c6;--accent2:#f5b84b;--th-bg:#172130;--code:#0d1420}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 88% 0,rgba(57,215,198,.15),transparent 34%),var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei",Roboto,Helvetica,Arial,sans-serif;line-height:1.72;letter-spacing:0}.wrap{width:min(1040px,calc(100% - 32px));margin:0 auto;padding:34px 0 64px}.top{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:24px}.btn{display:inline-flex;align-items:center;min-height:38px;padding:7px 12px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--fg);text-decoration:none;font-weight:700}.btn:hover{border-color:var(--accent)}header{border-bottom:1px solid var(--border);margin-bottom:24px;padding-bottom:18px}.kicker{margin:0 0 8px;color:var(--accent);font-weight:750}h1{margin:0;font-size:clamp(1.8rem,4vw,2.8rem);line-height:1.18;letter-spacing:0}h2{margin-top:1.8em;padding-bottom:.25em;border-bottom:1px solid var(--border);font-size:1.35rem}h3{color:var(--accent);margin-top:1.4em}p,li{max-width:78ch}a{color:var(--accent)}code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--code);border:1px solid var(--border);border-radius:6px;padding:.08em .35em}pre{overflow:auto;padding:14px;background:var(--code);border:1px solid var(--border);border-radius:8px}pre code{border:0;background:transparent;padding:0}.table-wrap{overflow-x:auto;margin:1rem 0;border:1px solid var(--border);border-radius:8px}table{width:100%;border-collapse:collapse;font-size:.95rem}th,td{border:1px solid var(--border);padding:8px 10px;vertical-align:top;text-align:left}th{background:var(--th-bg);font-weight:750}.meta{color:var(--muted)}.panel{border:1px solid var(--border);border-radius:8px;background:var(--card);padding:14px 16px;margin:16px 0}.sheet-title{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}.sheet-title small{color:var(--muted)}footer{margin-top:36px;color:var(--muted);font-size:.9rem;border-top:1px solid var(--border);padding-top:14px}@media(max-width:680px){.wrap{width:min(100% - 24px,1040px);padding-top:22px}th,td{padding:7px 8px}}</style>
+</head>
+<body>
+  <main class="wrap">
+    <nav class="top" aria-label="page actions">
+      <a class="btn" href="../../../excel-auto-codex-embedded-slides.html">回 Excel 自動化頁面</a>
+    </nav>
+    <header>
+      <p class="kicker">HTML Reference</p>
+      <h1>自動化出勤計算流程說明</h1>
+    </header>
+<h2>流程定位</h2>
+<p>這個流程把純 Excel 公式版的出勤計算規則，整理成可重複執行的自動化處理方式。此頁只保留流程說明與驗證重點，不提供程式碼或可下載腳本。</p>
+<p>它適用於結構相近的出勤 Excel 檔：</p>
+<ol>
+<li>Each employee has a section header such as <code>員工代號:00337  吳宗恩</code>.</li>
+<li>Each section contains attendance rows with columns equivalent to <code>日期</code>, <code>星期</code>, <code>上班</code>, and <code>下班</code>.</li>
+<li>The column order can vary if a recognizable header row is present.</li>
+<li>Dates may be Excel date cells or text like <code>2026/06/08</code> or <code>2026-06-08</code>.</li>
+<li>Times may be Excel time cells, plain text like <code>07:53</code>, or text ending in a time like <code>病假12:23</code>.</li>
+</ol>
+<h2>Output workbook</h2>
+<p>The automation creates a new output file by copying the source workbook structure.</p>
+<p>It does not modify the source workbook.</p>
+<p>The output keeps the original workbook sheets, including <code>算工作數</code> and <code>員工出勤明細表</code>.</p>
+<p>It fills <code>算工作數</code> with one summary row per masked employee and month.</p>
+<p>It also adds <code>計算明細</code> as an audit sheet for row-level review.</p>
+<p>It does not add <code>處理說明</code> or other non-audit worksheet structures.</p>
+<h2>Calculation rules</h2>
+<ol>
+<li>Saturday and Sunday are excluded.</li>
+<li>Rows with missing start or end time do not count as work time.</li>
+<li>Checkout later than the cap time is counted only up to the cap time.</li>
+<li>The same employee on the same date counts as only one workday.</li>
+<li>Multiple valid attendance segments on the same day are added to total work time.</li>
+<li>Output employee identifiers in <code>算工作數</code> are masked.</li>
+</ol>
+<h2>Verified sample</h2>
+<p>The automation was verified against <code>../data/2026.06月份.xlsx</code>.</p>
+<p>Result:</p>
+<ul>
+<li>Parsed attendance rows: 538</li>
+<li>Employees: 16</li>
+<li>Summary mismatches compared with <code>results.md</code>: 0</li>
+</ul>
+<h2>Limits</h2>
+<p>This is intentionally generic for similar workbooks, not every possible attendance export.</p>
+<p>It expects employee section headers in the first column and a recognizable date column in each section.</p>
+<p>If a workbook uses a completely different layout, add a header mapping or normalize the workbook first.</p>
+    <footer>Published for jy3736.github.io/workshop2026_01/0708/</footer>
+  </main>
+</body>
+</html>

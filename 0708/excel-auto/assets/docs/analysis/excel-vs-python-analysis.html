@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>純 Excel 公式法與 Python 解法比較分析</title>
+  <style>:root{color-scheme:dark;--bg:#080b12;--fg:#eef3f8;--muted:#a7b1c2;--card:#101722;--border:#243244;--accent:#39d7c6;--accent2:#f5b84b;--th-bg:#172130;--code:#0d1420}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 88% 0,rgba(57,215,198,.15),transparent 34%),var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei",Roboto,Helvetica,Arial,sans-serif;line-height:1.72;letter-spacing:0}.wrap{width:min(1040px,calc(100% - 32px));margin:0 auto;padding:34px 0 64px}.top{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:24px}.btn{display:inline-flex;align-items:center;min-height:38px;padding:7px 12px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--fg);text-decoration:none;font-weight:700}.btn:hover{border-color:var(--accent)}header{border-bottom:1px solid var(--border);margin-bottom:24px;padding-bottom:18px}.kicker{margin:0 0 8px;color:var(--accent);font-weight:750}h1{margin:0;font-size:clamp(1.8rem,4vw,2.8rem);line-height:1.18;letter-spacing:0}h2{margin-top:1.8em;padding-bottom:.25em;border-bottom:1px solid var(--border);font-size:1.35rem}h3{color:var(--accent);margin-top:1.4em}p,li{max-width:78ch}a{color:var(--accent)}code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--code);border:1px solid var(--border);border-radius:6px;padding:.08em .35em}pre{overflow:auto;padding:14px;background:var(--code);border:1px solid var(--border);border-radius:8px}pre code{border:0;background:transparent;padding:0}.table-wrap{overflow-x:auto;margin:1rem 0;border:1px solid var(--border);border-radius:8px}table{width:100%;border-collapse:collapse;font-size:.95rem}th,td{border:1px solid var(--border);padding:8px 10px;vertical-align:top;text-align:left}th{background:var(--th-bg);font-weight:750}.meta{color:var(--muted)}.panel{border:1px solid var(--border);border-radius:8px;background:var(--card);padding:14px 16px;margin:16px 0}.sheet-title{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}.sheet-title small{color:var(--muted)}footer{margin-top:36px;color:var(--muted);font-size:.9rem;border-top:1px solid var(--border);padding-top:14px}@media(max-width:680px){.wrap{width:min(100% - 24px,1040px);padding-top:22px}th,td{padding:7px 8px}}</style>
+</head>
+<body>
+  <main class="wrap">
+    <nav class="top" aria-label="page actions">
+      <a class="btn" href="../../../excel-auto-codex-embedded-slides.html">回 Excel 自動化頁面</a>
+      <a class="btn" href="excel-vs-python-analysis.md" download>下載原始檔</a>
+    </nav>
+    <header>
+      <p class="kicker">Markdown Reference</p>
+      <h1>純 Excel 公式法與 Python 解法比較分析</h1>
+    </header>
+<h2>純 Excel 公式法與 Python 解法比較分析</h2>
+<h2>分析目的</h2>
+<p>本報告比較兩種處理員工出勤工時計算問題的方法：</p>
+<ol>
+<li>純 Excel 公式法</li>
+<li>Python 自動化解法</li>
+</ol>
+<p>比較重點包含實作方式、建置成本、是否能不靠程式自動完成，以及在面對類似但不完全相同的隨機輸入 Excel 檔時，各自的適用性。</p>
+<h2>一、純 Excel 公式法</h2>
+<p>純 Excel 公式法適合用來教學、示範與人工稽核。它的最大優點是計算邏輯直接留在活頁簿中，使用者可以一格一格檢查公式，理解每個欄位如何從原始資料推導出結果。</p>
+<p>在目前這個出勤資料問題中，純 Excel 解法通常會建立一張 <code>計算明細</code> 工作表，逐列引用原始 <code>員工出勤明細表</code>，再用公式處理以下任務：</p>
+<ul>
+<li>找出目前列屬於哪一位員工。</li>
+<li>判斷某一列是不是有效日期列。</li>
+<li>解析文字日期，例如 <code>2026/06/08</code>。</li>
+<li>從 <code>遲到08:25</code>、<code>早退15:39</code>、<code>病假12:23</code> 這類文字中抓出最後的時間。</li>
+<li>排除星期六、星期日。</li>
+<li>將下班時間限制在 <code>19:30</code>。</li>
+<li>同一位員工同一天只計算一次工作天數。</li>
+<li>同一天多筆有效出勤紀錄仍可加總工作時數。</li>
+<li>將員工編號與姓名馬賽克。</li>
+<li>在 <code>算工作數</code> 彙整每位員工每月的工作天數與工作總時數。</li>
+</ul>
+<h2>二、純 Excel 公式法的實作成本</h2>
+<p>純 Excel 公式法的實作成本屬於中高。</p>
+<p>表面上看，這個問題只是計算工作天數與總時數；但實際資料並不是乾淨的一張表，而是區段式報表：</p>
+<ul>
+<li>員工資料列與出勤資料列混在同一張工作表。</li>
+<li>每位員工都有自己的區段標題。</li>
+<li>每個區段會重複欄位標題。</li>
+<li>日期可能是文字，不一定是 Excel 日期格式。</li>
+<li>上班、下班欄位可能混有文字註記。</li>
+<li>同一位員工同一天可能有多筆出勤紀錄。</li>
+<li>成果中還需要隱藏真實員工姓名與編號。</li>
+</ul>
+<p>因此，純 Excel 公式不能只靠簡單的 <code>SUMIFS</code> 或 <code>COUNTIFS</code> 完成。它需要多個輔助欄位，例如來源列、員工、日期、解析後上班時間、解析後下班時間、計算下班、工作時數、工作日鍵、每日計數、月份、馬賽克員工名稱等。</p>
+<p>這些公式一旦完成後很容易稽核，但第一次建立時需要仔細處理欄位參照、日期格式、文字時間解析與填滿範圍。對一般使用者而言，維護成本也不低。</p>
+<h2>三、純 Excel 能否不靠 Script 自動完成</h2>
+<p>如果目標是處理固定格式的活頁簿，純 Excel 可以做到半自動。</p>
+<p>可行做法是建立一份固定模板：</p>
+<ol>
+<li>使用者把原始出勤資料貼入或匯入指定工作表。</li>
+<li><code>計算明細</code> 事先放好公式。</li>
+<li><code>算工作數</code> 事先放好彙總公式。</li>
+<li>使用者重新計算活頁簿後得到結果。</li>
+</ol>
+<p>但是，若輸入檔是「類似但不完全相同」的隨機 Excel，例如工作表名稱不同、欄位順序不同、列數不同、日期格式不同、員工標題格式略有差異，純 Excel 模板就會變得脆弱。</p>
+<p>Excel 公式可以寫得很複雜，也可以用動態陣列公式改善自動化程度，但它不適合扮演通用解析器。它比較適合固定格式、人工可檢查的情境。</p>
+<p>因此，純 Excel 公式法的合理定位是：</p>
+<ul>
+<li>適合教學。</li>
+<li>適合讓非程式背景使用者理解計算過程。</li>
+<li>適合單一已知格式的活頁簿。</li>
+<li>適合需要在 Excel 內部完整稽核公式的場景。</li>
+</ul>
+<p>不適合：</p>
+<ul>
+<li>大量批次處理。</li>
+<li>隨機格式輸入。</li>
+<li>欄位自動偵測。</li>
+<li>長期自動化流程。</li>
+<li>希望完全免人工設定的場景。</li>
+</ul>
+<h2>四、Python 解法</h2>
+<p>Python 解法比較適合作為正式自動化工具。它把 Excel 活頁簿視為輸入資料，透過程式解析員工區段、日期列、上下班時間與欄位位置，再輸出整理後的結果活頁簿。</p>
+<p>目前的 Python 解法可以處理以下情況：</p>
+<ul>
+<li>自動偵測出勤明細工作表。</li>
+<li>解析員工區段標題，例如 <code>員工代號:00337  吳宗恩</code>。</li>
+<li>支援文字日期與 Excel 日期儲存格。</li>
+<li>支援文字時間與 Excel 時間儲存格。</li>
+<li>支援 <code>遲到08:25</code>、<code>早退15:39</code>、<code>病假12:23</code> 這類文字加時間格式。</li>
+<li>可在欄位標題可辨識時支援欄位順序調整。</li>
+<li>排除六日。</li>
+<li>套用下班時間上限，預設為 <code>19:30</code>。</li>
+<li>同一位員工同一天只計算一次工作天數。</li>
+<li>同一天多筆有效紀錄可加總工時。</li>
+<li>輸出時自動馬賽克員工姓名與編號。</li>
+</ul>
+<p>Python 解法會產生新的輸出活頁簿，不會覆蓋原始資料。輸出通常包含：</p>
+<ul>
+<li><code>算工作數</code>：每位員工每月彙總結果。</li>
+<li><code>計算明細</code>：逐筆解析與計算紀錄。</li>
+<li><code>處理說明</code>：來源檔案、來源工作表、計算規則與時間上限。</li>
+</ul>
+<h2>五、Python 解法的實作成本</h2>
+<p>Python 解法的初期實作成本比單次 Excel 操作高，因為需要寫程式處理各種資料邊界條件。</p>
+<p>需要處理的細節包括：</p>
+<ul>
+<li>如何辨識正確工作表。</li>
+<li>如何辨識員工標題列。</li>
+<li>如何辨識欄位標題。</li>
+<li>如何解析文字日期與 Excel 日期。</li>
+<li>如何解析文字時間與 Excel 時間。</li>
+<li>如何處理缺漏資料。</li>
+<li>如何避免同日重複計算工作天。</li>
+<li>如何保護員工資料隱私。</li>
+<li>如何產生可讀、可交付的輸出活頁簿。</li>
+</ul>
+<p>不過，一旦程式完成，後續每處理一份新檔案的成本就很低。使用者只要執行一次指令，即可得到新的計算結果。</p>
+<p>這使 Python 解法更適合重複使用、批次處理與處理隨機但相似的輸入檔。</p>
+<h2>六、兩種方法比較</h2>
+<div class="table-wrap"><table><thead><tr><th>面向</th><th>純 Excel 公式法</th><th>Python 解法</th></tr></thead><tbody><tr><td>主要用途</td><td>教學、稽核、手動解題</td><td>自動化、重複處理、泛用輸入</td></tr><tr><td>初期實作成本</td><td>中高</td><td>高</td></tr><tr><td>後續使用成本</td><td>中，需要維護模板與公式範圍</td><td>低，執行指令即可</td></tr><tr><td>是否容易理解</td><td>對 Excel 使用者較直觀</td><td>需要看程式或說明文件</td></tr><tr><td>是否容易稽核</td><td>高，公式在活頁簿內</td><td>中，結果可查，但邏輯在程式內</td></tr><tr><td>是否適合隨機輸入檔</td><td>低到中，取決於模板設計</td><td>高，可透過程式偵測與容錯</td></tr><tr><td>是否可完全不靠 Script 自動化</td><td>只能在固定模板中半自動</td><td>可以</td></tr><tr><td>是否適合批次處理</td><td>不適合</td><td>適合</td></tr><tr><td>隱私處理</td><td>可用公式達成，但容易漏掉輔助欄</td><td>可集中處理並統一輸出</td></tr><tr><td>維護風險</td><td>公式錯位、欄位變動、範圍不足</td><td>程式 bug、環境依賴</td></tr></tbody></table></div>
+<h2>七、建議使用情境</h2>
+<p>如果目標是讓學生或使用者理解出勤工時計算邏輯，應使用純 Excel 公式法。它可以讓學習者看到每一個中間步驟，理解為什麼週末不算、為什麼 <code>20:36</code> 只算到 <code>19:30</code>，以及同一天多筆紀錄如何處理。</p>
+<p>如果目標是實務上處理多份類似但不完全相同的 Excel 檔，應使用 Python 解法。它能把規則集中在程式中，降低人工貼公式、調整範圍與檢查欄位的時間。</p>
+<p>比較務實的安排是同時保留兩種方法：</p>
+<ol>
+<li>純 Excel 公式法作為教學版與人工稽核參考。</li>
+<li>Python 解法作為正式自動化處理流程。</li>
+</ol>
+<p>這樣可以兼顧學習與實務效率。</p>
+<h2>八、結論</h2>
+<p>純 Excel 可以解這個問題，但比較像是「把一次性的複雜清理與計算流程放進活頁簿」。它的價值在於透明、可看、可教學。</p>
+<p>Python 則是把同一套規則變成可重複執行的資料處理流程。它的價值在於穩定、可重用、可擴充，尤其適合處理隨機產生或來源不完全一致的類似出勤檔。</p>
+<p>因此，若只看單一檔案，純 Excel 公式法已經足夠；若看長期使用與不同輸入檔的適應能力，Python 解法明顯更合適。</p>
+    <footer>Published for jy3736.github.io/workshop2026_01/0708/</footer>
+  </main>
+</body>
+</html>

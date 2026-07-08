@@ -40,7 +40,7 @@
   .navbtn:hover { color:var(--accent); border-color:var(--border); background:var(--bg); }
   .navbtn.active { color:var(--accent); border-color:var(--border); background:var(--bg); }
   .btn { cursor:pointer; border:1px solid var(--border); background:var(--bg); color:var(--fg);
-    border-radius:8px; padding:6px 12px; font-size:13px; font-weight:700; }
+    border-radius:8px; padding:6px 12px; font-size:13px; font-weight:700; text-decoration:none; }
   .btn:hover { border-color:var(--accent); }
   .menu-toggle { display:none; position:fixed; top:12px; left:12px; z-index:40;
     cursor:pointer; border:1px solid var(--border); background:var(--card); color:var(--fg);
@@ -112,6 +112,7 @@
 <aside class="sidebar" id="sidebar">
   <div class="brand"><span class="zh">Excel Auto Codex</span><span class="en">Excel Auto Codex</span><small><span class="zh">AI 辦公流程案例</span><span class="en">AI Office Workflow Case</span></small></div>
   <div class="toprow">
+    <a class="btn" href="../index.html"><span class="zh">返回目錄</span><span class="en">Back to Catalog</span></a>
     <button class="btn" id="langBtn" onclick="toggleLang()">中文</button>
     <button class="btn" id="themeBtn" onclick="toggleTheme()">☀️ Light</button>
     <button class="btn" id="slideToggle" onclick="toggleEmbeddedSlides()">隱藏投影片</button>

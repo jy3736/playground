@@ -4,7 +4,166 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI Agent 教學應用工作坊 (一)</title>
-<style>:root{color-scheme:dark;--bg:#f4f1ea;--fg:#1f2328;--muted:#687180;--card:#ebe7df;--border:#d6d0c5;--accent:#2563eb;--th-bg:#ded8cc;--shadow:0 1px 3px rgba(44,38,28,.09);--sidebar-w:284px;--content-max:1040px;--content-pad-x:44px;--content-pad-y:42px;--measure:76ch}[data-theme="dark"]{--bg:#101217;--fg:#e7eaf0;--muted:#a5aebd;--card:#181c24;--border:#2a3140;--accent:#7bb2ff;--th-bg:#202632;--shadow:0 1px 3px rgba(0,0,0,.42)}html{scroll-behavior:smooth}*{box-sizing:border-box}body{min-width:0;margin:0;background:var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei",Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.76;letter-spacing:0;transition:background .25s,color .25s}.wrap{width:min(var(--content-max),calc(100vw - var(--sidebar-w) - (var(--content-pad-x) * 2)));margin-left:calc(var(--sidebar-w) + max(var(--content-pad-x),(100vw - var(--sidebar-w) - var(--content-max)) / 2));padding:var(--content-pad-y) var(--content-pad-x) 88px}.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;overflow-y:auto;background:var(--card);border-right:1px solid var(--border);display:flex;flex-direction:column;gap:10px;padding:18px 14px;z-index:30}.brand{font-weight:700;font-size:1rem;line-height:1.35;padding:0 6px}.toprow{display:flex;flex-wrap:wrap;align-items:center;gap:8px}.navmode{display:flex;align-items:flex-start;gap:8px;margin:0 6px;color:var(--muted);font-size:13px;font-weight:650;line-height:1.35}.navmode input{width:16px;height:16px;margin:1px 0 0;accent-color:var(--accent)}.nav{display:flex;flex-direction:column;gap:4px;margin-top:6px}.navbtn,.navhome{cursor:pointer;border:1px solid transparent;background:transparent;color:var(--muted);border-radius:7px;padding:7px 10px;font-size:14px;font-weight:650;text-align:left;width:100%;white-space:normal;text-decoration:none}.navbtn:hover,.navbtn.active,.navhome:hover{color:var(--accent);border-color:var(--border);background:var(--bg)}.navhome{display:block;border-color:var(--border);background:var(--bg);color:var(--fg)}.btn{cursor:pointer;border:1px solid var(--border);background:var(--bg);color:var(--fg);border-radius:8px;padding:6px 12px;font-size:13px;font-weight:650}.btn:hover{border-color:var(--accent)}.menu-toggle{display:none;position:fixed;top:12px;left:12px;z-index:40;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--fg);border-radius:8px;padding:6px 12px;font-size:18px;line-height:1}.backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:20}h1{max-width:var(--measure);font-size:2.15rem;line-height:1.28;margin:.2em 0 .35em}h2{font-size:1.48rem;margin-top:1.85em;padding-bottom:.25em;border-bottom:2px solid var(--border);scroll-margin-top:24px}h3{font-size:1.18rem;margin-top:1.55em;color:var(--accent)}h4{font-size:1.04rem;margin-top:1.25em;margin-bottom:.35em;color:var(--fg)}ul,ol{padding-left:1.3em}li{margin:.35em 0}p,li,blockquote{max-width:var(--measure);overflow-wrap:break-word}.table-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}table{width:100%;border-collapse:collapse;margin:1em 0;font-size:.94rem;box-shadow:var(--shadow);border-radius:8px;overflow:hidden}th,td{text-align:left;padding:10px 14px;border:1px solid var(--border);vertical-align:top}th{background:var(--th-bg);font-weight:750}td:first-child,th:first-child{white-space:nowrap}tbody tr:nth-child(even) td{background:var(--card)}figure{max-width:100%;margin:1.1em 0 1.35em;padding:10px;background:var(--card);border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow)}figure img{display:block;width:100%;height:auto;border-radius:6px}blockquote{margin:1.1em 0;padding:12px 16px;border-left:4px solid var(--accent);background:var(--card);color:var(--fg)}pre{overflow:auto;padding:12px 14px;background:var(--card);border:1px solid var(--border);border-radius:8px}code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;font-size:.92em;color:var(--fg);background:var(--card);border:1px solid var(--border);border-radius:6px;padding:.08em .35em}pre code{border:0;padding:0;background:transparent}.nav code{border:0;background:transparent;color:inherit;padding:0}.site-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:1.2em 0}.site-card{display:flex;flex-direction:column;gap:6px;min-height:142px;padding:14px 16px;border:1px solid var(--border);border-radius:8px;background:var(--card);box-shadow:var(--shadow);text-decoration:none;color:var(--fg)}.site-card:hover{border-color:var(--accent)}.site-card strong{font-size:1.03rem;color:var(--fg)}.site-card span{color:var(--muted)}.download-list{display:grid;gap:8px;max-width:var(--measure);padding-left:0;list-style:none}.download-list a{display:block;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--card);text-decoration:none}.download-list small{display:block;color:var(--muted)}table,pre{max-width:100%}a{color:var(--accent);overflow-wrap:anywhere}[data-lang="zh"] .en,[data-lang="en"] .zh{display:none}footer{margin-top:3em;color:var(--muted);font-size:.85rem;border-top:1px solid var(--border);padding-top:1em}@media (min-width:1440px){:root{--sidebar-w:304px;--content-max:1080px;--content-pad-x:54px;--content-pad-y:48px}}@media (max-width:1100px){:root{--sidebar-w:230px;--content-max:840px;--content-pad-x:28px;--content-pad-y:32px}.sidebar{padding:16px 10px}.brand{font-size:.95rem}.navbtn,.navhome{font-size:13px;padding:7px 8px}}@media (max-width:860px){:root{--sidebar-w:min(82vw,320px);--content-pad-x:18px;--content-pad-y:0px;--measure:100%}.sidebar{transform:translateX(-100%);transition:transform .25s}.sidebar.open{transform:none}.wrap{width:100%;margin-left:0;padding:72px var(--content-pad-x) 80px}.menu-toggle{display:block}.backdrop.show{display:block}h1{font-size:1.75rem}h2{font-size:1.26rem}h3{font-size:1.08rem}p,li,blockquote{max-width:100%}.site-grid{grid-template-columns:1fr}}@media (max-width:520px){:root{--sidebar-w:min(88vw,300px);--content-pad-x:14px}.wrap{padding-top:68px}.menu-toggle{top:10px;left:10px;padding:7px 11px}.sidebar{padding:14px 10px}.toprow{gap:6px}.btn{padding:6px 10px;font-size:12px}.navmode{font-size:12px}.navbtn,.navhome{font-size:13px}h1{font-size:1.55rem}h2{font-size:1.18rem}th,td{padding:8px 10px}}</style>
+<style>
+  :root {
+    color-scheme: dark;
+    --bg:#f7f8fb; --fg:#171a20; --muted:#596273; --card:#ffffff;
+    --border:#d9dee8; --accent:#0f766e; --accent2:#b45309; --danger:#dc2626;
+    --th-bg:#eef2f7; --shadow:0 16px 40px rgba(15,23,42,.10);
+    --sidebar-w:280px; --content-max:1120px; --content-pad-x:42px; --content-pad-y:42px;
+    --measure:76ch;
+  }
+  [data-theme="dark"] {
+    --bg:#080b12; --fg:#eef3f8; --muted:#a7b1c2; --card:#101722;
+    --border:#243244; --accent:#39d7c6; --accent2:#f5b84b; --danger:#ff6b6b;
+    --th-bg:#172130; --shadow:0 22px 60px rgba(0,0,0,.45);
+  }
+  html { scroll-behavior:smooth; }
+  * { box-sizing:border-box; }
+  body {
+    min-width:0; margin:0;
+    background:radial-gradient(circle at top right, rgba(57,215,198,.14), transparent 34%), var(--bg);
+    color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei",Roboto,Helvetica,Arial,sans-serif;
+    font-size:16px; line-height:1.75; letter-spacing:0;
+    transition:background .25s,color .25s;
+  }
+  .wrap {
+    width:min(var(--content-max), calc(100vw - var(--sidebar-w) - (var(--content-pad-x) * 2)));
+    margin-left:calc(var(--sidebar-w) + max(var(--content-pad-x), (100vw - var(--sidebar-w) - var(--content-max)) / 2));
+    padding:var(--content-pad-y) var(--content-pad-x) 88px;
+  }
+  .sidebar {
+    position:fixed; top:0; left:0; width:var(--sidebar-w); height:100vh; overflow-y:auto;
+    background:color-mix(in srgb, var(--card) 92%, transparent); border-right:1px solid var(--border);
+    display:flex; flex-direction:column; gap:10px; padding:18px 14px; z-index:30; backdrop-filter:blur(12px);
+  }
+  .brand { font-weight:800; font-size:1rem; line-height:1.35; padding:0 6px; color:var(--fg); }
+  .brand small { display:block; margin-top:5px; color:var(--muted); font-weight:600; }
+  .toprow { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+  .navmode { display:flex; align-items:flex-start; gap:8px; margin:0 6px; color:var(--muted); font-size:13px; font-weight:700; line-height:1.35; }
+  .navmode input { width:16px; height:16px; margin:1px 0 0; accent-color:var(--accent); }
+  .nav { display:flex; flex-direction:column; gap:4px; margin-top:6px; }
+  .navbtn, .navhome {
+    cursor:pointer; border:1px solid transparent; background:transparent; color:var(--muted);
+    border-radius:8px; padding:8px 10px; font-size:14px; font-weight:700;
+    text-align:left; width:100%; white-space:normal; line-height:1.35; text-decoration:none;
+  }
+  .navbtn:hover, .navbtn.active, .navhome:hover { color:var(--accent); border-color:var(--border); background:var(--bg); }
+  .navhome { display:block; border-color:var(--border); background:var(--bg); color:var(--fg); }
+  .btn {
+    cursor:pointer; border:1px solid var(--border); background:var(--bg); color:var(--fg);
+    border-radius:8px; padding:6px 12px; font-size:13px; font-weight:700; text-decoration:none;
+  }
+  .btn:hover { border-color:var(--accent); }
+  .menu-toggle {
+    display:none; position:fixed; top:12px; left:12px; z-index:40; cursor:pointer;
+    border:1px solid var(--border); background:var(--card); color:var(--fg);
+    border-radius:8px; padding:6px 12px; font-size:18px; line-height:1;
+  }
+  .backdrop { display:none; position:fixed; inset:0; background:rgba(0,0,0,.52); z-index:20; }
+  h1 { max-width:var(--measure); font-size:2.45rem; line-height:1.18; margin:.2em 0 .35em; letter-spacing:0; }
+  h2 { font-size:1.42rem; margin:2em 0 .7em; padding-bottom:.25em; border-bottom:1px solid var(--border); scroll-margin-top:24px; }
+  h3 { font-size:1.1rem; margin-top:1.4em; color:var(--accent); }
+  h4 { font-size:1.04rem; margin-top:1.25em; margin-bottom:.35em; color:var(--fg); }
+  p, li, blockquote { max-width:var(--measure); overflow-wrap:break-word; }
+  ul, ol { padding-left:1.3em; }
+  li { margin:.35em 0; }
+  a { color:var(--accent); overflow-wrap:anywhere; }
+  code { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.92em; padding:.1em .35em; border-radius:6px; background:var(--th-bg); color:var(--fg); }
+  pre { overflow:auto; padding:12px 14px; background:var(--card); border:1px solid var(--border); border-radius:8px; }
+  pre code, .nav code { border:0; padding:0; background:transparent; color:inherit; }
+  .table-wrap { width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  table { width:100%; border-collapse:collapse; margin:1em 0; font-size:.95rem; box-shadow:var(--shadow); border-radius:8px; overflow:hidden; }
+  th, td { text-align:left; padding:10px 14px; border:1px solid var(--border); vertical-align:top; }
+  th { background:var(--th-bg); font-weight:700; }
+  td:first-child, th:first-child { white-space:nowrap; }
+  tbody tr:nth-child(even) td { background:color-mix(in srgb, var(--card) 82%, var(--th-bg)); }
+  figure {
+    max-width:100%; margin:18px 0 18px; padding:18px; border:1px solid var(--border);
+    border-radius:18px; background:linear-gradient(145deg, color-mix(in srgb, var(--card) 96%, transparent), color-mix(in srgb, var(--accent) 9%, var(--card)));
+    box-shadow:var(--shadow);
+  }
+  figure img { display:block; width:100%; height:auto; border-radius:13px; border:1px solid var(--border); }
+  .full-screen-image {
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    margin:34px 0 42px; page-break-after:always;
+  }
+  .full-screen-image figure { width:100%; margin:0; }
+  .full-screen-image img { max-width:100%; max-height:calc(100vh - 72px); object-fit:contain; }
+  .content-slide-card {
+    margin:34px 0 42px; padding:22px; border:1px solid var(--border); border-radius:18px;
+    background:linear-gradient(145deg, color-mix(in srgb, var(--card) 96%, transparent), color-mix(in srgb, var(--accent) 5%, var(--card)));
+    box-shadow:var(--shadow);
+  }
+  .content-slide-card .full-screen-image {
+    min-height:auto !important; margin:0 0 22px !important; page-break-after:auto !important;
+  }
+  .content-slide-card .full-screen-image figure {
+    padding:0; border-radius:13px; background:transparent; box-shadow:0 14px 34px rgba(0,0,0,.22);
+  }
+  .content-slide-card .full-screen-image img {
+    max-height:none !important; border-radius:13px;
+  }
+  .slide-text h2 { margin-top:0; }
+  .slide-text p:last-child { margin-bottom:0; }
+  blockquote {
+    max-width:var(--measure); margin:1.1em 0; padding:12px 16px; border-left:4px solid var(--accent2);
+    background:color-mix(in srgb, var(--card) 94%, var(--accent) 6%); color:var(--fg);
+    border-radius:0 8px 8px 0;
+  }
+  .site-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin:1.2em 0; }
+  .site-card, .download-list a {
+    display:flex; flex-direction:column; gap:6px; padding:14px 16px; border:1px solid var(--border);
+    border-radius:8px; background:var(--card); box-shadow:var(--shadow); text-decoration:none; color:var(--fg);
+  }
+  .site-card { min-height:142px; }
+  .site-card:hover, .download-list a:hover { border-color:var(--accent); }
+  .site-card strong { font-size:1.03rem; color:var(--fg); }
+  .site-card span, .download-list small { color:var(--muted); }
+  .download-list { display:grid; gap:8px; max-width:var(--measure); padding-left:0; list-style:none; }
+  table, pre { max-width:100%; }
+  [data-lang="zh"] .en, [data-lang="en"] .zh { display:none; }
+  footer { margin-top:3em; color:var(--muted); font-size:.85rem; border-top:1px solid var(--border); padding-top:1em; }
+  @media (min-width:1440px) {
+    :root { --sidebar-w:300px; --content-max:1160px; --content-pad-x:54px; --content-pad-y:48px; }
+  }
+  @media (max-width:1100px) {
+    :root { --sidebar-w:230px; --content-max:820px; --content-pad-x:26px; --content-pad-y:32px; }
+    .sidebar { padding:16px 10px; }
+    .brand { font-size:.95rem; }
+    .navbtn, .navhome { font-size:13px; padding:7px 8px; }
+    table { display:block; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  }
+  @media (max-width:860px) {
+    :root { --sidebar-w:min(84vw, 330px); --content-pad-x:18px; --content-pad-y:0px; --measure:100%; }
+    .sidebar { transform:translateX(-100%); transition:transform .25s; }
+    .sidebar.open { transform:none; }
+    .wrap { width:100%; margin-left:0; padding:72px var(--content-pad-x) 80px; }
+    .menu-toggle { display:block; }
+    .backdrop.show { display:block; }
+    table { display:block; overflow-x:auto; }
+    h1 { font-size:1.78rem; }
+    h2 { font-size:1.24rem; }
+    p, li, blockquote { max-width:100%; }
+    figure { padding:12px; border-radius:14px; }
+    .full-screen-image { min-height:auto; margin:26px 0 32px; }
+    .content-slide-card { padding:16px; border-radius:14px; margin:26px 0 32px; }
+  }
+  @media (max-width:520px) {
+    :root { --sidebar-w:min(90vw, 310px); --content-pad-x:14px; }
+    .wrap { padding-top:68px; }
+    .menu-toggle { top:10px; left:10px; padding:7px 11px; }
+    .sidebar { padding:14px 10px; }
+    .toprow { gap:6px; }
+    .btn { padding:6px 10px; font-size:12px; }
+    .navmode { font-size:12px; }
+    .navbtn, .navhome { font-size:13px; }
+    h1 { font-size:1.52rem; }
+    h2 { font-size:1.12rem; }
+    th, td { padding:8px 10px; }
+  }
+</style>
 </head>
 <body>
 <button class="menu-toggle" id="menuToggle" onclick="toggleMenu()" type="button">☰</button>
@@ -124,194 +283,177 @@
 <p>這場工作坊的核心目標，是讓教師理解 AI Agent 如何成為教學與行政工作的實作夥伴。AI Agent 不只是回答問題的聊天工具；它可以在授權範圍內讀取專案檔案、修改內容、執行命令、操作瀏覽器，並把完成任務的過程整理成可以重複使用的流程。</p>
 <p>教師不需要先成為程式設計師，才有資格使用這類工具。更重要的是，教師要能用清楚的自然語言描述目標、提供材料、判斷成果是否正確，並把成功經驗逐步固定成講義、Skill、腳本或工作流程。這種能力會降低把教學構想落地的成本，也會讓原本需要大量手動處理的工作變得更容易試作與調整。</p>
 <p>本課程的學習重點包括形成性評量、個別化回饋、資料整理、網頁擷取、教材生成、本機專案管理，以及 AI Agent 的安全使用。學員完成課程後，應能判斷哪些任務適合交給聊天式 AI，哪些任務適合交給 AI Agent，哪些資料則應留在本機或先做去識別化處理。</p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+<article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
   <figure><img src="assets/workshop-goals-use-cases-infographic.png" alt="工作坊目標與使用情境資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
+  <div class="slide-text">
 <h2 id="_3">一、工作坊目標與使用情境</h2>
-<blockquote>
-<p>教學標籤：必講</p>
-</blockquote>
 <p>本工作坊希望每位教師最後都能帶走一個與自己工作有關的小工具或可重複流程。這個成果不必是完整系統，也不必包含大量程式碼；它可以是整理學生資料的流程、擷取網頁內容的方法、產生教材頁面的模板、建立互動練習的步驟，或把重複行政工作包裝成可再次執行的 Skill。</p>
 <p>每位教師的使用情境都不同。不同課程、學校、學生族群與行政需求，會產生不同痛點。因此，課程的目的不是提供單一標準答案，而是讓學員理解 AI Agent 的能力邊界。只要某項工作原本可以透過鍵盤、滑鼠、瀏覽器、檔案與簡單工具完成，就有機會讓 AI Agent 協助規劃、執行與整理。</p>
 <p>課程使用 Codex 作為核心工具，並搭配 VS Code、GitHub、GitHub Copilot、Playwright MCP、Ollama、本機範例伺服器與 Scrape Playground。這些工具各自扮演不同角色：Codex 負責專案中的代理工作，VS Code 協助查看檔案，GitHub 支援版本管理與分享，Playwright MCP 支援瀏覽器操作，Ollama 提供 Local LLM 的本機模型情境。學習重點不在背工具名稱，而在理解它們如何組成一條可工作的流程。</p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
   <figure><img src="assets/capstone-formative-assessment-infographic.png" alt="Capstone 形成性評量系統資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
+  <div class="slide-text">
 <h2 id="capstone-ai">二、Capstone 預覽：形成性評量系統與 AI 輔助教學</h2>
-<blockquote>
-<p>教學標籤：示範</p>
-</blockquote>
 <p>本系列工作坊最後會以 AI 形成性評量系統作為 Capstone 應用。這個範例不是單純做一份線上測驗，而是呈現一個完整的教學工具想像：教師端可以掌握全班作答狀態，學生端可以完成短測驗並帶走作答回顧，AI 則協助把錯題與教材轉成後續補強方向。</p>
 <p>形成性評量的核心不是考倒學生，而是在課堂中快速回答三個問題：學生是否理解剛剛的概念、哪些學生或哪些題型需要教師再補充、學生作答後能不能取得下一步複習方向。若評量資料只停留在分數，教師能做的判斷有限；若能把作答進度、正確率、錯題紀錄與教材內容串起來，評量就會變成課堂中的即時訊號，也會成為學生課後補強的材料。</p>
 <p>範例系統包含教師端 Dashboard 與學生端測驗介面。教師端看的是全班狀態，例如目前學生正在做哪一份測驗、完成幾題、正確率如何、是否已提交；學生端則提供登入、逐題作答、提交、成績摘要與逐題作答回顧。這些畫面讓學員先看見 Workshop 1、2、3 逐步累積後可能完成的教學應用，而不是要求一開始就理解所有技術細節。</p>
 <p>AI 在這個設計中的位置是學習鷹架，而不是代答工具。學生完成作答後，可以把作答紀錄、題目內容與教材摘要提供給 ChatGPT、Gemini 或其他工具，請 AI 分析錯誤可能來自哪個概念、該回頭複習哪一段教材，以及下一步可以做什麼練習。這樣的流程讓 AI 協助診斷與補強，而最後的理解、判斷與修正仍然需要學生自己完成。</p>
 <p>延伸參考：<a href="capstone-assessment-preview.html">AI Agent 教學應用工作坊 Capstone 預覽：形成性評量系統設計意圖</a>。</p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
   <figure><img src="assets/natural-language-vibe-coding-infographic.png" alt="自然語言與 Vibe Coding 資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
+  <div class="slide-text">
 <h2 id="vibe-coding">三、自然語言、vibe coding 與程式角色的改變</h2>
-<blockquote>
-<p>教學標籤：必講</p>
-</blockquote>
 <p>人與電腦互動的方式正在改變。過去主要靠鍵盤、滑鼠、命令列與圖形介面操作；現在，自然語言也逐漸成為一種操作電腦的介面。使用者可以用日常語言描述目標、限制、資料來源與輸出格式，再由 AI 協助產生、執行或修改具體成果。</p>
 <p>Vibe coding 的重點不只是 coding，而是把「想要什麼」說清楚。使用者提供目標、素材與回饋，AI 協助產生程式、網頁、教材、自動化流程或資料整理結果。教師真正需要掌握的是需求描述、結果檢查、資料補充與方向修正，而不是每一行程式的語法細節。</p>
 <p>這並不表示程式知識不再重要。當成果要公開部署、處理敏感資料、連接外部系統或長期維護時，仍需要檢查安全性、正確性與可維護性。不過，對許多教學與行政原型而言，AI 已經能讓非程式背景的教師更快做出可試用的版本。</p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
   <figure><img src="assets/chatgpt-vs-ai-agent-infographic.png" alt="ChatGPT 與 AI Agent 差異資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
+  <div class="slide-text">
 <h2 id="chatgpt-ai-agent">四、ChatGPT 與 AI Agent 的差異</h2>
-<blockquote>
-<p>教學標籤：必講</p>
-</blockquote>
 <p>ChatGPT 類工具主要是對話式輔助。使用者輸入問題，AI 回覆說明、步驟、程式碼、摘要或建議。這類工具適合用來整理想法、改寫文字、產生範例、解釋概念，或協助教師準備教材草稿。它的輸出通常仍需要人自行複製、下載、貼到其他工具或手動執行。</p>
 <p>AI Agent 更像被授權執行任務的代理人。它不只回覆文字，也可以在指定工作區中讀取檔案、修改檔案、執行命令、開啟瀏覽器、點擊網頁、擷取資料，並把結果存回專案。這種能力讓 AI Agent 適合處理「需要實際產出檔案或操作工具」的任務，例如產生 HTML 講義、整理 CSV、檢查資料格式、啟動本機伺服器或測試網頁。</p>
 <p>這種差異也帶來權限與安全問題。聊天工具多半只處理使用者貼上的內容；AI Agent 則可能碰到專案檔案與本機工具。因此，使用 AI Agent 時要清楚知道它能讀什麼、能寫什麼、能不能執行命令，以及哪些動作需要使用者批准。AI Agent 越能做事，就越需要明確邊界與人工監督。</p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
   <figure><img src="assets/privacy-local-llm-infographic.png" alt="資料隱私與 Local LLM 資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
+  <div class="slide-text">
 <h2 id="ai-local-llm">五、資料隱私、雲端 AI 與 Local LLM</h2>
-<blockquote>
-<p>教學標籤：必講</p>
-</blockquote>
 <p>教師經常接觸學生資料、成績資料、行政資料與學校內部文件。這些資料不應在沒有處理的情況下直接上傳雲端 AI。即使服務提供者宣稱資料不會被拿去訓練模型，資料離開本機後仍會涉及外部儲存、傳輸與資安風險。</p>
 <p>處理敏感資料前，應先做去識別化。例如將學生姓名、學號、班級、座號與其他可識別資訊替換成代碼，只保留分析所需欄位。若資料非常敏感，或學校政策不允許上傳外部服務，就應考慮使用 Local LLM。</p>
 <p>Local LLM 是在本機執行的語言模型，例如透過 Ollama 下載並執行 gemma3:12b 之類的模型。它的優點是資料留在本機，不必上傳雲端；缺點是需要較多硬體資源，速度與能力也可能不如大型雲端模型。實務選擇可以分成三類：一般問答使用聊天 AI，需要操作檔案與工具時使用 AI Agent，敏感資料或離線需求則考慮 Local LLM。</p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
   <figure><img src="assets/token-permissions-safety-infographic.png" alt="Token 權限與安全意識資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
+  <div class="slide-text">
 <h2 id="token">六、Token、權限與安全意識</h2>
-<blockquote>
-<p>教學標籤：必講</p>
-</blockquote>
 <p>Token 可以理解為 AI 系統處理文字與上下文的單位。越長的對話、越多檔案、越複雜的任務，都會消耗更多 token。AI Agent 若在錯誤方向上反覆嘗試，可能快速消耗額度。因此，使用 Agent 時應設定清楚目標、限制範圍，並在必要時要求它先提出計畫或回報進度。</p>
 <p>權限管理是 AI Agent 使用中的核心能力。使用者應避免一開始就開放完整電腦存取權。較安全的做法是把工作限制在特定 project 或 workspace 中，讓 Agent 只能讀取與修改該資料夾下的內容。若任務需要超出範圍，例如下載外部資源、開啟其他資料夾或執行高風險命令，系統應要求使用者批准。</p>
 <p>剛開始使用時，不建議讓 Agent 無人看管地長時間執行。教師應觀察它準備做什麼、執行了什麼、是否開始重複嘗試、是否需要額外權限，以及輸出是否符合預期。這樣可以同時控制 token 成本、資料安全與檔案安全。</p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
   <figure><img src="assets/computer-environment-requirements-infographic.png" alt="電腦環境與硬體需求資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
+  <div class="slide-text">
 <h2 id="_4">七、電腦環境與硬體需求</h2>
-<blockquote>
-<p>教學標籤：必講</p>
-</blockquote>
 <p>本課程主要使用雲端模型，因此模型推論不需要在學員電腦上完成。一般三到五年內的 Windows 筆電或 Mac，通常足以進行課程練習。真正需要注意的是網路穩定性、雲端模型額度、token 消耗，以及同時開啟多個應用程式時的記憶體使用量。</p>
 <p>AI Agent 的工作方式通常不是只開一個聊天視窗。實作時可能會同時開啟 Codex、瀏覽器、終端機、VS Code、本機伺服器與專案資料夾。若記憶體太小，整體操作會變慢，瀏覽器與開發工具也可能卡頓。因此，雖然不需要高階顯示卡，仍建議使用記憶體較充足的電腦。</p>
 <p>課程現場常見的問題是網路限制與下載速度。Codex App、套件、瀏覽器工具或範例資料若下載很慢，可能不是工具本身故障，而是學校網路、共享頻寬或安全政策造成的限制。正式上課前，應盡量先完成安裝、登入與資料下載；若現場網路不穩，可以暫時使用手機熱點或改由已安裝好的示範環境進行。</p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
   <figure><img src="assets/codex-app-setup-infographic.png" alt="Codex App 安裝與基本設定資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
+  <div class="slide-text">
 <h2 id="codex-app">八、Codex App 安裝與基本設定</h2>
-<blockquote>
-<p>教學標籤：必講</p>
-</blockquote>
 <p>開始使用 Codex 前，第一步是先從官方或課程提供的下載連結取得 Codex App，依照作業系統完成安裝，然後打開 App 並使用 ChatGPT 帳號登入。安裝完成後，先確認 Codex 能正常啟動、帳號狀態正常，並知道目前使用的是免費、付費或教育方案額度。</p>
 <p>第一次設定 Codex 時，應先選擇一個明確的 project 或 workspace。Codex 看起來像聊天工具，但它會綁定特定資料夾；這表示它能在指定範圍內讀取檔案、修改檔案與執行工具。開始任務前，應確認目前開啟的是哪個專案、可讀寫範圍在哪裡，以及執行命令時是否需要批准。</p>
 <p>基本設定應以安全與可理解為優先。若使用者不是程式背景，可以選擇較白話的回應方式，讓 Codex 用一般語言說明它正在做什麼。檔案權限建議先限制在工作區內，並在需要下載外部資源、開啟其他資料夾或執行較高風險命令時要求批准。這樣可以保留使用者的控制權，也能避免 Agent 無意間碰到不相關檔案。</p>
 <p>不建議初學者一開始就開啟完整存取權。完整存取權可能讓 Codex 接觸更大範圍的檔案、下載工具或執行高風險操作。較好的學習方式是先用小型練習專案建立信任與理解，再逐步擴大任務範圍。</p>
 <p>設定細節可參考外部講義：<a href="codex-app-settings-guide.html">Codex App 設定與權限邊界說明</a>。這份講義整理工作模式、權限、沙盒、網路存取與保守設定檢查，適合在 Workshop 1 開始前或 Module 1 操作前先閱讀。</p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
   <figure><img src="assets/windows11-vibe-coding-setup-infographic.png" alt="Windows 11 Vibe Coding 環境準備資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
+  <div class="slide-text">
 <h2 id="module-1windows-11-vibe-coding">九、Module 1：Windows 11 Vibe Coding 環境準備</h2>
-<blockquote>
-<p>教學標籤：示範</p>
-</blockquote>
 <p>本節以 Windows 11 筆電為主，目標是先完成可用的 Vibe Coding 工作環境，而不是立刻精通所有工具。學員需取得課程資料、確認資料夾位置，並能在 Codex 中開啟正確的 project。</p>
 <p>建議優先使用課程提供的 <code>setup-windows.bat</code> 完成一鍵安裝；若受限於權限、網路或資安政策，再依補充講義手動安裝。完成後，確認 <code>code</code>、<code>git</code>、<code>node</code>、<code>npm</code>、<code>uv</code>、<code>gh</code> 與 <code>codex</code> 都能顯示版本號。</p>
 <p>帳號部分需確認 ChatGPT / Codex 與 GitHub 都能登入。Codex CLI 透過瀏覽器登入 ChatGPT 帳號；GitHub CLI 使用 <code>gh auth login</code> 與一次性代碼登入，不需要先設定 SSH 金鑰。</p>
 <p>完成本節後，學員應能啟動 Codex CLI、讓 Codex 讀取第一個 project，並具備 VS Code、Python、Node.js 與 GitHub CLI 的基本可用環境。</p>
 <p>補充材料：<a href="module1/windows11-vibe-coding-setup.html">Windows 11 Vibe Coding 與 AI Agent 環境建置</a></p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
   <figure><img src="assets/markdown-agents-skill-docs-infographic.png" alt="Markdown AGENTS.md 與 Skill 資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
+  <div class="slide-text">
 <h2 id="markdownagentsmdskill">十、Markdown、AGENTS.md、Skill 與可讀文件</h2>
-<blockquote>
-<p>教學標籤：必講</p>
-</blockquote>
 <p>Markdown 是 AI 工作流程中非常重要的文件格式。它是純文字檔，但能用標題、段落、清單、表格、程式區塊與連結整理內容。對人而言，Markdown 容易閱讀；對 AI 而言，Markdown 結構清楚，適合當作教材、規則、任務說明或操作手冊。</p>
 <p>AGENTS.md 可用來描述專案中的工作規則。例如專案如何啟動、檔案放在哪裡、測試如何執行、產出格式有什麼限制、哪些資料不能修改。這類文件會影響 AI Agent 的工作方式，讓它不必每次都重新猜測專案慣例。</p>
 <p>Skill 是把可重複流程固定下來的方式。當某項任務未來會一再發生，例如整理課程名冊、產生固定格式講義、擷取特定網站資料或建立同類型報表，就適合把流程寫成 Skill。Skill 的價值在於把一次試成功的經驗，轉換成下次可以穩定呼叫的能力。</p>
 <p>延伸練習可參考：<a href="simple-codex-project-agents-guide.html">AGENTS.md 入門講義：給 Codex 的簡單專案規則</a>。這份材料聚焦最簡單的 Codex project，提供一份短版 <code>AGENTS.md</code> 範本，並包含三個入門範例，適合課堂中讓學員直接改成自己的專案版本。</p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
   <figure><img src="assets/plugin-playwright-computer-use-infographic.png" alt="Plugin Playwright MCP 與 Computer Use 資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
+  <div class="slide-text">
 <h2 id="pluginplaywright-mcp-computer-use">十一、Plugin、Playwright MCP 與 Computer Use</h2>
-<blockquote>
-<p>教學標籤：時間不足可略過</p>
-</blockquote>
 <p>在 Codex 的能力架構中，Plugin 與 Skill 是不同層級的概念。Plugin 比較像「能力包」或「工具整合包」：安裝後可能提供新的工具、apps、MCP servers、瀏覽器控制、桌面操作或其他系統能力。Computer Use、Record &amp; Replay 這類能力可以理解為 Plugin 層級的功能，它們讓 Codex 能接觸原本不能直接操作的環境，例如桌面視窗、使用者操作紀錄或外部服務。</p>
 <p>Skill 則比較像「任務說明書」或「可重複工作流程」。它不一定提供新的底層工具，而是告訴 Codex 遇到某類任務時應該怎麼判斷、讀哪些材料、用哪些工具、照什麼步驟完成，以及最後如何驗證。例如 Image Gen skill 會引導 Codex 在需要圖片產生或圖片編修時使用合適的圖片工具；Playwright CLI skill 會引導 Codex 用命令列方式操作瀏覽器、截圖、測試或除錯網頁流程。</p>
 <p>可以用一句話區分：Plugin 提供「Codex 能用什麼能力」，Skill 提供「Codex 遇到某類任務時該怎麼做」。有些 Plugin 會附帶 Skill，讓新工具不只是被安裝，也有對應的使用流程；但兩者仍不是同一件事。Plugin 偏向能力與連接，Skill 偏向流程與方法。</p>
 <p>Playwright MCP 是結構化瀏覽器控制能力，讓 AI Agent 能開啟網頁、點擊按鈕、填寫表單、等待 JavaScript 渲染、截圖與擷取資料。這比單純讀取 HTML 更接近真實使用者的操作方式，也適合處理需要登入、按鈕互動或動態載入資料的頁面。若同時有 Playwright 相關 Skill，Skill 會進一步規範何時使用 Playwright、如何記錄截圖、如何驗證頁面是否真的完成操作。</p>
 <p>Computer Use 是更一般化的 GUI 操作能力，可以操作桌面視窗、點擊應用程式與輸入文字。它很強，但也更難控管，因此應視為最後手段。若任務有 API、CLI、MCP 或其他結構化工具可用，應優先使用那些較可檢查、較穩定的方式；只有在必須操作圖形介面時，才考慮使用 Computer Use。Record &amp; Replay 也屬於偏工具能力的概念：它先記錄一次操作，再讓 AI Agent 之後依照相同意圖重做，適合重複性高、風險可控的任務。</p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
   <figure><img src="assets/record-replay-workflow-infographic.png" alt="Record and Replay 工作流程資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
+  <div class="slide-text">
 <h2 id="record-replay">十二、Record &amp; Replay：從示範到意圖式重播</h2>
-<blockquote>
-<p>教學標籤：延伸閱讀</p>
-</blockquote>
 <p>Record &amp; Replay 的概念是先記錄一次使用者操作，再讓 AI Agent 之後依照相同意圖重做。它不是單純記住滑鼠座標，而是嘗試理解任務目標，例如開啟某頁、選擇某項、下載某份資料、建立報表或完成某個行政流程。</p>
 <p>Record 是示範與萃取流程：使用者先做一次，讓 Codex 觀察任務目標、重要欄位、輸入輸出、判斷點與完成條件，並整理成可重複使用的 skill。Replay 則是依照這份 skill 重新完成任務；下一次使用者提供新的日期、檔案或查詢條件時，Codex 不是逐格播放錄影，而是依照同一個任務意圖重新操作。</p>
 <p>這與傳統 macro 不同。傳統巨集通常記住固定的點擊位置與按鍵順序，畫面一變、按鈕位置改變或資料筆數不同，就可能失效。Record &amp; Replay 比較接近「把示範轉成任務知識」：它保留流程目的與檢查方法，因此在檔名、位置或畫面略有不同時，有機會調整策略。不過如果流程大改、權限不足或成功條件沒有定義，重播仍可能失敗。</p>
 <p>它也不等於傳統 web scraping。Web scraping 通常針對 HTML、API 回應或 DOM 結構擷取資料，適合大量、規則、可重複的公開資料處理；Record &amp; Replay 則較適合「人本來會在 GUI 中操作」的流程，例如登入後台、選日期、匯出報表、重新命名檔案並檢查輸出。能用 API、CSV 下載或結構化資料來源時，應優先使用那些方式；需要操作畫面時，才考慮 Playwright、Computer Use 或 Record &amp; Replay。</p>
 <p>這類功能適合用在重複性高、步驟清楚、風險可控的任務。不要把它當成繞過網站限制、驗證碼、付費牆或服務條款的工具；若流程涉及帳號登入、學生資料、行政資料或高權限操作，仍應保持人工監督。好的重播流程應有明確輸入、輸出、停止條件與驗證方式。</p>
 <p>截至 2026-07-06 查核 OpenAI Developers 官方文件，Record &amp; Replay 標示為可在 macOS 使用，且需要 Computer Use 可用並已啟用；初始可用地區不包含 EEA、英國與瑞士。官方頁面目前沒有列出 Windows 版 Record &amp; Replay 可用，因此課程材料應暫時寫成「Codex App 可能有 Windows 版本，但 Record &amp; Replay 本功能目前以官方文件列出的 macOS 支援為準」。日後若官方文件更新，這一段應重新查核。查核來源：https://developers.openai.com/codex/record-and-replay</p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
   <figure><img src="assets/module2-ai-contexts-infographic.png" alt="Module 2 三種 AI 使用情境資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
+  <div class="slide-text">
 <h2 id="module-2-ai">十三、Module 2：用問卷資料比較三種 AI 使用情境</h2>
-<blockquote>
-<p>教學標籤：示範</p>
-</blockquote>
 <p>本節讓學員用同一份問卷資料比較三種 AI 使用情境。近期的雲端聊天 AI，例如 ChatGPT 或 Claude，已經可以直接讀取完整 <code>.xlsx</code>，不需要使用者把問卷資料切段或只貼幾列樣本。它適合快速理解 workbook 結構、摘要欄位、提出分析計畫與產生初步解讀；但分析結果通常仍停留在對話或附件中，後續若要形成可重複、可檢查的專案輸出，仍需要整理保存與驗證。</p>
 <p>AI Agent，例如 Codex 或 Claude Code，適合進入專案資料夾，直接讀取 <code>pre-test.xlsx</code> 與 <code>post-test.xlsx</code>，解析問卷資料、檢查欄位與缺漏、計算信度與基本效度線索，並對前後測共同填答者進行 paired t-test。重點不只是得到統計數字，而是讓學員看見 Agent 可以把結果自動寫成 Markdown、CSV 或 HTML 檔，並把清理資料、分析步驟與驗證紀錄留在專案中。</p>
 <p>Local LLM 則用來討論資料留在本機的價值。雖然一般筆電的本機運算能力很難和雲端 AI 服務相比，模型速度、能力與上下文長度也可能受限，但它的優點是資料不必離開本機，適合用來示範隱私保護、離線草稿、敏感資料先行摘要、或在上傳雲端前做去識別化處理。重點不是宣稱 Local LLM 比雲端更強，而是讓學員理解「資料留在本機」本身就是一種重要能力。</p>
 <p>配套的 learning-by-doing 練習材料請見：<a href="module2/codex-questionnaire-workbook-practice.html">Codex 問卷 Workbook 分析實作指南</a>。這份材料帶學員直接用 Codex 分析問卷 workbook，從資料結構判讀、去識別化結果表，到前測信效度 HTML 報告，作為本節觀念比較的實作延伸。</p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
   <figure><img src="assets/module3-scrape-playground-infographic.png" alt="Module 3 Scrape Playground 資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
+  <div class="slide-text">
 <h2 id="module-3scrape-playground">十四、Module 3：Scrape Playground 與網頁擷取練習</h2>
-<blockquote>
-<p>教學標籤：示範</p>
-</blockquote>
 <p>本節使用本機端 Scrape Playground 模擬網頁擷取任務。使用本機環境練習的好處是安全、可控、不涉及真實網站的服務條款與隱私問題。學員可以在可預期的情境中理解網頁資料從哪裡來，以及 AI Agent 如何協助擷取與整理。</p>
 <p>第一類練習是下載公開 CSV。學員需要啟動本機伺服器，開啟指定頁面，找到課程名冊連結，選擇課程，下載 CSV，存到指定資料夾，並檢查檔案內容。這個任務包含開服務、瀏覽網頁、找資料、下載檔案、命名與驗證等完整步驟。</p>
 <p>第二類練習是處理需要登入、選項或按鈕互動的頁面。這類頁面不一定能用單一網址或 curl 直接取得資料，可能需要先登入、點選下拉選單、按下載鈕或等待畫面更新。Playwright MCP 可以讓 AI Agent 模擬使用者操作，補足傳統靜態擷取的限制。</p>
 <p>第三類練習是 JavaScript 渲染頁面與 JSON 端點。畫面上看得到表格，不代表原始 HTML 裡就有表格資料。有些頁面會先載入框架，再透過 API 取得 JSON 並渲染到畫面上。AI Agent 可以等待渲染後擷取，也可以分析網路請求找出資料端點。這能幫助學員理解「看得到資料」與「抓得到資料」之間的差別。</p>
 <p>補充材料：<a href="module3/module3-playground.zip" download>Scrape Playground web server</a></p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
   <figure><img src="assets/repeatable-workflow-infographic.png" alt="從一次操作到可重複流程資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
+  <div class="slide-text">
 <h2 id="_5">十五、從一次操作到可重複流程</h2>
-<blockquote>
-<p>教學標籤：必講</p>
-</blockquote>
 <p>一次成功的操作只是開始。真正有價值的是把成功操作整理成未來可以重複執行的流程。若某項任務每週、每月或每學期都會做，就不應每次重新與 AI 對話，而應把流程固定成 Skill、腳本或清楚的操作文件。</p>
 <p>可重複流程至少需要描述任務目標、輸入條件、操作步驟、輸出位置與驗證方式。以下載 CSV 為例，流程應包含如何確認本機伺服器可連線、開啟哪個 URL、支援哪些課程代碼、下載後存到哪個資料夾，以及如何確認檔案內容正確。</p>
 <p>這種整理工作能把 AI Agent 從「現場聊天工具」轉變成「可累積的工作系統」。教師每次完成一個流程，都可以把經驗沉澱到專案中，讓下一次任務更快、更穩定，也更容易交給同事或學生使用。</p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
   <figure><img src="assets/qa-common-blockers-infographic.png" alt="Q&A 與常見卡關資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
+  <div class="slide-text">
 <h2 id="qa">十六、Q&amp;A 與常見卡關整理</h2>
-<blockquote>
-<p>教學標籤：時間不足可略過</p>
-</blockquote>
 <ul>
 <li>工作坊主軸：環境準備、project 操作、資料分析、網頁擷取、可重複流程。</li>
 <li>安裝問題：權限、<code>winget</code>、App Installer、PATH、網路下載速度。</li>
@@ -323,17 +465,19 @@
 </ul>
 <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0;">
   <figure><img src="assets/0709後測.png" alt="0709 後測" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
-</div></section>
+</div>
+  </div>
+</article></section>
   <section class="en"><h1 id="ai-agent-teaching-applications-workshop-1">AI Agent Teaching Applications Workshop (1)</h1>
 <h2 id="course-information">Course Information</h2>
 <ul>
-<li>Organizer：教育部智慧雨林產業創生人才育成計畫辦公室</li>
-<li>Topic：AI Agent 工作環境建立與使用</li>
-<li>Audience：智慧雨林產業創生人才育成計畫團隊teachers</li>
-<li>Speaker：南臺科技大學電子系 楊榮林 教授</li>
-<li>Location：南臺科技大學 J 棟 J301 教室</li>
+<li>Organizer: Ministry of Education Smart Rainforest Industry Talent Development Program Office</li>
+<li>Topic: Building and Using an AI Agent Work Environment</li>
+<li>Participants: Faculty teams in the Smart Rainforest Industry Talent Development Program</li>
+<li>Speaker: Prof. Rong-Lin Yang, Department of Electronic Engineering, Southern Taiwan University of Science and Technology</li>
+<li>Venue: Room J301, Building J, Southern Taiwan University of Science and Technology</li>
 </ul>
-<p>活動日期及時間：</p>
+<p>Dates and time:</p>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -344,18 +488,18 @@
 </thead>
 <tbody>
 <tr>
-<td>Session一</td>
-<td>115 年 7 月 2 日（四）</td>
-<td>13：00 - 17：30</td>
+<td>Session 1</td>
+<td>July 2, 2026 (Thu.)</td>
+<td>13:00 - 17:30</td>
 </tr>
 <tr>
-<td>Session二</td>
-<td>115 年 7 月 9 日（四）</td>
-<td>13：00 - 17：30</td>
+<td>Session 2</td>
+<td>July 9, 2026 (Thu.)</td>
+<td>13:00 - 17:30</td>
 </tr>
 </tbody>
 </table></div>
-<p>活動議程：</p>
+<p>Agenda:</p>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -365,258 +509,299 @@
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>12：30 - 13：00</td>
-<td>Check-in</td>
-<td></td>
-</tr>
-<tr>
-<td>13：00 - 13：10</td>
-<td>Opening</td>
-<td>余兆棠 教務長</td>
-</tr>
-<tr>
-<td>13：10 - 14：00</td>
-<td>AI Agent 工作環境建置</td>
-<td>楊榮林 教授</td>
-</tr>
-<tr>
-<td>14：00 - 14：50</td>
-<td>AI 工具認識</td>
-<td>楊榮林 教授</td>
-</tr>
-<tr>
-<td>14：50 - 15：20</td>
-<td>Tea Break</td>
-<td></td>
-</tr>
-<tr>
-<td>15：20 - 16：40</td>
-<td>AI 工具實務操作</td>
-<td>楊榮林 教授</td>
-</tr>
-<tr>
-<td>16：40 - 17：30</td>
-<td>Demo and Exchange</td>
-<td>楊榮林 教授</td>
-</tr>
-<tr>
-<td>17：30 ~</td>
-<td>Dismissal</td>
-<td></td>
-</tr>
+<tr><td>12:30 - 13:00</td><td>Check-in</td><td></td></tr>
+<tr><td>13:00 - 13:10</td><td>Opening</td><td>Provost Chao-Tang Yu</td></tr>
+<tr><td>13:10 - 14:00</td><td>AI Agent work environment setup</td><td>Prof. Rong-Lin Yang</td></tr>
+<tr><td>14:00 - 14:50</td><td>Introduction to AI tools</td><td>Prof. Rong-Lin Yang</td></tr>
+<tr><td>14:50 - 15:20</td><td>Tea break</td><td></td></tr>
+<tr><td>15:20 - 16:40</td><td>Hands-on AI tool practice</td><td>Prof. Rong-Lin Yang</td></tr>
+<tr><td>16:40 - 17:30</td><td>Demo, sharing, and discussion</td><td>Prof. Rong-Lin Yang</td></tr>
+<tr><td>17:30 ~</td><td>Dismissal</td><td></td></tr>
 </tbody>
 </table></div>
 <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
-  <figure><img src="assets/0709前測.png" alt="0709 前測" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
+  <figure><img src="assets/0709前測.png" alt="July 9 pre-test" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
 
 <h1 id="ai-agent-teaching-applications-workshop-1_1">AI Agent Teaching Applications Workshop (1)</h1>
-<p>這場工作坊的核心目標，是讓教師理解 AI Agent 如何成為教學與行政工作的實作夥伴。AI Agent 不只是回答問題的聊天工具；它可以在授權範圍內讀取專案檔案、修改內容、執行命令、操作瀏覽器，並把完成任務的過程整理成可以重複使用的流程。</p>
-<p>教師不需要先成為程式設計師，才有資格使用這類工具。更重要的是，教師要能用清楚的自然語言描述目標、提供材料、判斷成果是否正確，並把成功經驗逐步固定成講義、Skill、腳本或工作流程。這種能力會降低把教學構想落地的成本，也會讓原本需要大量手動處理的工作變得更容易試作與調整。</p>
-<p>本課程的學習重點包括形成性評量、個別化回饋、資料整理、網頁擷取、教材生成、本機專案管理，以及 AI Agent 的安全使用。學員完成課程後，應能判斷哪些任務適合交給聊天式 AI，哪些任務適合交給 AI Agent，哪些資料則應留在本機或先做去識別化處理。</p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
-  <figure><img src="assets/workshop-goals-use-cases-infographic.png" alt="工作坊目標與使用情境資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
+<p>The core goal of this workshop is to help teachers understand how AI Agents can become practical partners for teaching and administrative work. An AI Agent is not only a chat tool that answers questions; within an authorized workspace, it can read project files, edit content, run commands, operate a browser, and turn completed work into repeatable workflows.</p>
+<p>Teachers do not need to become programmers before they can use these tools. The more important skills are describing goals clearly in natural language, providing the right materials, judging whether the output is correct, and gradually turning successful work into handouts, Skills, scripts, or workflows.</p>
+<p>The course focuses on formative assessment, personalized feedback, data organization, web extraction, teaching-material generation, local project management, and safe AI Agent use. After the course, participants should be able to decide which tasks fit chat-based AI, which tasks fit AI Agents, and which data should remain local or be de-identified first.</p>
+<article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  <figure><img src="assets/workshop-goals-use-cases-infographic.png" alt="Workshop goals and use cases infographic" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
+  <div class="slide-text">
 <h2 id="1-workshop-goals-and-use-cases">1. Workshop Goals and Use Cases</h2>
-<blockquote>
-<p>教學標籤：必講</p>
-</blockquote>
-<p>本工作坊希望每位教師最後都能帶走一個與自己工作有關的小工具或可重複流程。這個成果不必是完整系統，也不必包含大量程式碼；它可以是整理學生資料的流程、擷取網頁內容的方法、產生教材頁面的模板、建立互動練習的步驟，或把重複行政工作包裝成可再次執行的 Skill。</p>
-<p>每位教師的使用情境都不同。不同課程、學校、學生族群與行政需求，會產生不同痛點。因此，課程的目的不是提供單一標準答案，而是讓學員理解 AI Agent 的能力邊界。只要某項工作原本可以透過鍵盤、滑鼠、瀏覽器、檔案與簡單工具完成，就有機會讓 AI Agent 協助規劃、執行與整理。</p>
-<p>課程使用 Codex 作為核心工具，並搭配 VS Code、GitHub、GitHub Copilot、Playwright MCP、Ollama、本機範例伺服器與 Scrape Playground。這些工具各自扮演不同角色：Codex 負責專案中的代理工作，VS Code 協助查看檔案，GitHub 支援版本管理與分享，Playwright MCP 支援瀏覽器操作，Ollama 提供 Local LLM 的本機模型情境。學習重點不在背工具名稱，而在理解它們如何組成一條可工作的流程。</p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
-  <figure><img src="assets/capstone-formative-assessment-infographic.png" alt="Capstone 形成性評量系統資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
+<p>By the end of the workshop, each teacher should leave with a small tool or repeatable workflow related to their own work. The outcome does not need to be a complete system or a large codebase. It may be a process for organizing student data, extracting web content, generating teaching pages, building interactive practice, or packaging a recurring administrative task as a reusable Skill.</p>
+<p>Every teacher’s context is different. Different courses, schools, student groups, and administrative needs create different pain points. The purpose of the course is not to provide one standard answer, but to help participants understand the capability boundaries of AI Agents. If a task can normally be done with keyboard, mouse, browser, files, and simple tools, there is a chance an AI Agent can help plan, execute, and document it.</p>
+<p>The workshop uses Codex as the core tool, alongside VS Code, GitHub, GitHub Copilot, Playwright MCP, Ollama, a local example server, and Scrape Playground. The point is not to memorize tool names, but to understand how they can be combined into a workable process.</p>
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  <figure><img src="assets/capstone-formative-assessment-infographic.png" alt="Capstone formative assessment infographic" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
+  <div class="slide-text">
 <h2 id="2-capstone-preview-formative-assessment-and-ai-assisted-teaching">2. Capstone Preview: Formative Assessment and AI-Assisted Teaching</h2>
-<blockquote>
-<p>教學標籤：示範</p>
-</blockquote>
-<p>本系列工作坊最後會以 AI 形成性評量系統作為 Capstone 應用。這個範例不是單純做一份線上測驗，而是呈現一個完整的教學工具想像：教師端可以掌握全班作答狀態，學生端可以完成短測驗並帶走作答回顧，AI 則協助把錯題與教材轉成後續補強方向。</p>
-<p>形成性評量的核心不是考倒學生，而是在課堂中快速回答三個問題：學生是否理解剛剛的概念、哪些學生或哪些題型需要教師再補充、學生作答後能不能取得下一步複習方向。若評量資料只停留在分數，教師能做的判斷有限；若能把作答進度、正確率、錯題紀錄與教材內容串起來，評量就會變成課堂中的即時訊號，也會成為學生課後補強的材料。</p>
-<p>範例系統包含教師端 Dashboard 與學生端測驗介面。教師端看的是全班狀態，例如目前學生正在做哪一份測驗、完成幾題、正確率如何、是否已提交；學生端則提供登入、逐題作答、提交、成績摘要與逐題作答回顧。這些畫面讓學員先看見 Workshop 1、2、3 逐步累積後可能完成的教學應用，而不是要求一開始就理解所有技術細節。</p>
-<p>AI 在這個設計中的位置是學習鷹架，而不是代答工具。學生完成作答後，可以把作答紀錄、題目內容與教材摘要提供給 ChatGPT、Gemini 或其他工具，請 AI 分析錯誤可能來自哪個概念、該回頭複習哪一段教材，以及下一步可以做什麼練習。這樣的流程讓 AI 協助診斷與補強，而最後的理解、判斷與修正仍然需要學生自己完成。</p>
-<p>延伸參考：<a href="capstone-assessment-preview.html">AI Agent 教學應用工作坊 Capstone 預覽：形成性評量系統設計意圖</a>。</p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
-  <figure><img src="assets/natural-language-vibe-coding-infographic.png" alt="自然語言與 Vibe Coding 資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
+<p>The workshop series will end with an AI formative-assessment system as the capstone application. This example is not just an online quiz. It presents a complete teaching-tool scenario: the teacher side tracks class progress, the student side completes short quizzes and reviews responses, and AI helps turn wrong answers and teaching materials into follow-up learning directions.</p>
+<p>The point of formative assessment is not to make tests harder. It is to answer three classroom questions quickly: whether students understood the concept, which students or question types need more support, and what students should review next after answering.</p>
+<p>The example system includes a teacher dashboard and a student quiz interface. The teacher sees class-level status such as quiz progress, completion, accuracy, and submission state. The student side supports login, question-by-question answering, submission, score summary, and response review.</p>
+<p>AI is used as learning scaffolding, not as an answer machine. After students submit their work, their responses, question content, and material summary can be given to ChatGPT, Gemini, or another tool to analyze possible misconceptions, recommend review sections, and suggest next exercises.</p>
+<p>Reference: <a href="capstone-assessment-preview.html">AI Agent Teaching Applications Workshop Capstone Preview: Design Intent for a Formative Assessment System</a>.</p>
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  <figure><img src="assets/natural-language-vibe-coding-infographic.png" alt="Natural language and vibe coding infographic" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
+  <div class="slide-text">
 <h2 id="3-natural-language-vibe-coding-and-the-changing-role-of-code">3. Natural Language, Vibe Coding, and the Changing Role of Code</h2>
-<blockquote>
-<p>教學標籤：必講</p>
-</blockquote>
-<p>人與電腦互動的方式正在改變。過去主要靠鍵盤、滑鼠、命令列與圖形介面操作；現在，自然語言也逐漸成為一種操作電腦的介面。使用者可以用日常語言描述目標、限制、資料來源與輸出格式，再由 AI 協助產生、執行或修改具體成果。</p>
-<p>Vibe coding 的重點不只是 coding，而是把「想要什麼」說清楚。使用者提供目標、素材與回饋，AI 協助產生程式、網頁、教材、自動化流程或資料整理結果。教師真正需要掌握的是需求描述、結果檢查、資料補充與方向修正，而不是每一行程式的語法細節。</p>
-<p>這並不表示程式知識不再重要。當成果要公開部署、處理敏感資料、連接外部系統或長期維護時，仍需要檢查安全性、正確性與可維護性。不過，對許多教學與行政原型而言，AI 已經能讓非程式背景的教師更快做出可試用的版本。</p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
-  <figure><img src="assets/chatgpt-vs-ai-agent-infographic.png" alt="ChatGPT 與 AI Agent 差異資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
+<p>The way people interact with computers is changing. In the past, interaction mainly depended on keyboards, mice, command lines, and graphical interfaces. Now natural language is also becoming an interface for operating computers.</p>
+<p>Vibe coding is not only about coding. Its core is explaining clearly what you want. The user provides goals, materials, constraints, and feedback; AI helps generate programs, pages, teaching materials, automation flows, or data-processing results.</p>
+<p>This does not mean programming knowledge no longer matters. When an outcome will be published, handle sensitive data, connect to external systems, or require long-term maintenance, safety, correctness, and maintainability still need to be checked.</p>
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  <figure><img src="assets/chatgpt-vs-ai-agent-infographic.png" alt="ChatGPT and AI Agent differences infographic" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
+  <div class="slide-text">
 <h2 id="4-differences-between-chatgpt-and-ai-agents">4. Differences Between ChatGPT and AI Agents</h2>
-<blockquote>
-<p>教學標籤：必講</p>
-</blockquote>
-<p>ChatGPT 類工具主要是對話式輔助。使用者輸入問題，AI 回覆說明、步驟、程式碼、摘要或建議。這類工具適合用來整理想法、改寫文字、產生範例、解釋概念，或協助教師準備教材草稿。它的輸出通常仍需要人自行複製、下載、貼到其他工具或手動執行。</p>
-<p>AI Agent 更像被授權執行任務的代理人。它不只回覆文字，也可以在指定工作區中讀取檔案、修改檔案、執行命令、開啟瀏覽器、點擊網頁、擷取資料，並把結果存回專案。這種能力讓 AI Agent 適合處理「需要實際產出檔案或操作工具」的任務，例如產生 HTML 講義、整理 CSV、檢查資料格式、啟動本機伺服器或測試網頁。</p>
-<p>這種差異也帶來權限與安全問題。聊天工具多半只處理使用者貼上的內容；AI Agent 則可能碰到專案檔案與本機工具。因此，使用 AI Agent 時要清楚知道它能讀什麼、能寫什麼、能不能執行命令，以及哪些動作需要使用者批准。AI Agent 越能做事，就越需要明確邊界與人工監督。</p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
-  <figure><img src="assets/privacy-local-llm-infographic.png" alt="資料隱私與 Local LLM 資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
+<p>ChatGPT-like tools are mainly conversational assistants. Users ask questions, and AI replies with explanations, steps, code, summaries, or suggestions. These tools are useful for organizing ideas, rewriting text, generating examples, explaining concepts, or drafting teaching materials.</p>
+<p>An AI Agent is more like an authorized task executor. It can do more than reply with text: in a specified workspace, it can read files, edit files, run commands, open a browser, click pages, extract data, and save results back into the project.</p>
+<p>This difference also creates permission and safety issues. Chat tools mostly process content pasted by the user. AI Agents may touch project files and local tools, so users must understand what the Agent can read, write, and execute, and which actions require approval.</p>
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  <figure><img src="assets/privacy-local-llm-infographic.png" alt="Data privacy and Local LLM infographic" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
+  <div class="slide-text">
 <h2 id="5-data-privacy-cloud-ai-and-local-llms">5. Data Privacy, Cloud AI, and Local LLMs</h2>
-<blockquote>
-<p>教學標籤：必講</p>
-</blockquote>
-<p>教師經常接觸學生資料、成績資料、行政資料與學校內部文件。這些資料不應在沒有處理的情況下直接上傳雲端 AI。即使服務提供者宣稱資料不會被拿去訓練模型，資料離開本機後仍會涉及外部儲存、傳輸與資安風險。</p>
-<p>處理敏感資料前，應先做去識別化。例如將學生姓名、學號、班級、座號與其他可識別資訊替換成代碼，只保留分析所需欄位。若資料非常敏感，或學校政策不允許上傳外部服務，就應考慮使用 Local LLM。</p>
-<p>Local LLM 是在本機執行的語言模型，例如透過 Ollama 下載並執行 gemma3:12b 之類的模型。它的優點是資料留在本機，不必上傳雲端；缺點是需要較多硬體資源，速度與能力也可能不如大型雲端模型。實務選擇可以分成三類：一般問答使用聊天 AI，需要操作檔案與工具時使用 AI Agent，敏感資料或離線需求則考慮 Local LLM。</p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
-  <figure><img src="assets/token-permissions-safety-infographic.png" alt="Token 權限與安全意識資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
+<p>Teachers often handle student data, grades, administrative data, and internal school documents. These materials should not be uploaded directly to cloud AI services without proper handling.</p>
+<p>Before processing sensitive data, de-identify it first. Replace names, student IDs, class information, seat numbers, and other identifiers with codes, and keep only the fields needed for analysis.</p>
+<p>A Local LLM runs on the user’s own computer, for example through Ollama. Its advantage is that data can stay local; its disadvantage is that it requires more hardware resources and may be slower or less capable than large cloud models.</p>
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  <figure><img src="assets/token-permissions-safety-infographic.png" alt="Tokens permissions and safety awareness infographic" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
+  <div class="slide-text">
 <h2 id="6-tokens-permissions-and-security-awareness">6. Tokens, Permissions, and Security Awareness</h2>
-<blockquote>
-<p>教學標籤：必講</p>
-</blockquote>
-<p>Token 可以理解為 AI 系統處理文字與上下文的單位。越長的對話、越多檔案、越複雜的任務，都會消耗更多 token。AI Agent 若在錯誤方向上反覆嘗試，可能快速消耗額度。因此，使用 Agent 時應設定清楚目標、限制範圍，並在必要時要求它先提出計畫或回報進度。</p>
-<p>權限管理是 AI Agent 使用中的核心能力。使用者應避免一開始就開放完整電腦存取權。較安全的做法是把工作限制在特定 project 或 workspace 中，讓 Agent 只能讀取與修改該資料夾下的內容。若任務需要超出範圍，例如下載外部資源、開啟其他資料夾或執行高風險命令，系統應要求使用者批准。</p>
-<p>剛開始使用時，不建議讓 Agent 無人看管地長時間執行。教師應觀察它準備做什麼、執行了什麼、是否開始重複嘗試、是否需要額外權限，以及輸出是否符合預期。這樣可以同時控制 token 成本、資料安全與檔案安全。</p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
-  <figure><img src="assets/computer-environment-requirements-infographic.png" alt="電腦環境與硬體需求資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
+<p>Tokens can be understood as the units AI systems use to process text and context. Longer conversations, more files, and more complex tasks consume more tokens. If an AI Agent repeatedly works in the wrong direction, it may quickly spend the available budget.</p>
+<p>Permission management is central to AI Agent use. Users should avoid granting full computer access at the beginning. A safer approach is to limit work to a specific project or workspace so the Agent can read and modify only that folder.</p>
+<p>Beginners should not leave an Agent running unattended for long periods. Teachers should watch what it plans to do, what it executes, whether it repeats failed attempts, whether it needs additional permissions, and whether the output matches expectations.</p>
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  <figure><img src="assets/computer-environment-requirements-infographic.png" alt="Computer environment and hardware requirements infographic" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
+  <div class="slide-text">
 <h2 id="7-computer-environment-and-hardware-requirements">7. Computer Environment and Hardware Requirements</h2>
-<blockquote>
-<p>教學標籤：必講</p>
-</blockquote>
-<p>本課程主要使用雲端模型，因此模型推論不需要在學員電腦上完成。一般三到五年內的 Windows 筆電或 Mac，通常足以進行課程練習。真正需要注意的是網路穩定性、雲端模型額度、token 消耗，以及同時開啟多個應用程式時的記憶體使用量。</p>
-<p>AI Agent 的工作方式通常不是只開一個聊天視窗。實作時可能會同時開啟 Codex、瀏覽器、終端機、VS Code、本機伺服器與專案資料夾。若記憶體太小，整體操作會變慢，瀏覽器與開發工具也可能卡頓。因此，雖然不需要高階顯示卡，仍建議使用記憶體較充足的電腦。</p>
-<p>課程現場常見的問題是網路限制與下載速度。Codex App、套件、瀏覽器工具或範例資料若下載很慢，可能不是工具本身故障，而是學校網路、共享頻寬或安全政策造成的限制。正式上課前，應盡量先完成安裝、登入與資料下載；若現場網路不穩，可以暫時使用手機熱點或改由已安裝好的示範環境進行。</p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
-  <figure><img src="assets/codex-app-setup-infographic.png" alt="Codex App 安裝與基本設定資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
+<p>This course mainly uses cloud models, so model inference does not need to run on participants’ computers. A Windows laptop or Mac from the past three to five years is usually enough for the course exercises.</p>
+<p>AI Agent work usually involves more than one chat window. Practice may involve Codex, a browser, a terminal, VS Code, a local server, and project folders at the same time. Sufficient memory matters more than a high-end GPU for this workshop.</p>
+<p>Common classroom issues include network restrictions and slow downloads. If Codex App, packages, browser tools, or sample data download slowly, the cause may be school network policy or shared bandwidth rather than the tool itself.</p>
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  <figure><img src="assets/codex-app-setup-infographic.png" alt="Codex App setup infographic" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
+  <div class="slide-text">
 <h2 id="8-codex-app-installation-and-basic-settings">8. Codex App Installation and Basic Settings</h2>
-<blockquote>
-<p>教學標籤：必講</p>
-</blockquote>
-<p>開始使用 Codex 前，第一步是先從官方或課程提供的下載連結取得 Codex App，依照作業系統完成安裝，然後打開 App 並使用 ChatGPT 帳號登入。安裝完成後，先確認 Codex 能正常啟動、帳號狀態正常，並知道目前使用的是免費、付費或教育方案額度。</p>
-<p>第一次設定 Codex 時，應先選擇一個明確的 project 或 workspace。Codex 看起來像聊天工具，但它會綁定特定資料夾；這表示它能在指定範圍內讀取檔案、修改檔案與執行工具。開始任務前，應確認目前開啟的是哪個專案、可讀寫範圍在哪裡，以及執行命令時是否需要批准。</p>
-<p>基本設定應以安全與可理解為優先。若使用者不是程式背景，可以選擇較白話的回應方式，讓 Codex 用一般語言說明它正在做什麼。檔案權限建議先限制在工作區內，並在需要下載外部資源、開啟其他資料夾或執行較高風險命令時要求批准。這樣可以保留使用者的控制權，也能避免 Agent 無意間碰到不相關檔案。</p>
-<p>不建議初學者一開始就開啟完整存取權。完整存取權可能讓 Codex 接觸更大範圍的檔案、下載工具或執行高風險操作。較好的學習方式是先用小型練習專案建立信任與理解，再逐步擴大任務範圍。</p>
-<p>設定細節可參考外部講義：<a href="codex-app-settings-guide.html">Codex App 設定與權限邊界說明</a>。這份講義整理工作模式、權限、沙盒、網路存取與保守設定檢查，適合在 Workshop 1 開始前或 Module 1 操作前先閱讀。</p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
-  <figure><img src="assets/windows11-vibe-coding-setup-infographic.png" alt="Windows 11 Vibe Coding 環境準備資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
+<p>Before using Codex, first obtain Codex App from the official or course-provided download link, install it for the operating system, open the app, and sign in with a ChatGPT account.</p>
+<p>When setting up Codex for the first time, choose a clear project or workspace. Codex looks like a chat tool, but it is bound to a folder. This means it can read files, edit files, and use tools within the specified scope.</p>
+<p>Basic settings should prioritize safety and understandability. For non-programmers, it is helpful to ask Codex to explain what it is doing in plain language. File access should initially be limited to the workspace.</p>
+<p>Beginners should not enable full access at the start. A better path is to build trust with a small practice project and then gradually expand the task scope.</p>
+<p>For details, see: <a href="codex-app-settings-guide.html">Codex App Settings and Permission Boundaries</a>.</p>
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  <figure><img src="assets/windows11-vibe-coding-setup-infographic.png" alt="Windows 11 vibe coding setup infographic" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
-<h2 id="9-module-1-windows-11-vibe-coding-environment-preparation">9. Module 1: Windows 11 Vibe Coding Environment Preparation</h2>
-<blockquote>
-<p>教學標籤：示範</p>
-</blockquote>
-<p>本節以 Windows 11 筆電為主，目標是先完成可用的 Vibe Coding 工作環境，而不是立刻精通所有工具。學員需取得課程資料、確認資料夾位置，並能在 Codex 中開啟正確的 project。</p>
-<p>建議優先使用課程提供的 <code>setup-windows.bat</code> 完成一鍵安裝；若受限於權限、網路或資安政策，再依補充講義手動安裝。完成後，確認 <code>code</code>、<code>git</code>、<code>node</code>、<code>npm</code>、<code>uv</code>、<code>gh</code> 與 <code>codex</code> 都能顯示版本號。</p>
-<p>帳號部分需確認 ChatGPT / Codex 與 GitHub 都能登入。Codex CLI 透過瀏覽器登入 ChatGPT 帳號；GitHub CLI 使用 <code>gh auth login</code> 與一次性代碼登入，不需要先設定 SSH 金鑰。</p>
-<p>完成本節後，學員應能啟動 Codex CLI、讓 Codex 讀取第一個 project，並具備 VS Code、Python、Node.js 與 GitHub CLI 的基本可用環境。</p>
-<p>補充材料：<a href="module1/windows11-vibe-coding-setup.html">Windows 11 Vibe Coding 與 AI Agent 環境建置</a></p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
-  <figure><img src="assets/markdown-agents-skill-docs-infographic.png" alt="Markdown AGENTS.md 與 Skill 資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
+  <div class="slide-text">
+<h2 id="9-module-1-windows-11-vibe-coding-environment-preparation">9. Windows 11 Vibe Coding Environment Preparation</h2>
+<p>This section focuses on Windows 11 laptops. The goal is to prepare a usable vibe-coding work environment, not to master every tool immediately.</p>
+<p>Use the course-provided <code>setup-windows.bat</code> first when possible. If permissions, network access, or security policy block it, install tools manually using the supplementary handout. After setup, confirm that <code>code</code>, <code>git</code>, <code>node</code>, <code>npm</code>, <code>uv</code>, <code>gh</code>, and <code>codex</code> can show version numbers.</p>
+<p>For accounts, confirm that ChatGPT / Codex and GitHub can both sign in. Codex CLI signs in through a browser, and GitHub CLI signs in with <code>gh auth login</code> and a one-time code.</p>
+<p>Supplement: <a href="module1/windows11-vibe-coding-setup.html">Windows 11 Vibe Coding and AI Agent Environment Setup</a></p>
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  <figure><img src="assets/markdown-agents-skill-docs-infographic.png" alt="Markdown AGENTS.md and Skill infographic" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
+  <div class="slide-text">
 <h2 id="10-markdown-agentsmd-skills-and-readable-documents">10. Markdown, AGENTS.md, Skills, and Readable Documents</h2>
-<blockquote>
-<p>教學標籤：必講</p>
-</blockquote>
-<p>Markdown 是 AI 工作流程中非常重要的文件格式。它是純文字檔，但能用標題、段落、清單、表格、程式區塊與連結整理內容。對人而言，Markdown 容易閱讀；對 AI 而言，Markdown 結構清楚，適合當作教材、規則、任務說明或操作手冊。</p>
-<p>AGENTS.md 可用來描述專案中的工作規則。例如專案如何啟動、檔案放在哪裡、測試如何執行、產出格式有什麼限制、哪些資料不能修改。這類文件會影響 AI Agent 的工作方式，讓它不必每次都重新猜測專案慣例。</p>
-<p>Skill 是把可重複流程固定下來的方式。當某項任務未來會一再發生，例如整理課程名冊、產生固定格式講義、擷取特定網站資料或建立同類型報表，就適合把流程寫成 Skill。Skill 的價值在於把一次試成功的經驗，轉換成下次可以穩定呼叫的能力。</p>
-<p>延伸練習可參考：<a href="simple-codex-project-agents-guide.html">AGENTS.md 入門講義：給 Codex 的簡單專案規則</a>。這份材料聚焦最簡單的 Codex project，提供一份短版 <code>AGENTS.md</code> 範本，並包含三個入門範例，適合課堂中讓學員直接改成自己的專案版本。</p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
-  <figure><img src="assets/plugin-playwright-computer-use-infographic.png" alt="Plugin Playwright MCP 與 Computer Use 資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
+<p>Markdown is an important document format in AI workflows. It is plain text, but it can organize headings, paragraphs, lists, tables, code blocks, and links. It is easy for people to read and structured enough for AI to use.</p>
+<p>AGENTS.md can describe project rules: how to start the project, where files belong, how tests run, what output format is expected, and what data should not be changed.</p>
+<p>A Skill is a way to preserve a repeatable process. When a task will happen again, such as organizing a roster, generating a fixed handout format, extracting a specific site, or creating similar reports, the workflow can be written as a Skill.</p>
+<p>Practice reference: <a href="simple-codex-project-agents-guide.html">Introductory AGENTS.md Guide: Simple Project Rules for Codex</a>.</p>
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  <figure><img src="assets/plugin-playwright-computer-use-infographic.png" alt="Plugin Playwright MCP and Computer Use infographic" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
+  <div class="slide-text">
 <h2 id="11-plugins-playwright-mcp-and-computer-use">11. Plugins, Playwright MCP, and Computer Use</h2>
-<blockquote>
-<p>教學標籤：時間不足可略過</p>
-</blockquote>
-<p>在 Codex 的能力架構中，Plugin 與 Skill 是不同層級的概念。Plugin 比較像「能力包」或「工具整合包」：安裝後可能提供新的工具、apps、MCP servers、瀏覽器控制、桌面操作或其他系統能力。Computer Use、Record &amp; Replay 這類能力可以理解為 Plugin 層級的功能，它們讓 Codex 能接觸原本不能直接操作的環境，例如桌面視窗、使用者操作紀錄或外部服務。</p>
-<p>Skill 則比較像「任務說明書」或「可重複工作流程」。它不一定提供新的底層工具，而是告訴 Codex 遇到某類任務時應該怎麼判斷、讀哪些材料、用哪些工具、照什麼步驟完成，以及最後如何驗證。例如 Image Gen skill 會引導 Codex 在需要圖片產生或圖片編修時使用合適的圖片工具；Playwright CLI skill 會引導 Codex 用命令列方式操作瀏覽器、截圖、測試或除錯網頁流程。</p>
-<p>可以用一句話區分：Plugin 提供「Codex 能用什麼能力」，Skill 提供「Codex 遇到某類任務時該怎麼做」。有些 Plugin 會附帶 Skill，讓新工具不只是被安裝，也有對應的使用流程；但兩者仍不是同一件事。Plugin 偏向能力與連接，Skill 偏向流程與方法。</p>
-<p>Playwright MCP 是結構化瀏覽器控制能力，讓 AI Agent 能開啟網頁、點擊按鈕、填寫表單、等待 JavaScript 渲染、截圖與擷取資料。這比單純讀取 HTML 更接近真實使用者的操作方式，也適合處理需要登入、按鈕互動或動態載入資料的頁面。若同時有 Playwright 相關 Skill，Skill 會進一步規範何時使用 Playwright、如何記錄截圖、如何驗證頁面是否真的完成操作。</p>
-<p>Computer Use 是更一般化的 GUI 操作能力，可以操作桌面視窗、點擊應用程式與輸入文字。它很強，但也更難控管，因此應視為最後手段。若任務有 API、CLI、MCP 或其他結構化工具可用，應優先使用那些較可檢查、較穩定的方式；只有在必須操作圖形介面時，才考慮使用 Computer Use。Record &amp; Replay 也屬於偏工具能力的概念：它先記錄一次操作，再讓 AI Agent 之後依照相同意圖重做，適合重複性高、風險可控的任務。</p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
-  <figure><img src="assets/record-replay-workflow-infographic.png" alt="Record and Replay 工作流程資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
+<p>In Codex, Plugins and Skills are different layers. A Plugin is like a capability or integration package. After installation, it may provide new tools, apps, MCP servers, browser control, desktop operation, or other system capabilities.</p>
+<p>A Skill is more like a task guide or repeatable workflow. It does not necessarily add new low-level tools; instead, it tells Codex how to handle a specific type of task, what materials to read, which tools to use, and how to verify the result.</p>
+<p>In short, Plugins provide what Codex can use; Skills provide how Codex should work on a task.</p>
+<p>Playwright MCP provides structured browser control: opening pages, clicking buttons, filling forms, waiting for JavaScript rendering, taking screenshots, and extracting data.</p>
+<p>Computer Use is a more general GUI operation capability. It is powerful but harder to govern, so structured tools such as APIs, CLIs, or MCP should be preferred whenever possible.</p>
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  <figure><img src="assets/record-replay-workflow-infographic.png" alt="Record and Replay workflow infographic" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
+  <div class="slide-text">
 <h2 id="12-record-replay-from-demonstration-to-intent-based-replay">12. Record &amp; Replay: From Demonstration to Intent-Based Replay</h2>
-<blockquote>
-<p>教學標籤：延伸閱讀</p>
-</blockquote>
-<p>Record &amp; Replay 的概念是先記錄一次使用者操作，再讓 AI Agent 之後依照相同意圖重做。它不是單純記住滑鼠座標，而是嘗試理解任務目標，例如開啟某頁、選擇某項、下載某份資料、建立報表或完成某個行政流程。</p>
-<p>Record 是示範與萃取流程：使用者先做一次，讓 Codex 觀察任務目標、重要欄位、輸入輸出、判斷點與完成條件，並整理成可重複使用的 skill。Replay 則是依照這份 skill 重新完成任務；下一次使用者提供新的日期、檔案或查詢條件時，Codex 不是逐格播放錄影，而是依照同一個任務意圖重新操作。</p>
-<p>這與傳統 macro 不同。傳統巨集通常記住固定的點擊位置與按鍵順序，畫面一變、按鈕位置改變或資料筆數不同，就可能失效。Record &amp; Replay 比較接近「把示範轉成任務知識」：它保留流程目的與檢查方法，因此在檔名、位置或畫面略有不同時，有機會調整策略。不過如果流程大改、權限不足或成功條件沒有定義，重播仍可能失敗。</p>
-<p>它也不等於傳統 web scraping。Web scraping 通常針對 HTML、API 回應或 DOM 結構擷取資料，適合大量、規則、可重複的公開資料處理；Record &amp; Replay 則較適合「人本來會在 GUI 中操作」的流程，例如登入後台、選日期、匯出報表、重新命名檔案並檢查輸出。能用 API、CSV 下載或結構化資料來源時，應優先使用那些方式；需要操作畫面時，才考慮 Playwright、Computer Use 或 Record &amp; Replay。</p>
-<p>這類功能適合用在重複性高、步驟清楚、風險可控的任務。不要把它當成繞過網站限制、驗證碼、付費牆或服務條款的工具；若流程涉及帳號登入、學生資料、行政資料或高權限操作，仍應保持人工監督。好的重播流程應有明確輸入、輸出、停止條件與驗證方式。</p>
-<p>截至 2026-07-06 查核 OpenAI Developers 官方文件，Record &amp; Replay 標示為可在 macOS 使用，且需要 Computer Use 可用並已啟用；初始可用地區不包含 EEA、英國與瑞士。官方頁面目前沒有列出 Windows 版 Record &amp; Replay 可用，因此課程材料應暫時寫成「Codex App 可能有 Windows 版本，但 Record &amp; Replay 本功能目前以官方文件列出的 macOS 支援為準」。日後若官方文件更新，這一段應重新查核。查核來源：https://developers.openai.com/codex/record-and-replay</p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
-  <figure><img src="assets/module2-ai-contexts-infographic.png" alt="Module 2 三種 AI 使用情境資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
+<p>Record &amp; Replay means recording a user’s operation once, then letting an AI Agent repeat the same intent later. It does not simply memorize mouse coordinates; it tries to understand the task goal, important fields, inputs, outputs, decision points, and completion criteria.</p>
+<p>Record extracts the workflow from a demonstration. Replay uses that workflow to complete the task again when the user provides a new date, file, or query condition.</p>
+<p>This is different from a traditional macro. Macros often remember fixed clicks and keystrokes; if the screen changes, they may fail. Record &amp; Replay is closer to turning a demonstration into task knowledge.</p>
+<p>It is also different from traditional web scraping. Web scraping targets HTML, API responses, or DOM structures; Record &amp; Replay is better for workflows people normally perform through a GUI.</p>
+<p>Use this only for clear, repeatable, low-risk tasks with human supervision. Do not use it to bypass website restrictions, CAPTCHAs, paywalls, or terms of service.</p>
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  <figure><img src="assets/module2-ai-contexts-infographic.png" alt="Three AI use contexts infographic" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
-<h2 id="13-module-2-comparing-three-ai-use-scenarios-with-questionnaire-data">13. Module 2: Comparing Three AI Use Scenarios with Questionnaire Data</h2>
-<blockquote>
-<p>教學標籤：示範</p>
-</blockquote>
-<p>本節讓學員用同一份問卷資料比較三種 AI 使用情境。近期的雲端聊天 AI，例如 ChatGPT 或 Claude，已經可以直接讀取完整 <code>.xlsx</code>，不需要使用者把問卷資料切段或只貼幾列樣本。它適合快速理解 workbook 結構、摘要欄位、提出分析計畫與產生初步解讀；但分析結果通常仍停留在對話或附件中，後續若要形成可重複、可檢查的專案輸出，仍需要整理保存與驗證。</p>
-<p>AI Agent，例如 Codex 或 Claude Code，適合進入專案資料夾，直接讀取 <code>pre-test.xlsx</code> 與 <code>post-test.xlsx</code>，解析問卷資料、檢查欄位與缺漏、計算信度與基本效度線索，並對前後測共同填答者進行 paired t-test。重點不只是得到統計數字，而是讓學員看見 Agent 可以把結果自動寫成 Markdown、CSV 或 HTML 檔，並把清理資料、分析步驟與驗證紀錄留在專案中。</p>
-<p>Local LLM 則用來討論資料留在本機的價值。雖然一般筆電的本機運算能力很難和雲端 AI 服務相比，模型速度、能力與上下文長度也可能受限，但它的優點是資料不必離開本機，適合用來示範隱私保護、離線草稿、敏感資料先行摘要、或在上傳雲端前做去識別化處理。重點不是宣稱 Local LLM 比雲端更強，而是讓學員理解「資料留在本機」本身就是一種重要能力。</p>
-<p>配套的 learning-by-doing 練習材料請見：<a href="module2/codex-questionnaire-workbook-practice.html">Codex 問卷 Workbook 分析實作指南</a>。這份材料帶學員直接用 Codex 分析問卷 workbook，從資料結構判讀、去識別化結果表，到前測信效度 HTML 報告，作為本節觀念比較的實作延伸。</p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
-  <figure><img src="assets/module3-scrape-playground-infographic.png" alt="Module 3 Scrape Playground 資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
+  <div class="slide-text">
+<h2 id="13-module-2-comparing-three-ai-use-scenarios-with-questionnaire-data">13. Comparing Three AI Use Scenarios with Questionnaire Data</h2>
+<p>This section uses the same questionnaire data to compare three AI use scenarios. Recent cloud chat AI tools such as ChatGPT or Claude can read a full <code>.xlsx</code> workbook directly, without requiring users to paste only a few rows or split the workbook into small pieces.</p>
+<p>AI Agents such as Codex or Claude Code are suitable for entering a project folder, reading <code>pre-test.xlsx</code> and <code>post-test.xlsx</code>, parsing questionnaire data, checking fields and missing values, calculating reliability and validity clues, and running paired t-tests for matched pre/post respondents.</p>
+<p>Local LLMs are used to discuss the value of keeping data on the local machine. Their speed, ability, and context length may be limited, but the privacy benefit is important.</p>
+<p>Hands-on guide: <a href="module2/codex-questionnaire-workbook-practice.html">Codex Questionnaire Workbook Analysis Practice Guide</a>.</p>
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  <figure><img src="assets/module3-scrape-playground-infographic.png" alt="Scrape Playground infographic" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
-<h2 id="14-module-3-scrape-playground-and-web-extraction-practice">14. Module 3: Scrape Playground and Web Extraction Practice</h2>
-<blockquote>
-<p>教學標籤：示範</p>
-</blockquote>
-<p>本節使用本機端 Scrape Playground 模擬網頁擷取任務。使用本機環境練習的好處是安全、可控、不涉及真實網站的服務條款與隱私問題。學員可以在可預期的情境中理解網頁資料從哪裡來，以及 AI Agent 如何協助擷取與整理。</p>
-<p>第一類練習是下載公開 CSV。學員需要啟動本機伺服器，開啟指定頁面，找到課程名冊連結，選擇課程，下載 CSV，存到指定資料夾，並檢查檔案內容。這個任務包含開服務、瀏覽網頁、找資料、下載檔案、命名與驗證等完整步驟。</p>
-<p>第二類練習是處理需要登入、選項或按鈕互動的頁面。這類頁面不一定能用單一網址或 curl 直接取得資料，可能需要先登入、點選下拉選單、按下載鈕或等待畫面更新。Playwright MCP 可以讓 AI Agent 模擬使用者操作，補足傳統靜態擷取的限制。</p>
-<p>第三類練習是 JavaScript 渲染頁面與 JSON 端點。畫面上看得到表格，不代表原始 HTML 裡就有表格資料。有些頁面會先載入框架，再透過 API 取得 JSON 並渲染到畫面上。AI Agent 可以等待渲染後擷取，也可以分析網路請求找出資料端點。這能幫助學員理解「看得到資料」與「抓得到資料」之間的差別。</p>
-<p>補充材料：<a href="module3/module3-playground.zip" download>Scrape Playground web server</a></p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
-  <figure><img src="assets/repeatable-workflow-infographic.png" alt="從一次操作到可重複流程資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
+  <div class="slide-text">
+<h2 id="14-module-3-scrape-playground-and-web-extraction-practice">14. Scrape Playground and Web Extraction Practice</h2>
+<p>This section uses a local Scrape Playground to simulate web extraction tasks. A local environment is safe, controllable, and avoids real website terms-of-service or privacy issues.</p>
+<p>The first practice task is downloading a public CSV: start a local server, open the assigned page, find a roster link, choose a course, download the CSV, save it to the target folder, and verify the file content.</p>
+<p>The second task handles pages that require login, options, or button interactions. These pages may require dropdown selections, download buttons, or waiting for screen updates.</p>
+<p>The third task covers JavaScript-rendered pages and JSON endpoints. Seeing a table on screen does not always mean the table data is in the original HTML.</p>
+<p>Supplement: <a href="module3/module3-playground.zip" download>Scrape Playground web server</a></p>
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  <figure><img src="assets/repeatable-workflow-infographic.png" alt="From one-time operation to repeatable workflow infographic" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
+  <div class="slide-text">
 <h2 id="15-from-one-time-operation-to-repeatable-workflow">15. From One-Time Operation to Repeatable Workflow</h2>
-<blockquote>
-<p>教學標籤：必講</p>
-</blockquote>
-<p>一次成功的操作只是開始。真正有價值的是把成功操作整理成未來可以重複執行的流程。若某項任務每週、每月或每學期都會做，就不應每次重新與 AI 對話，而應把流程固定成 Skill、腳本或清楚的操作文件。</p>
-<p>可重複流程至少需要描述任務目標、輸入條件、操作步驟、輸出位置與驗證方式。以下載 CSV 為例，流程應包含如何確認本機伺服器可連線、開啟哪個 URL、支援哪些課程代碼、下載後存到哪個資料夾，以及如何確認檔案內容正確。</p>
-<p>這種整理工作能把 AI Agent 從「現場聊天工具」轉變成「可累積的工作系統」。教師每次完成一個流程，都可以把經驗沉澱到專案中，讓下一次任務更快、更穩定，也更容易交給同事或學生使用。</p>
-<div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
-  <figure><img src="assets/qa-common-blockers-infographic.png" alt="Q&A 與常見卡關資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
+<p>A successful one-time operation is only the beginning. The real value is turning that success into a process that can be run again in the future.</p>
+<p>A repeatable workflow should describe the task goal, input conditions, steps, output location, and verification method. For example, a CSV download workflow should explain how to confirm the server is reachable, which URL to open, which course codes are supported, where to save the file, and how to verify the result.</p>
+<p>This turns an AI Agent from an on-the-spot chat helper into an accumulative work system. Each completed workflow can become part of the project and make the next task faster and more stable.</p>
+  </div>
+</article><article class="content-slide-card">
+  <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0; page-break-after: always;">
+  <figure><img src="assets/qa-common-blockers-infographic.png" alt="Q&A and common blockers infographic" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-
+  <div class="slide-text">
 <h2 id="16-qa-and-common-troubleshooting">16. Q&amp;A and Common Troubleshooting</h2>
-<blockquote>
-<p>教學標籤：時間不足可略過</p>
-</blockquote>
 <ul>
-<li>workshop主軸：環境準備、project 操作、dataanalysis、網頁擷取、可重複workflow。</li>
-<li>安裝問題：permissions、<code>winget</code>、App Installer、PATH、network下載速度。</li>
-<li>帳號問題：ChatGPT / Codex 登入、GitHub 登入、額度與教育方案。</li>
-<li>Project 問題：開錯data夾、找不到教材、輸出位置不明。</li>
-<li>questionnaireanalysis問題：欄位解讀、前post-test配對、去識別化、結果驗證。</li>
-<li>Scrape Playground 問題：本機伺服器、URL / port、下載位置、JavaScript / JSON data來源。</li>
-<li>可重複workflow問題：何時整理成文件、腳本或 Skill。</li>
+<li>Workshop focus: environment setup, project operation, data analysis, web extraction, and repeatable workflows.</li>
+<li>Installation issues: permissions, <code>winget</code>, App Installer, PATH, and network download speed.</li>
+<li>Account issues: ChatGPT / Codex login, GitHub login, quota, and education plans.</li>
+<li>Project issues: wrong folder, missing materials, and unclear output location.</li>
+<li>Questionnaire analysis issues: field interpretation, pre/post pairing, de-identification, and result verification.</li>
+<li>Scrape Playground issues: local server, URL / port, download location, and JavaScript / JSON data source.</li>
+<li>Repeatable workflow issues: when to turn work into a document, script, or Skill.</li>
 </ul>
 <div class="full-screen-image" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 2rem 0;">
-  <figure><img src="assets/0709後測.png" alt="0709 後測" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
-</div></section>
-  <footer>智慧雨林產業創生人才育成計畫 (南臺科技大學 電子系 楊榮林 教授)</footer>
+  <figure><img src="assets/0709後測.png" alt="July 9 post-test" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
-<script>function currentSection(){const lang=document.documentElement.getAttribute('data-lang');return document.querySelector('section.'+lang)}function navUsesSlides(){const box=document.getElementById('slideNavMode');return !!(box&&box.checked)}function targetForHead(head){if(!navUsesSlides())return head;const prev=head.previousElementSibling;if(prev&&(prev.classList.contains('full-screen-image')||prev.querySelector('img')))return prev;return head}function navTargets(){const section=currentSection();if(!section)return[];return[...section.querySelectorAll('h2')].map(targetForHead)}function gotoSection(i){const targets=navTargets();if(targets[i])targets[i].scrollIntoView({behavior:'smooth',block:'start'});closeMenu()}function toggleMenu(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('backdrop').classList.toggle('show')}function closeMenu(){document.getElementById('sidebar').classList.remove('open');document.getElementById('backdrop').classList.remove('show')}let spy;function buildSpy(){if(spy)spy.disconnect();const targets=navTargets();const btns=[...document.querySelectorAll('.nav .navbtn')];spy=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){const idx=targets.indexOf(e.target);btns.forEach((b,i)=>b.classList.toggle('active',i===idx))}})},{rootMargin:'0px 0px -75% 0px',threshold:0});targets.forEach(t=>spy.observe(t))}document.addEventListener('DOMContentLoaded',buildSpy);function toggleTheme(){const html=document.documentElement;const goingDark=html.getAttribute('data-theme')==='light';html.setAttribute('data-theme',goingDark?'dark':'light');document.getElementById('themeBtn').textContent=goingDark?'☀️ Light':'🌙 Dark'}function toggleLang(){const html=document.documentElement;const goingEn=html.getAttribute('data-lang')==='zh';html.setAttribute('data-lang',goingEn?'en':'zh');html.setAttribute('lang',goingEn?'en':'zh-Hant');document.getElementById('langBtn').textContent=goingEn?'中文':'English';buildSpy()}</script>
+  </div>
+</article></section>
+  <footer>教育部智慧雨林產業創生人才育成計畫 (南臺科技大學 電子系 楊榮林 教授)</footer>
+</div>
+<script>
+const pageTitles = {
+  zh: 'AI Agent 教學應用工作坊 (一)',
+  en: 'AI Agent Teaching Applications Workshop (1)'
+};
+
+function currentSection() {
+  const lang = document.documentElement.getAttribute('data-lang');
+  return document.querySelector('section.' + lang);
+}
+
+function navUsesSlides() {
+  const box = document.getElementById('slideNavMode');
+  return !!(box && box.checked);
+}
+
+function targetForHead(head) {
+  if (!navUsesSlides()) return head;
+  const card = head.closest('.content-slide-card');
+  if (card) return card;
+  const prev = head.previousElementSibling;
+  if (prev && (prev.classList.contains('full-screen-image') || prev.querySelector('img'))) return prev;
+  return head;
+}
+
+function navTargets() {
+  const section = currentSection();
+  if (!section) return [];
+  return [...section.querySelectorAll('h2')].map(targetForHead);
+}
+
+function gotoSection(i) {
+  const targets = navTargets();
+  if (targets[i]) targets[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
+  closeMenu();
+}
+
+function toggleMenu() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('backdrop').classList.toggle('show');
+}
+
+function closeMenu() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('backdrop').classList.remove('show');
+}
+
+let spy;
+function buildSpy() {
+  if (spy) spy.disconnect();
+  const targets = navTargets();
+  const btns = [...document.querySelectorAll('.nav .navbtn')];
+  spy = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const idx = targets.indexOf(e.target);
+        btns.forEach((b, i) => b.classList.toggle('active', i === idx));
+      }
+    });
+  }, { rootMargin: '0px 0px -75% 0px', threshold: 0 });
+  targets.forEach(t => spy.observe(t));
+}
+
+function toggleTheme() {
+  const html = document.documentElement;
+  const goingDark = html.getAttribute('data-theme') === 'light';
+  html.setAttribute('data-theme', goingDark ? 'dark' : 'light');
+  document.getElementById('themeBtn').textContent = goingDark ? '☀️ Light' : '🌙 Dark';
+}
+
+function setLanguage(lang) {
+  const html = document.documentElement;
+  const next = lang === 'en' ? 'en' : 'zh';
+  html.setAttribute('data-lang', next);
+  html.setAttribute('lang', next === 'en' ? 'en' : 'zh-Hant');
+  document.title = pageTitles[next];
+  const langBtn = document.getElementById('langBtn');
+  langBtn.textContent = next === 'en' ? '中文' : 'English';
+  langBtn.setAttribute('aria-label', next === 'en' ? 'Switch to Mandarin' : '切換為英文');
+  buildSpy();
+}
+
+function toggleLang() {
+  const current = document.documentElement.getAttribute('data-lang');
+  setLanguage(current === 'zh' ? 'en' : 'zh');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  setLanguage(document.documentElement.getAttribute('data-lang') || 'zh');
+});
+</script>
 </body>
 </html>

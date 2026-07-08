@@ -86,6 +86,29 @@
       font-size: 1.06rem;
     }
 
+    .intro-slide {
+      margin: 26px 0 28px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: linear-gradient(145deg, rgba(16, 23, 34, .96), rgba(23, 33, 48, .82));
+      box-shadow: var(--shadow);
+    }
+
+    .intro-slide img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 6px;
+      background: var(--panel);
+    }
+
+    .intro-caption {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: .94rem;
+    }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -148,6 +171,10 @@
       .card {
         min-height: 210px;
       }
+
+      .intro-slide {
+        padding: 10px;
+      }
     }
   </style>
 </head>
@@ -159,6 +186,11 @@
       <h1>企業 AI 導入入門：從工作現場與 Excel 工時計算開始</h1>
       <p class="lead">這份內容是提供給台南科工區在地企業的 AI 入門說明。第一部分用員工出勤與工作時數計算這類日常 Excel 報表做例子，讓大家看到 AI 可以怎麼協助整理資料；第二部分則給主管與管理者一個導入前的提醒：在開始買工具或導入系統之前，先釐清現場痛點、作業規則、責任分工與後續管理方式。</p>
     </header>
+
+    <section class="intro-slide" aria-label="講者自我介紹投影片">
+      <img src="assets/self-intro-slide-ai-focus.png" alt="楊榮林教授自我介紹投影片：從數位 IC 到生成式 AI 應用，聚焦 AI 應用與推動">
+      <p class="intro-caption">講者自我介紹：從數位 IC 到生成式 AI 應用，聚焦善用 AI 解決問題。</p>
+    </section>
 
     <section class="grid" aria-label="0708 presentation links">
       <a class="card" href="ai-worksites/ai-worksite-subject-summaries.html">

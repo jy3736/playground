@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AGENTS.md 簡介講義：給 Codex 的簡單專案規則</title>
-<style>:root{color-scheme:dark;--bg:#f4f1ea;--fg:#1f2328;--muted:#687180;--card:#ebe7df;--border:#d6d0c5;--accent:#2563eb;--th-bg:#ded8cc;--shadow:0 1px 3px rgba(44,38,28,.09);--sidebar-w:284px;--content-max:1040px;--content-pad-x:44px;--content-pad-y:42px;--measure:76ch}[data-theme="dark"]{--bg:#101217;--fg:#e7eaf0;--muted:#a5aebd;--card:#181c24;--border:#2a3140;--accent:#7bb2ff;--th-bg:#202632;--shadow:0 1px 3px rgba(0,0,0,.42)}html{scroll-behavior:smooth}*{box-sizing:border-box}body{min-width:0;margin:0;background:var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei",Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.76;letter-spacing:0;transition:background .25s,color .25s}.wrap{width:min(var(--content-max),calc(100vw - var(--sidebar-w) - (var(--content-pad-x) * 2)));margin-left:calc(var(--sidebar-w) + max(var(--content-pad-x),(100vw - var(--sidebar-w) - var(--content-max)) / 2));padding:var(--content-pad-y) var(--content-pad-x) 88px}.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;overflow-y:auto;background:var(--card);border-right:1px solid var(--border);display:flex;flex-direction:column;gap:10px;padding:18px 14px;z-index:30}.brand{font-weight:700;font-size:1rem;line-height:1.35;padding:0 6px}.toprow{display:flex;flex-wrap:wrap;align-items:center;gap:8px}.navmode{display:flex;align-items:flex-start;gap:8px;margin:0 6px;color:var(--muted);font-size:13px;font-weight:650;line-height:1.35}.navmode input{width:16px;height:16px;margin:1px 0 0;accent-color:var(--accent)}.nav{display:flex;flex-direction:column;gap:4px;margin-top:6px}.navbtn,.navhome{cursor:pointer;border:1px solid transparent;background:transparent;color:var(--muted);border-radius:7px;padding:7px 10px;font-size:14px;font-weight:650;text-align:left;width:100%;white-space:normal;text-decoration:none}.navbtn:hover,.navbtn.active,.navhome:hover{color:var(--accent);border-color:var(--border);background:var(--bg)}.navhome{display:block;border-color:var(--border);background:var(--bg);color:var(--fg)}.btn{cursor:pointer;border:1px solid var(--border);background:var(--bg);color:var(--fg);border-radius:8px;padding:6px 12px;font-size:13px;font-weight:650}.btn:hover{border-color:var(--accent)}.menu-toggle{display:none;position:fixed;top:12px;left:12px;z-index:40;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--fg);border-radius:8px;padding:6px 12px;font-size:18px;line-height:1}.backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:20}h1{max-width:var(--measure);font-size:2.15rem;line-height:1.28;margin:.2em 0 .35em}h2{font-size:1.48rem;margin-top:1.85em;padding-bottom:.25em;border-bottom:2px solid var(--border);scroll-margin-top:24px}h3{font-size:1.18rem;margin-top:1.55em;color:var(--accent)}h4{font-size:1.04rem;margin-top:1.25em;margin-bottom:.35em;color:var(--fg)}ul,ol{padding-left:1.3em}li{margin:.35em 0}p,li,blockquote{max-width:var(--measure);overflow-wrap:break-word}.table-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}table{width:100%;border-collapse:collapse;margin:1em 0;font-size:.94rem;box-shadow:var(--shadow);border-radius:8px;overflow:hidden}th,td{text-align:left;padding:10px 14px;border:1px solid var(--border);vertical-align:top}th{background:var(--th-bg);font-weight:750}td:first-child,th:first-child{white-space:nowrap}tbody tr:nth-child(even) td{background:var(--card)}figure{max-width:100%;margin:1.1em 0 1.35em;padding:10px;background:var(--card);border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow)}figure img{display:block;width:100%;height:auto;border-radius:6px}blockquote{margin:1.1em 0;padding:12px 16px;border-left:4px solid var(--accent);background:var(--card);color:var(--fg)}pre{overflow:auto;padding:12px 14px;background:var(--card);border:1px solid var(--border);border-radius:8px}code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;font-size:.92em;color:var(--fg);background:var(--card);border:1px solid var(--border);border-radius:6px;padding:.08em .35em}pre code{border:0;padding:0;background:transparent}.nav code{border:0;background:transparent;color:inherit;padding:0}.agents-sample{max-width:var(--measure);margin:1em 0 1.2em}.agents-sample-toolbar{display:flex;gap:8px;margin:0 0 8px}.sample-toggle{cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--muted);border-radius:8px;padding:6px 12px;font-size:13px;font-weight:700}.sample-toggle:hover,.sample-toggle[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);background:var(--bg)}.agents-sample pre{margin:0}.agents-sample[data-agents-lang="zh"] .agents-sample-en,.agents-sample[data-agents-lang="en"] .agents-sample-zh{display:none}.site-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:1.2em 0}.site-card{display:flex;flex-direction:column;gap:6px;min-height:142px;padding:14px 16px;border:1px solid var(--border);border-radius:8px;background:var(--card);box-shadow:var(--shadow);text-decoration:none;color:var(--fg)}.site-card:hover{border-color:var(--accent)}.site-card strong{font-size:1.03rem;color:var(--fg)}.site-card span{color:var(--muted)}.download-list{display:grid;gap:8px;max-width:var(--measure);padding-left:0;list-style:none}.download-list a{display:block;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--card);text-decoration:none}.download-list small{display:block;color:var(--muted)}table,pre{max-width:100%}a{color:var(--accent);overflow-wrap:anywhere}[data-lang="zh"] .en,[data-lang="en"] .zh{display:none}footer{margin-top:3em;color:var(--muted);font-size:.85rem;border-top:1px solid var(--border);padding-top:1em}@media (min-width:1440px){:root{--sidebar-w:304px;--content-max:1080px;--content-pad-x:54px;--content-pad-y:48px}}@media (max-width:1100px){:root{--sidebar-w:230px;--content-max:840px;--content-pad-x:28px;--content-pad-y:32px}.sidebar{padding:16px 10px}.brand{font-size:.95rem}.navbtn,.navhome{font-size:13px;padding:7px 8px}}@media (max-width:860px){:root{--sidebar-w:min(82vw,320px);--content-pad-x:18px;--content-pad-y:0px;--measure:100%}.sidebar{transform:translateX(-100%);transition:transform .25s}.sidebar.open{transform:none}.wrap{width:100%;margin-left:0;padding:72px var(--content-pad-x) 80px}.menu-toggle{display:block}.backdrop.show{display:block}h1{font-size:1.75rem}h2{font-size:1.26rem}h3{font-size:1.08rem}p,li,blockquote{max-width:100%}.site-grid{grid-template-columns:1fr}}@media (max-width:520px){:root{--sidebar-w:min(88vw,300px);--content-pad-x:14px}.wrap{padding-top:68px}.menu-toggle{top:10px;left:10px;padding:7px 11px}.sidebar{padding:14px 10px}.toprow{gap:6px}.btn{padding:6px 10px;font-size:12px}.navmode{font-size:12px}.navbtn,.navhome{font-size:13px}.agents-sample-toolbar{flex-wrap:wrap}h1{font-size:1.55rem}h2{font-size:1.18rem}th,td{padding:8px 10px}}</style>
+<style>:root{color-scheme:dark;--bg:#f4f1ea;--fg:#1f2328;--muted:#687180;--card:#ebe7df;--border:#d6d0c5;--accent:#2563eb;--th-bg:#ded8cc;--shadow:0 1px 3px rgba(44,38,28,.09);--sidebar-w:284px;--content-max:1040px;--content-pad-x:44px;--content-pad-y:42px;--measure:76ch}[data-theme="dark"]{--bg:#101217;--fg:#e7eaf0;--muted:#a5aebd;--card:#181c24;--border:#2a3140;--accent:#7bb2ff;--th-bg:#202632;--shadow:0 1px 3px rgba(0,0,0,.42)}html{scroll-behavior:smooth}*{box-sizing:border-box}body{min-width:0;margin:0;background:var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei",Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.76;letter-spacing:0;transition:background .25s,color .25s}.wrap{width:min(var(--content-max),calc(100vw - var(--sidebar-w) - (var(--content-pad-x) * 2)));margin-left:calc(var(--sidebar-w) + max(var(--content-pad-x),(100vw - var(--sidebar-w) - var(--content-max)) / 2));padding:var(--content-pad-y) var(--content-pad-x) 88px}.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;overflow-y:auto;background:var(--card);border-right:1px solid var(--border);display:flex;flex-direction:column;gap:10px;padding:18px 14px;z-index:30}.brand{font-weight:700;font-size:1rem;line-height:1.35;padding:0 6px}.toprow{display:flex;flex-wrap:wrap;align-items:center;gap:8px}.navmode{display:flex;align-items:flex-start;gap:8px;margin:0 6px;color:var(--muted);font-size:13px;font-weight:650;line-height:1.35}.navmode input{width:16px;height:16px;margin:1px 0 0;accent-color:var(--accent)}.nav{display:flex;flex-direction:column;gap:4px;margin-top:6px}.navbtn,.navhome{cursor:pointer;border:1px solid transparent;background:transparent;color:var(--muted);border-radius:7px;padding:7px 10px;font-size:14px;font-weight:650;text-align:left;width:100%;white-space:normal;text-decoration:none}.navbtn:hover,.navbtn.active,.navhome:hover{color:var(--accent);border-color:var(--border);background:var(--bg)}.navhome{display:block;border-color:var(--border);background:var(--bg);color:var(--fg)}.btn{cursor:pointer;border:1px solid var(--border);background:var(--bg);color:var(--fg);border-radius:8px;padding:6px 12px;font-size:13px;font-weight:650}.btn:hover{border-color:var(--accent)}.menu-toggle{display:none;position:fixed;top:12px;left:12px;z-index:40;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--fg);border-radius:8px;padding:6px 12px;font-size:18px;line-height:1}.backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:20}h1{max-width:var(--measure);font-size:2.15rem;line-height:1.28;margin:.2em 0 .35em}h2{font-size:1.48rem;margin-top:1.85em;padding-bottom:.25em;border-bottom:2px solid var(--border);scroll-margin-top:24px}h3{font-size:1.18rem;margin-top:1.55em;color:var(--accent)}h4{font-size:1.04rem;margin-top:1.25em;margin-bottom:.35em;color:var(--fg)}ul,ol{padding-left:1.3em}li{margin:.35em 0}p,li,blockquote{max-width:var(--measure);overflow-wrap:break-word}.table-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}table{width:100%;border-collapse:collapse;margin:1em 0;font-size:.94rem;box-shadow:var(--shadow);border-radius:8px;overflow:hidden}th,td{text-align:left;padding:10px 14px;border:1px solid var(--border);vertical-align:top}th{background:var(--th-bg);font-weight:750}td:first-child,th:first-child{white-space:nowrap}tbody tr:nth-child(even) td{background:var(--card)}figure{max-width:100%;margin:1.1em 0 1.35em;padding:10px;background:var(--card);border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow)}figure img{display:block;width:100%;height:auto;border-radius:6px}blockquote{margin:1.1em 0;padding:12px 16px;border-left:4px solid var(--accent);background:var(--card);color:var(--fg)}pre{overflow:auto;padding:12px 14px;background:var(--card);border:1px solid var(--border);border-radius:8px}code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;font-size:.92em;color:var(--fg);background:var(--card);border:1px solid var(--border);border-radius:6px;padding:.08em .35em}pre code{border:0;padding:0;background:transparent}.nav code{border:0;background:transparent;color:inherit;padding:0}.code-sample{max-width:var(--measure);margin:1em 0 1.2em}.code-sample-toolbar{display:flex;gap:8px;margin:0 0 8px}.sample-toggle{cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--muted);border-radius:8px;padding:6px 12px;font-size:13px;font-weight:700}.sample-toggle:hover,.sample-toggle[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);background:var(--bg)}.code-sample pre{margin:0}.code-sample[data-code-lang="zh"] .code-sample-en,.code-sample[data-code-lang="en"] .code-sample-zh{display:none}.site-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:1.2em 0}.site-card{display:flex;flex-direction:column;gap:6px;min-height:142px;padding:14px 16px;border:1px solid var(--border);border-radius:8px;background:var(--card);box-shadow:var(--shadow);text-decoration:none;color:var(--fg)}.site-card:hover{border-color:var(--accent)}.site-card strong{font-size:1.03rem;color:var(--fg)}.site-card span{color:var(--muted)}.download-list{display:grid;gap:8px;max-width:var(--measure);padding-left:0;list-style:none}.download-list a{display:block;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--card);text-decoration:none}.download-list small{display:block;color:var(--muted)}table,pre{max-width:100%}a{color:var(--accent);overflow-wrap:anywhere}[data-lang="zh"] .en,[data-lang="en"] .zh{display:none}footer{margin-top:3em;color:var(--muted);font-size:.85rem;border-top:1px solid var(--border);padding-top:1em}@media (min-width:1440px){:root{--sidebar-w:304px;--content-max:1080px;--content-pad-x:54px;--content-pad-y:48px}}@media (max-width:1100px){:root{--sidebar-w:230px;--content-max:840px;--content-pad-x:28px;--content-pad-y:32px}.sidebar{padding:16px 10px}.brand{font-size:.95rem}.navbtn,.navhome{font-size:13px;padding:7px 8px}}@media (max-width:860px){:root{--sidebar-w:min(82vw,320px);--content-pad-x:18px;--content-pad-y:0px;--measure:100%}.sidebar{transform:translateX(-100%);transition:transform .25s}.sidebar.open{transform:none}.wrap{width:100%;margin-left:0;padding:72px var(--content-pad-x) 80px}.menu-toggle{display:block}.backdrop.show{display:block}h1{font-size:1.75rem}h2{font-size:1.26rem}h3{font-size:1.08rem}p,li,blockquote{max-width:100%}.site-grid{grid-template-columns:1fr}}@media (max-width:520px){:root{--sidebar-w:min(88vw,300px);--content-pad-x:14px}.wrap{padding-top:68px}.menu-toggle{top:10px;left:10px;padding:7px 11px}.sidebar{padding:14px 10px}.toprow{gap:6px}.btn{padding:6px 10px;font-size:12px}.navmode{font-size:12px}.navbtn,.navhome{font-size:13px}.code-sample-toolbar{flex-wrap:wrap}h1{font-size:1.55rem}h2{font-size:1.18rem}th,td{padding:8px 10px}}</style>
 </head>
 <body>
 <button class="menu-toggle" id="menuToggle" onclick="toggleMenu()" type="button">☰</button>
@@ -43,12 +43,12 @@
 <p><code>AGENTS.md</code> 不需要寫得很長。能讓 Codex 少猜一點，就是有用的規則。</p>
 <h2 id="codex-agentsmd">最簡單的 Codex AGENTS.md</h2>
 <p>下面是一份非常簡單的版本。它只描述 Codex 在目前 project 裡的基本工作方式。</p>
-<div class="agents-sample" data-agents-lang="zh">
-  <div class="agents-sample-toolbar" aria-label="AGENTS.md 範本語言切換">
-    <button class="sample-toggle" type="button" onclick="setAgentsSampleLang(this,'zh')" aria-pressed="true">中文</button>
-    <button class="sample-toggle" type="button" onclick="setAgentsSampleLang(this,'en')" aria-pressed="false">English</button>
+<div class="code-sample" data-code-lang="en">
+  <div class="code-sample-toolbar" aria-label="AGENTS.md 範本語言切換">
+    <button class="sample-toggle" type="button" onclick="setCodeSampleLang(this,'zh')" aria-pressed="false">中文</button>
+    <button class="sample-toggle" type="button" onclick="setCodeSampleLang(this,'en')" aria-pressed="true">English</button>
   </div>
-  <pre class="agents-sample-zh"><code class="language-markdown"># AGENTS.md
+  <pre class="code-sample-zh"><code class="language-markdown"># AGENTS.md
 
 ## 專案
 
@@ -79,7 +79,7 @@
 - 檢查內容是否符合使用者的要求。
 - 如果有無法檢查的項目，要告訴使用者。
 </code></pre>
-  <pre class="agents-sample-en"><code class="language-markdown"># AGENTS.md
+  <pre class="code-sample-en"><code class="language-markdown"># AGENTS.md
 
 ## Project
 
@@ -122,7 +122,37 @@ This is a simple Codex project.
 <p>不要一開始就寫太多規則。規則越多，越難看懂，也越不容易維護。</p>
 <h2 id="_3">範例一：簡單文字修改專案</h2>
 <p>這個範例適合用在只有一兩個文字檔的專案，例如改講稿、改說明文字或整理課堂筆記。</p>
-<pre><code class="language-markdown"># AGENTS.md
+<div class="code-sample" data-code-lang="en">
+  <div class="code-sample-toolbar" aria-label="文字修改 AGENTS.md 範例語言切換">
+    <button class="sample-toggle" type="button" onclick="setCodeSampleLang(this,'zh')" aria-pressed="false">中文</button>
+    <button class="sample-toggle" type="button" onclick="setCodeSampleLang(this,'en')" aria-pressed="true">English</button>
+  </div>
+  <pre class="code-sample-zh"><code class="language-markdown"># AGENTS.md
+
+## 專案
+
+這是一個簡單的文字修改專案。
+
+## 語言
+
+- 使用繁體中文。
+- 文字要清楚自然。
+- 避免太正式或太技術性的說法。
+
+## 工作規則
+
+- 編輯前先閱讀檔案。
+- 除非使用者要求改變，否則保留原本意思。
+- 做聚焦的修改。
+- 除非範例明顯無關，否則不要移除範例。
+
+## 驗證
+
+- 檢查修改後的文字是否容易閱讀。
+- 檢查標題和清單是否仍然合理。
+- 編輯後摘要主要變更。
+</code></pre>
+  <pre class="code-sample-en"><code class="language-markdown"># AGENTS.md
 
 ## Project
 
@@ -147,9 +177,39 @@ This is a simple writing project.
 - Check that headings and lists still make sense.
 - Summarize the main changes after editing.
 </code></pre>
+</div>
 <h2 id="_4">範例二：簡單程式練習專案</h2>
 <p>這個範例適合用在一個小程式練習，例如一個 Python 檔、一個 JavaScript 檔，或一個簡單網頁。</p>
-<pre><code class="language-markdown"># AGENTS.md
+<div class="code-sample" data-code-lang="en">
+  <div class="code-sample-toolbar" aria-label="程式練習 AGENTS.md 範例語言切換">
+    <button class="sample-toggle" type="button" onclick="setCodeSampleLang(this,'zh')" aria-pressed="false">中文</button>
+    <button class="sample-toggle" type="button" onclick="setCodeSampleLang(this,'en')" aria-pressed="true">English</button>
+  </div>
+  <pre class="code-sample-zh"><code class="language-markdown"># AGENTS.md
+
+## 專案
+
+這是一個小型程式練習專案。
+
+## 語言
+
+- 用繁體中文說明修改內容。
+- 程式註解要短而有用。
+
+## 工作規則
+
+- 修改前先閱讀現有程式碼。
+- 優先使用初學者能理解的簡單程式碼。
+- 除非使用者要求，不要新增套件。
+- 不要修改無關的程式碼。
+
+## 驗證
+
+- 可以的話，執行基本檢查。
+- 如果程式無法執行，說明原因。
+- 回報修改的檔案和已檢查的項目。
+</code></pre>
+  <pre class="code-sample-en"><code class="language-markdown"># AGENTS.md
 
 ## Project
 
@@ -173,9 +233,39 @@ This is a small coding practice project.
 - If the code cannot be run, explain why.
 - Report the changed file and what was checked.
 </code></pre>
+</div>
 <h2 id="_5">範例三：簡單資料整理專案</h2>
 <p>這個範例適合用在一個小型資料檔，例如整理一份 CSV、表格內容或貼上的名單。</p>
-<pre><code class="language-markdown"># AGENTS.md
+<div class="code-sample" data-code-lang="en">
+  <div class="code-sample-toolbar" aria-label="資料整理 AGENTS.md 範例語言切換">
+    <button class="sample-toggle" type="button" onclick="setCodeSampleLang(this,'zh')" aria-pressed="false">中文</button>
+    <button class="sample-toggle" type="button" onclick="setCodeSampleLang(this,'en')" aria-pressed="true">English</button>
+  </div>
+  <pre class="code-sample-zh"><code class="language-markdown"># AGENTS.md
+
+## 專案
+
+這是一個簡單的資料整理專案。
+
+## 語言
+
+- 使用繁體中文。
+- 清楚說明假設。
+
+## 工作規則
+
+- 不要編造缺少的資料。
+- 不要暴露私人個人資料。
+- 保留原始資料的意思。
+- 大量更動列或欄之前先詢問。
+
+## 驗證
+
+- 可以的話，檢查資料列數。
+- 檢查重要欄位是否仍然存在。
+- 摘要缺少或異常的值。
+</code></pre>
+  <pre class="code-sample-en"><code class="language-markdown"># AGENTS.md
 
 ## Project
 
@@ -199,6 +289,7 @@ This is a simple data cleanup project.
 - Check that important columns are still present.
 - Summarize any missing or unusual values.
 </code></pre>
+</div>
 <h2 id="agentsmd_1">課堂練習：建立自己的 AGENTS.md</h2>
 <h3 id="problem-statement">Problem Statement</h3>
 <p>請在你的 Codex project 最上層建立一份簡單的 <code>AGENTS.md</code>。這份文件只需要描述這個 project 的基本工作規則，不需要規劃其他資料夾，也不需要寫成完整技術文件。</p>
@@ -212,11 +303,22 @@ This is a simple data cleanup project.
 </ul>
 <h3 id="suggested-prompt">Suggested Prompt</h3>
 <p>可以直接對 Codex 說：</p>
-<pre><code class="language-text">Create a simple AGENTS.md for this Codex project.
+<div class="code-sample" data-code-lang="en">
+  <div class="code-sample-toolbar" aria-label="建議 prompt 語言切換">
+    <button class="sample-toggle" type="button" onclick="setCodeSampleLang(this,'zh')" aria-pressed="false">中文</button>
+    <button class="sample-toggle" type="button" onclick="setCodeSampleLang(this,'en')" aria-pressed="true">English</button>
+  </div>
+  <pre class="code-sample-zh"><code class="language-text">為這個 Codex project 建立一份簡單的 AGENTS.md。
+保持適合初學者。
+使用繁體中文說明。
+只聚焦在這個簡單的 Codex project。
+</code></pre>
+  <pre class="code-sample-en"><code class="language-text">Create a simple AGENTS.md for this Codex project.
 Keep it beginner-friendly.
 Use Traditional Chinese explanations.
 Focus only on this simple Codex project.
 </code></pre>
+</div>
 <h2 id="_6">檢查清單</h2>
 <p>完成後，確認你的 <code>AGENTS.md</code>：</p>
 <ul>
@@ -247,12 +349,12 @@ Focus only on this simple Codex project.
 <p><code>AGENTS.md</code> does not need to be long. Any rule that helps Codex guess less is useful.</p>
 <h2 id="the-simplest-codex-agentsmd">The Simplest Codex AGENTS.md</h2>
 <p>Here is a very simple version. It only describes how Codex should work in the current project.</p>
-<div class="agents-sample" data-agents-lang="en">
-  <div class="agents-sample-toolbar" aria-label="AGENTS.md sample language toggle">
-    <button class="sample-toggle" type="button" onclick="setAgentsSampleLang(this,'zh')" aria-pressed="false">中文</button>
-    <button class="sample-toggle" type="button" onclick="setAgentsSampleLang(this,'en')" aria-pressed="true">English</button>
+<div class="code-sample" data-code-lang="en">
+  <div class="code-sample-toolbar" aria-label="AGENTS.md sample language toggle">
+    <button class="sample-toggle" type="button" onclick="setCodeSampleLang(this,'zh')" aria-pressed="false">中文</button>
+    <button class="sample-toggle" type="button" onclick="setCodeSampleLang(this,'en')" aria-pressed="true">English</button>
   </div>
-  <pre class="agents-sample-zh"><code class="language-markdown"># AGENTS.md
+  <pre class="code-sample-zh"><code class="language-markdown"># AGENTS.md
 
 ## 專案
 
@@ -283,7 +385,7 @@ Focus only on this simple Codex project.
 - 檢查內容是否符合使用者的要求。
 - 如果有無法檢查的項目，要告訴使用者。
 </code></pre>
-  <pre class="agents-sample-en"><code class="language-markdown"># AGENTS.md
+  <pre class="code-sample-en"><code class="language-markdown"># AGENTS.md
 
 ## Project
 
@@ -326,7 +428,37 @@ This is a simple Codex project.
 <p>Do not write too many rules at the beginning. The more rules you add, the harder they are to read and maintain.</p>
 <h2 id="example-1-simple-text-editing-project">Example 1: Simple Text Editing Project</h2>
 <p>This example fits a project with only one or two text files, such as revising a script, editing explanatory text, or organizing class notes.</p>
-<pre><code class="language-markdown"># AGENTS.md
+<div class="code-sample" data-code-lang="en">
+  <div class="code-sample-toolbar" aria-label="Text editing AGENTS.md sample language toggle">
+    <button class="sample-toggle" type="button" onclick="setCodeSampleLang(this,'zh')" aria-pressed="false">中文</button>
+    <button class="sample-toggle" type="button" onclick="setCodeSampleLang(this,'en')" aria-pressed="true">English</button>
+  </div>
+  <pre class="code-sample-zh"><code class="language-markdown"># AGENTS.md
+
+## 專案
+
+這是一個簡單的文字修改專案。
+
+## 語言
+
+- 使用繁體中文。
+- 文字要清楚自然。
+- 避免太正式或太技術性的說法。
+
+## 工作規則
+
+- 編輯前先閱讀檔案。
+- 除非使用者要求改變，否則保留原本意思。
+- 做聚焦的修改。
+- 除非範例明顯無關，否則不要移除範例。
+
+## 驗證
+
+- 檢查修改後的文字是否容易閱讀。
+- 檢查標題和清單是否仍然合理。
+- 編輯後摘要主要變更。
+</code></pre>
+  <pre class="code-sample-en"><code class="language-markdown"># AGENTS.md
 
 ## Project
 
@@ -351,9 +483,39 @@ This is a simple writing project.
 - Check that headings and lists still make sense.
 - Summarize the main changes after editing.
 </code></pre>
+</div>
 <h2 id="example-2-simple-programming-practice-project">Example 2: Simple Programming Practice Project</h2>
 <p>This example fits a small programming practice project, such as one Python file, one JavaScript file, or a simple web page.</p>
-<pre><code class="language-markdown"># AGENTS.md
+<div class="code-sample" data-code-lang="en">
+  <div class="code-sample-toolbar" aria-label="Programming practice AGENTS.md sample language toggle">
+    <button class="sample-toggle" type="button" onclick="setCodeSampleLang(this,'zh')" aria-pressed="false">中文</button>
+    <button class="sample-toggle" type="button" onclick="setCodeSampleLang(this,'en')" aria-pressed="true">English</button>
+  </div>
+  <pre class="code-sample-zh"><code class="language-markdown"># AGENTS.md
+
+## 專案
+
+這是一個小型程式練習專案。
+
+## 語言
+
+- 用繁體中文說明修改內容。
+- 程式註解要短而有用。
+
+## 工作規則
+
+- 修改前先閱讀現有程式碼。
+- 優先使用初學者能理解的簡單程式碼。
+- 除非使用者要求，不要新增套件。
+- 不要修改無關的程式碼。
+
+## 驗證
+
+- 可以的話，執行基本檢查。
+- 如果程式無法執行，說明原因。
+- 回報修改的檔案和已檢查的項目。
+</code></pre>
+  <pre class="code-sample-en"><code class="language-markdown"># AGENTS.md
 
 ## Project
 
@@ -377,9 +539,39 @@ This is a small coding practice project.
 - If the code cannot be run, explain why.
 - Report the changed file and what was checked.
 </code></pre>
+</div>
 <h2 id="example-3-simple-data-organization-project">Example 3: Simple Data Organization Project</h2>
 <p>This example fits a small data file, such as cleaning a CSV, spreadsheet content, or a pasted roster.</p>
-<pre><code class="language-markdown"># AGENTS.md
+<div class="code-sample" data-code-lang="en">
+  <div class="code-sample-toolbar" aria-label="Data organization AGENTS.md sample language toggle">
+    <button class="sample-toggle" type="button" onclick="setCodeSampleLang(this,'zh')" aria-pressed="false">中文</button>
+    <button class="sample-toggle" type="button" onclick="setCodeSampleLang(this,'en')" aria-pressed="true">English</button>
+  </div>
+  <pre class="code-sample-zh"><code class="language-markdown"># AGENTS.md
+
+## 專案
+
+這是一個簡單的資料整理專案。
+
+## 語言
+
+- 使用繁體中文。
+- 清楚說明假設。
+
+## 工作規則
+
+- 不要編造缺少的資料。
+- 不要暴露私人個人資料。
+- 保留原始資料的意思。
+- 大量更動列或欄之前先詢問。
+
+## 驗證
+
+- 可以的話，檢查資料列數。
+- 檢查重要欄位是否仍然存在。
+- 摘要缺少或異常的值。
+</code></pre>
+  <pre class="code-sample-en"><code class="language-markdown"># AGENTS.md
 
 ## Project
 
@@ -403,6 +595,7 @@ This is a simple data cleanup project.
 - Check that important columns are still present.
 - Summarize any missing or unusual values.
 </code></pre>
+</div>
 <h2 id="class-practice-create-your-own-agentsmd">Class Practice: Create Your Own AGENTS.md</h2>
 <h3 id="problem-statement">Problem Statement</h3>
 <p>Create a simple <code>AGENTS.md</code> at the top level of your Codex project. This file only needs to describe the basic working rules for this project. It does not need to plan other folders or become a full technical document.</p>
@@ -416,11 +609,22 @@ This is a simple data cleanup project.
 </ul>
 <h3 id="suggested-prompt">Suggested Prompt</h3>
 <p>You can say this directly to Codex:</p>
-<pre><code class="language-text">Create a simple AGENTS.md for this Codex project.
+<div class="code-sample" data-code-lang="en">
+  <div class="code-sample-toolbar" aria-label="Suggested prompt language toggle">
+    <button class="sample-toggle" type="button" onclick="setCodeSampleLang(this,'zh')" aria-pressed="false">中文</button>
+    <button class="sample-toggle" type="button" onclick="setCodeSampleLang(this,'en')" aria-pressed="true">English</button>
+  </div>
+  <pre class="code-sample-zh"><code class="language-text">為這個 Codex project 建立一份簡單的 AGENTS.md。
+保持適合初學者。
+使用繁體中文說明。
+只聚焦在這個簡單的 Codex project。
+</code></pre>
+  <pre class="code-sample-en"><code class="language-text">Create a simple AGENTS.md for this Codex project.
 Keep it beginner-friendly.
 Use Traditional Chinese explanations.
 Focus only on this simple Codex project.
 </code></pre>
+</div>
 <h2 id="checklist">Checklist</h2>
 <p>After finishing, check that your <code>AGENTS.md</code>:</p>
 <ul>
@@ -436,6 +640,6 @@ Focus only on this simple Codex project.
 <p>Learn to write <code>AGENTS.md</code> first. When a task keeps repeating, then consider turning it into a Skill.</p></section>
   <footer>智慧雨林產業創生人才育成計畫 (南臺科技大學 電子系 楊榮林 教授)</footer>
 </div>
-<script>function currentSection(){const lang=document.documentElement.getAttribute('data-lang');return document.querySelector('section.'+lang)}function navUsesSlides(){const box=document.getElementById('slideNavMode');return !!(box&&box.checked)}function targetForHead(head){if(!navUsesSlides())return head;const prev=head.previousElementSibling;if(prev&&(prev.classList.contains('full-screen-image')||prev.querySelector('img')))return prev;return head}function navTargets(){const section=currentSection();if(!section)return[];return[...section.querySelectorAll('h2')].map(targetForHead)}function gotoSection(i){const targets=navTargets();if(targets[i])targets[i].scrollIntoView({behavior:'smooth',block:'start'});closeMenu()}function toggleMenu(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('backdrop').classList.toggle('show')}function closeMenu(){document.getElementById('sidebar').classList.remove('open');document.getElementById('backdrop').classList.remove('show')}let spy;function buildSpy(){if(spy)spy.disconnect();const targets=navTargets();const btns=[...document.querySelectorAll('.nav .navbtn')];spy=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){const idx=targets.indexOf(e.target);btns.forEach((b,i)=>b.classList.toggle('active',i===idx))}})},{rootMargin:'0px 0px -75% 0px',threshold:0});targets.forEach(t=>spy.observe(t))}document.addEventListener('DOMContentLoaded',buildSpy);function setAgentsSampleLang(button,lang){const sample=button.closest('.agents-sample');if(!sample)return;sample.setAttribute('data-agents-lang',lang);sample.querySelectorAll('.sample-toggle').forEach(btn=>btn.setAttribute('aria-pressed',btn===button?'true':'false'))}function toggleTheme(){const html=document.documentElement;const goingDark=html.getAttribute('data-theme')==='light';html.setAttribute('data-theme',goingDark?'dark':'light');document.getElementById('themeBtn').textContent=goingDark?'☀️ Light':'🌙 Dark'}function toggleLang(){const html=document.documentElement;const goingEn=html.getAttribute('data-lang')==='zh';html.setAttribute('data-lang',goingEn?'en':'zh');html.setAttribute('lang',goingEn?'en':'zh-Hant');document.getElementById('langBtn').textContent=goingEn?'中文':'English';buildSpy()}</script>
+<script>function currentSection(){const lang=document.documentElement.getAttribute('data-lang');return document.querySelector('section.'+lang)}function navUsesSlides(){const box=document.getElementById('slideNavMode');return !!(box&&box.checked)}function targetForHead(head){if(!navUsesSlides())return head;const prev=head.previousElementSibling;if(prev&&(prev.classList.contains('full-screen-image')||prev.querySelector('img')))return prev;return head}function navTargets(){const section=currentSection();if(!section)return[];return[...section.querySelectorAll('h2')].map(targetForHead)}function gotoSection(i){const targets=navTargets();if(targets[i])targets[i].scrollIntoView({behavior:'smooth',block:'start'});closeMenu()}function toggleMenu(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('backdrop').classList.toggle('show')}function closeMenu(){document.getElementById('sidebar').classList.remove('open');document.getElementById('backdrop').classList.remove('show')}let spy;function buildSpy(){if(spy)spy.disconnect();const targets=navTargets();const btns=[...document.querySelectorAll('.nav .navbtn')];spy=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){const idx=targets.indexOf(e.target);btns.forEach((b,i)=>b.classList.toggle('active',i===idx))}})},{rootMargin:'0px 0px -75% 0px',threshold:0});targets.forEach(t=>spy.observe(t))}document.addEventListener('DOMContentLoaded',buildSpy);function setCodeSampleLang(button,lang){const sample=button.closest('.code-sample');if(!sample)return;sample.setAttribute('data-code-lang',lang);sample.querySelectorAll('.sample-toggle').forEach(btn=>btn.setAttribute('aria-pressed',btn===button?'true':'false'))}function toggleTheme(){const html=document.documentElement;const goingDark=html.getAttribute('data-theme')==='light';html.setAttribute('data-theme',goingDark?'dark':'light');document.getElementById('themeBtn').textContent=goingDark?'☀️ Light':'🌙 Dark'}function toggleLang(){const html=document.documentElement;const goingEn=html.getAttribute('data-lang')==='zh';html.setAttribute('data-lang',goingEn?'en':'zh');html.setAttribute('lang',goingEn?'en':'zh-Hant');document.getElementById('langBtn').textContent=goingEn?'中文':'English';buildSpy()}</script>
 </body>
 </html>

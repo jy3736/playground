@@ -144,7 +144,7 @@
       <h2>2. 把問題講清楚</h2>
       <figure class="slide-figure"><img src="assets/slides/slide-02-clear-ai-task.png" alt="2. 把問題講清楚"><figcaption>2. 把問題講清楚</figcaption></figure>
       <p>員工要有效使用 AI，第一步不是學會寫程式，而是把自己的辦公需求講成可執行規格。以本案例來說，不能只對 AI 說「幫我算工時」，而要清楚交代來源檔案、來源工作表、輸出欄位、計算規則、例外情況、隱私要求與驗收方式。</p>
-      <p>本專案的題目文件已經把這些要求具體化：來源是 <code>2026.06月份.xlsx</code>，主要工作表包含 <code>算工作數</code> 與 <code>員工出勤明細表</code>；計算規則包含六日不計、下班時間最多算到 <code>19:30</code>、文字註記中要抓出最後出現的時間、同一員工同一天只算一次工作天數，以及成果中的員工資料需馬賽克。這種規格化描述，是公司推動 AI 辦公應用的基礎能力。<sup><a href="#ref-problem">[problem]</a></sup></p>
+      <p>本專案的題目文件已經把這些要求具體化：來源是一份月份出勤報表，主要工作表包含 <code>算工作數</code> 與 <code>員工出勤明細表</code>；計算規則包含六日不計、下班時間最多算到 <code>19:30</code>、文字註記中要抓出最後出現的時間、同一員工同一天只算一次工作天數，以及成果中的員工資料需馬賽克。這種規格化描述，是公司推動 AI 辦公應用的基礎能力。<sup><a href="#ref-problem">[problem]</a></sup></p>
     </article>
     <article class="subject-card">
       <h2>3. 資料不乾淨</h2>
@@ -161,7 +161,7 @@
     <article class="subject-card">
       <h2>5. 純 Excel 公式版</h2>
       <figure class="slide-figure"><img src="assets/slides/slide-05-excel-formula-solution.png" alt="5. 純 Excel 公式版"><figcaption>5. 純 Excel 公式版</figcaption></figure>
-      <p>第一種方案是請 AI 產生純 Excel 公式解法。這個方式保留原始 <code>員工出勤明細表</code>，新增 <code>計算明細</code> 工作表，用公式解析員工、日期、上班時間、下班時間、計算下班、工作時數與每日計數，再於 <code>算工作數</code> 彙總每位員工每月的工作天數與總工時。專案中已保存對應的純 Excel 解法說明與成果檔。<sup><a href="#ref-excel_solution">[excel_solution]</a></sup><sup><a href="#ref-excel_workbook">[excel_workbook]</a></sup></p>
+      <p>第一種方案是請 AI 產生純 Excel 公式解法。這個方式保留原始 <code>員工出勤明細表</code>，新增 <code>計算明細</code> 工作表，用公式解析員工、日期、上班時間、下班時間、計算下班、工作時數與每日計數，再於 <code>算工作數</code> 彙總每位員工每月的工作天數與總工時。專案中已保存對應的純 Excel 解法說明。<sup><a href="#ref-excel_solution">[excel_solution]</a></sup></p>
       <p>純 Excel 解法的價值在於可視化與可稽核。主管或行政同仁可以直接在 Excel 中看到中間欄位，逐步追蹤結果是如何產生的。對於導入初期、固定格式、少量檔案或需要人工複核的情境，這是一個容易被接受的第一版 AI 成果。<sup><a href="#ref-analysis">[analysis]</a></sup></p>
     </article>
     <article class="subject-card">
@@ -179,8 +179,8 @@
     <article class="subject-card">
       <h2>8. 驗證與擴充</h2>
       <figure class="slide-figure"><img src="assets/slides/slide-08-validation-scalability.png" alt="8. 驗證與擴充"><figcaption>8. 驗證與擴充</figcaption></figure>
-      <p>本專案已對 2026 年 6 月原始檔做驗證。Python 解法解析出 <code>538</code> 筆日期列與 <code>16</code> 位員工，並與既有驗算結果比對為 <code>0</code> 筆不一致。純 Excel 公式版也保留了同一組預期結果，讓兩種方法可以互相參照與交叉驗證。<sup><a href="#ref-results">[results]</a></sup><sup><a href="#ref-python_june_output">[python_june_output]</a></sup></p>
-      <p>為了測試泛用性，專案另外建立 2026 年 5 月隨機測試檔，使用 50 位虛構員工，保留相似的區段式報表結構，並加入空白日、週末測試資料、同日多筆出勤、遲到、早退、病假與晚於 <code>19:30</code> 的下班時間。Python 解法成功解析 <code>1691</code> 筆出勤日期列與 <code>50</code> 位員工，並產生對應結果檔。這個驗證重點不只是「能跑」，而是確認流程能處理類似但不完全相同的輸入資料。<sup><a href="#ref-random_input">[random_input]</a></sup><sup><a href="#ref-python_may_output">[python_may_output]</a></sup></p>
+      <p>本專案已對 2026 年 6 月案例資料做驗證。Python 解法解析出 <code>538</code> 筆日期列與 <code>16</code> 位員工，並與既有驗算結果比對為 <code>0</code> 筆不一致。純 Excel 公式版也保留了同一組預期結果，讓兩種方法可以互相參照與交叉驗證。<sup><a href="#ref-results">[results]</a></sup></p>
+      <p>為了測試泛用性，專案另外建立 2026 年 5 月隨機測試檔，使用 50 位虛構員工，保留相似的區段式報表結構，並加入空白日、週末測試資料、同日多筆出勤、遲到、早退、病假與晚於 <code>19:30</code> 的下班時間。Python 解法成功解析 <code>1691</code> 筆出勤日期列與 <code>50</code> 位員工，並產生對應結果檔。這個驗證重點不只是「能跑」，而是確認流程能處理類似但不完全相同的輸入資料。</p>
     </article>
     <article class="subject-card">
       <h2>9. 導入判斷</h2>
@@ -192,19 +192,15 @@
       <h2>10. 落地路徑</h2>
       <figure class="slide-figure"><img src="assets/slides/slide-10-rollout-roadmap.png" alt="10. 落地路徑"><figcaption>10. 落地路徑</figcaption></figure>
       <p>建議的落地方式，是從低風險、高重複性的辦公任務開始，例如出勤彙總、報表整理、名單比對、費用分類或月報初稿。第一步先要求員工用固定格式描述任務，包含資料來源、處理規則、例外情況、輸出格式、驗收條件、個資與權限限制。這能把人的經驗整理成 AI 可以執行的規格。</p>
-      <p>第二步先產出可人工稽核的版本，例如純 Excel 公式版或含計算明細的輸出檔。當某項任務被證明會重複發生、規則穩定且驗收方式明確時，再進一步建立自動化流程，保留輸入檔、輸出檔與稽核用計算明細。最終目標不是讓 AI 取代員工，而是讓員工把日常辦公經驗變成可重複、可檢查、可管理的公司流程。<sup><a href="#ref-excel_workbook">[excel_workbook]</a></sup><sup><a href="#ref-analysis">[analysis]</a></sup></p>
+      <p>第二步先產出可人工稽核的版本，例如純 Excel 公式版或含計算明細的輸出檔。當某項任務被證明會重複發生、規則穩定且驗收方式明確時，再進一步建立自動化流程，保留輸入檔、輸出檔與稽核用計算明細。最終目標不是讓 AI 取代員工，而是讓員工把日常辦公經驗變成可重複、可檢查、可管理的公司流程。<sup><a href="#ref-analysis">[analysis]</a></sup></p>
     </article>
     <h2>References</h2>
     <ol>
       <li id="ref-problem"><a href="assets/docs/common/problem-statement.html" target="_blank" rel="noopener noreferrer">員工出勤工時計算問題</a></li>
       <li id="ref-excel_solution"><a href="assets/docs/pure-excel/solution.html" target="_blank" rel="noopener noreferrer">純 Excel 公式解法說明</a></li>
-      <li id="ref-excel_workbook"><a href="assets/docs/pure-excel/2026.06月份-純Excel公式解.xlsx" download>2026.06月份-純Excel公式解.xlsx</a></li>
       <li id="ref-results"><a href="assets/docs/pure-excel/results.html" target="_blank" rel="noopener noreferrer">2026.06 純 Excel 公式解驗算結果</a></li>
       <li id="ref-analysis"><a href="assets/docs/analysis/excel-vs-python-analysis.html" target="_blank" rel="noopener noreferrer">純 Excel 公式法與 Python 解法比較分析</a></li>
       <li id="ref-python_doc"><a href="assets/docs/python-solution/python-solution.html" target="_blank" rel="noopener noreferrer">自動化出勤計算流程說明</a></li>
-      <li id="ref-python_june_output"><a href="assets/docs/python-solution/outputs/2026.06月份-python工時計算.xlsx" download>2026.06月份-python工時計算.xlsx</a></li>
-      <li id="ref-random_input"><a href="assets/data/2026.05月份-隨機出勤.xlsx" download>2026.05月份-隨機出勤.xlsx</a></li>
-      <li id="ref-python_may_output"><a href="assets/docs/python-solution/outputs/2026.05月份-python工時計算.xlsx" download>2026.05月份-python工時計算.xlsx</a></li>
     </ol>
   </section>
   <footer>教育部智慧雨林產業創生人才育成計畫 (南臺科技大學 電子系 楊榮林 教授)</footer>

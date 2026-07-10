@@ -189,7 +189,7 @@
 <p class="lead"><span class="zh">同一個任務交給聊天機器人、AI Agent 與 Local LLM，會產生不同的操作方式、成品能力與資料去向。</span><span class="en">The same task behaves differently in a chatbot, an AI agent, and a local LLM: different operation, output capability, and data path.</span></p>
 </section>
 <p class="lead">本講義對應 Module 2 的五個實作活動，提供可直接照做的步驟、可複製的 prompt、預期結果與討論題。設計上同時適合「現場帶領」與「課後自學」：每個練習都自成一段，附上要輸入什麼、會看到什麼、以及做完要思考什麼，教師離開工作坊後可獨立重做與延伸。</p>
-<blockquote>主角工具為 Module 1 設定的 Codex CLI；若你慣用 Copilot 或 Claude Code，指令與 prompt 幾乎相同，可直接互換。對話式 AI 請任選一項你有帳號的服務 (ChatGPT、Claude 或 Gemini)。</blockquote>
+<blockquote>主角工具是 ChatGPT desktop 的 Work／Codex agent 工作區。先選好本機 project，再讓 agent 在明確範圍內工作；畫面上的名稱可能因版本不同而略有差異。CLI 與 VS Code 是本講義最後的進階路線，不是本練習的必要條件。</blockquote>
 <h2>如何使用本講義</h2>
 <table>
 <thead><tr><th>對象</th><th>建議用法</th></tr></thead>
@@ -205,15 +205,15 @@
 <h2><span class="zh">練習開始前，先把所有產物集中在同一個資料夾。</span><span class="en">Before practice, keep every artifact in one workspace folder.</span></h2>
 <div class="flow">
 <div class="flow-step"><strong><span class="zh">建立資料夾</span><span class="en">Create folder</span></strong><p><span class="zh">例如 <code>module2-lab/</code>，所有檔案都放這裡。</span><span class="en">For example, <code>module2-lab/</code>, with all files kept inside.</span></p></div>
-<div class="flow-step"><strong><span class="zh">進入 Codex</span><span class="en">Enter Codex</span></strong><p><span class="zh">在終端機切到該資料夾並執行 <code>codex</code>。</span><span class="en">Open Terminal in that folder and run <code>codex</code>.</span></p></div>
-<div class="flow-step"><strong><span class="zh">開聊天 AI</span><span class="en">Open chat AI</span></strong><p><span class="zh">另開瀏覽器分頁，準備做並排比較。</span><span class="en">Open a browser tab for side-by-side comparison.</span></p></div>
+<div class="flow-step"><strong><span class="zh">選擇 ChatGPT Work project</span><span class="en">Select a ChatGPT Work project</span></strong><p><span class="zh">在 ChatGPT desktop 開啟 Work／Codex agent，選擇剛建立的資料夾。</span><span class="en">Open the Work/Codex agent in ChatGPT desktop and select the folder.</span></p></div>
+<div class="flow-step"><strong><span class="zh">準備比較</span><span class="en">Prepare comparison</span></strong><p><span class="zh">同一個 ChatGPT 對話可先討論，再把任務交給 Work agent 執行。</span><span class="en">Use ChatGPT to discuss first, then delegate the task to the Work agent.</span></p></div>
 <div class="flow-step"><strong><span class="zh">確認網路</span><span class="en">Check network</span></strong><p><span class="zh">練習 1 到 3 需要網路；Local LLM 階段可離線。</span><span class="en">Exercises 1 to 3 need network; the Local LLM part can be offline.</span></p></div>
 </div>
 </section>
 <ul>
 <li>在你的家目錄底下開一個工作資料夾，例如 <code>module2-lab/</code>，本模組所有檔案都放這裡，方便整理與刪除。</li>
-<li>開啟終端機，切換到該資料夾，執行 <code>codex</code> 進入 AI Agent。</li>
-<li>另開一個瀏覽器分頁，登入你的對話式 AI 服務 (ChatGPT / Claude / Gemini)，等一下要做並排比較。</li>
+<li>開啟 ChatGPT desktop，進入 Work／Codex agent，並選擇這個工作資料夾。</li>
+<li>確認你看得到 project 範圍與權限提示；名稱或位置可能隨版本不同。</li>
 <li>確認可以上網 (練習 1 到 3 需要)；練習 4 的 Local LLM 階段可離線。</li>
 </ul>
 <blockquote>講師提示：先用一張投影片帶出本模組主線「先看差異、再看威力、最後談資料去哪裡」，讓學員知道每個練習在整條光譜上的位置。</blockquote>

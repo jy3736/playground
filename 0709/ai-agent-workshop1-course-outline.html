@@ -180,7 +180,7 @@
 <button class="navbtn" onclick="gotoSection(5)" type="button"><span class="zh">五、資料隱私、雲端 AI 與 Local LLM</span><span class="en">5. Data Privacy, Cloud AI, and Local LLMs</span></button>
 <button class="navbtn" onclick="gotoSection(6)" type="button"><span class="zh">六、Token、權限與安全意識</span><span class="en">6. Tokens, Permissions, and Security Awareness</span></button>
 <button class="navbtn" onclick="gotoSection(7)" type="button"><span class="zh">七、電腦環境與硬體需求</span><span class="en">7. Computer Environment and Hardware Requirements</span></button>
-<button class="navbtn" onclick="gotoSection(8)" type="button"><span class="zh">八、Codex App 安裝與基本設定</span><span class="en">8. Codex App Installation and Basic Settings</span></button>
+<button class="navbtn" onclick="gotoSection(8)" type="button"><span class="zh">八、ChatGPT Work 專案與基本設定</span><span class="en">8. ChatGPT Work Project and Basic Settings</span></button>
 <button class="navbtn" onclick="gotoSection(9)" type="button"><span class="zh">九、Module 1：Windows 11 Vibe Coding 環境準備</span><span class="en">9. Module 1: Windows 11 Vibe Coding Environment Preparation</span></button>
 <button class="navbtn" onclick="gotoSection(10)" type="button"><span class="zh">十、Markdown、AGENTS.md、Skill 與可讀文件</span><span class="en">10. Markdown, AGENTS.md, Skills, and Readable Documents</span></button>
 <button class="navbtn" onclick="gotoSection(11)" type="button"><span class="zh">十一、Plugin、Playwright MCP 與 Computer Use</span><span class="en">11. Plugins, Playwright MCP, and Computer Use</span></button>
@@ -360,8 +360,8 @@
   <figure><img src="assets/codex-app-setup-infographic.png" alt="Codex App 安裝與基本設定資訊圖" style="max-width: 100%; max-height: 100vh; object-fit: contain;" /></figure>
 </div>
   <div class="slide-text">
-<h2 id="codex-app">八、Codex App 安裝與基本設定</h2>
-<p>開始使用 Codex 前，第一步是先從官方或課程提供的下載連結取得 Codex App，依照作業系統完成安裝，然後打開 App 並使用 ChatGPT 帳號登入。安裝完成後，先確認 Codex 能正常啟動、帳號狀態正常，並知道目前使用的是免費、付費或教育方案額度。</p>
+<h2 id="codex-app">八、ChatGPT Work 專案與基本設定</h2>
+<p>開始時開啟 ChatGPT desktop，以課程帳號登入並進入 Work／Codex agent。選定 project 後，依序確認：工作範圍、任務與資料限制、approval 提示、產物位置與驗證方式。畫面名稱會隨版本調整，不必背按鈕。</p>
 <p>第一次設定 Codex 時，應先選擇一個明確的 project 或 workspace。Codex 看起來像聊天工具，但它會綁定特定資料夾；這表示它能在指定範圍內讀取檔案、修改檔案與執行工具。開始任務前，應確認目前開啟的是哪個專案、可讀寫範圍在哪裡，以及執行命令時是否需要批准。</p>
 <p>基本設定應以安全與可理解為優先。若使用者不是程式背景，可以選擇較白話的回應方式，讓 Codex 用一般語言說明它正在做什麼。檔案權限建議先限制在工作區內，並在需要下載外部資源、開啟其他資料夾或執行較高風險命令時要求批准。這樣可以保留使用者的控制權，也能避免 Agent 無意間碰到不相關檔案。</p>
 <p>不建議初學者一開始就開啟完整存取權。完整存取權可能讓 Codex 接觸更大範圍的檔案、下載工具或執行高風險操作。較好的學習方式是先用小型練習專案建立信任與理解，再逐步擴大任務範圍。</p>
@@ -373,10 +373,10 @@
 </div>
   <div class="slide-text">
 <h2 id="module-1windows-11-vibe-coding">九、Module 1：Windows 11 Vibe Coding 環境準備</h2>
-<p>本節以 Windows 11 筆電為主，目標是先完成可用的 Vibe Coding 工作環境，而不是立刻精通所有工具。學員需取得課程資料、確認資料夾位置，並能在 Codex 中開啟正確的 project。</p>
+<p>本節以 Windows 11 筆電為主，目標是先完成可用的 ChatGPT Work 環境。學員需取得課程資料、確認資料夾位置，並能在 ChatGPT Work 中選擇正確 project。</p>
 <p>建議優先使用課程提供的 <code>setup-windows.bat</code> 完成一鍵安裝；若受限於權限、網路或資安政策，再依補充講義手動安裝。完成後，確認 <code>code</code>、<code>git</code>、<code>node</code>、<code>npm</code>、<code>uv</code>、<code>gh</code> 與 <code>codex</code> 都能顯示版本號。</p>
 <p>帳號部分需確認 ChatGPT / Codex 與 GitHub 都能登入。Codex CLI 透過瀏覽器登入 ChatGPT 帳號；GitHub CLI 使用 <code>gh auth login</code> 與一次性代碼登入，不需要先設定 SSH 金鑰。</p>
-<p>完成本節後，學員應能啟動 Codex CLI、讓 Codex 讀取第一個 project，並具備 VS Code、Python、Node.js 與 GitHub CLI 的基本可用環境。</p>
+<p>完成本節後，學員應能讓 ChatGPT Work agent 讀取第一個 project、建立並驗證一個小型產物。VS Code、Python、Node.js 與 GitHub CLI 為進階本機開發路線。</p>
 <p>補充材料：<a href="module1/windows11-vibe-coding-setup.html">Windows 11 Vibe Coding 與 AI Agent 環境建置</a></p>
   </div>
 </article><article class="content-slide-card">

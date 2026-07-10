@@ -182,7 +182,7 @@
 <div class="backdrop" id="backdrop" onclick="toggleMenu()"></div>
 <div class="wrap">
 <section class="zh">
-<h1>Codex 完整介紹：把 AI 變成能協助你處理電腦工作的助理</h1><section class="embedded-slide" data-embedded-slide="slide-02" data-for-section="Codex 完整介紹">
+<h1>ChatGPT Work 與 Codex Agent：把 AI 變成能協助你處理電腦工作的助理</h1><section class="embedded-slide" data-embedded-slide="slide-02" data-for-section="Codex 完整介紹">
 <div class="slide-label">Learning Path</div>
 <h2><span class="zh">今天要建立一條從「會使用它」到「會管理它」的路徑。</span><span class="en">Today moves from using Codex to managing Codex.</span></h2>
 <div class="grid-4">
@@ -202,9 +202,10 @@
 <p>Codex 是 OpenAI 的 AI coding agent。它不只是回答問題，而是能在你授權的工作環境裡協助你完成任務：理解專案、讀檔案、修改檔案、執行命令、檢查結果、產出程式、文件、表格、簡報素材、網頁或其他工作成果。</p>
 <p>如果用一句話總結兩者的差別：</p>
 <ul>
-<li><strong>ChatGPT 網頁版</strong>：主要在瀏覽器裡對話。你通常需要自己上傳資料、下載結果、整理檔案。</li>
-<li><strong>Codex</strong>：可以安裝在本機或透過不同 Codex 介面使用，直接在你指定的 project / workspace 裡工作。在 sandbox 與 approval 設定允許的範圍內，它能讀檔、改檔、執行工具、使用外掛與技能，並把成果存回你的專案。</li>
+<li><strong>ChatGPT 對話</strong>：主要用來討論、規劃與產生草稿。</li>
+<li><strong>ChatGPT Work／Codex agent</strong>：在你選定的 project / workspace 裡工作。在權限與 approval 設定允許的範圍內，它能讀檔、改檔、執行工具並把成果存回專案。</li>
 </ul>
+<div class="table-wrap"><table><thead><tr><th>五步驟</th><th>使用者的責任</th></tr></thead><tbody><tr><td>選 project</td><td>限定可工作資料夾。</td></tr><tr><td>說任務與範圍</td><td>給明確輸入、輸出與不可碰觸內容。</td></tr><tr><td>看 approval</td><td>確認 agent 提出的動作。</td></tr><tr><td>檢查產物</td><td>實際開啟檔案或預覽。</td></tr><tr><td>驗證再接受</td><td>以檢查結果而非口頭回報判定完成。</td></tr></tbody></table></div>
 <p>有一個生活化的比喻：如果只把 Codex 當聊天機器人使用，就像只使用一套完整系統中的一小部分功能，會錯過它真正適合支援的工作流程。</p>
 <p>也正因為 Codex 可能碰得到你的檔案與工具，不能只給一句模糊指令後就不再檢查。你需要理解專案範圍、權限、上下文、AGENTS.md、Skill、外掛與驗收方式，才能把它用得穩。</p>
 <h2>二、AI 的等級：從對話者到智能體</h2><section class="embedded-slide" data-embedded-slide="slide-03" data-for-section="二、AI 的等級">
@@ -288,7 +289,7 @@
 </div>
 <figure class="visual-panel compact"><img alt="A project workspace boundary enclosing inputs, an AI workflow, outputs, and review markers." src="assets/codex-project-scope.png"/></figure>
 </section>
-<p>Codex App 裡的 project 可以想成「這次工作的資料夾與環境」。如果你從某個資料夾啟動 Codex CLI，或在 App 裡新增一個 project，Codex 通常會把這個資料夾當成主要工作範圍。</p>
+<p>ChatGPT Work 裡的 project 可以想成「這次工作的資料夾與環境」。先選定 project，才讓 Codex agent 在這個清楚的範圍裡工作。</p>
 <p>所以第一步，先在電腦裡開一個資料夾（例如「講座籌備」），把活動說明、報名單、講者介紹、圖片素材、過去的簡報放進去。這一步看似基本，卻是整件事的關鍵：你不是把整台電腦交給 AI，而是先圈出一塊清楚的工作範圍，讓它專注，也降低改到不該碰檔案的風險。</p>
 <p>當你要 Codex 處理某個檔案，與其只提供模糊關鍵字讓它自行搜尋，不如明確告訴它資料夾、檔名、路徑，或用介面支援的方式附加檔案。上下文越清楚，Codex 越不需要到處搜尋，也比較不會浪費 token。</p>
 <blockquote><strong>上下文工程（Context Engineering）</strong>：把專案資料夾裡的檔案歸好類、名字取清楚，讓任何人看資料夾名稱就找得到東西。就算沒有 AI，你本來也該這樣做；到了 Agent 時代，這件事只會更重要。</blockquote>
